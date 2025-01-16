@@ -193,6 +193,7 @@ table.dataTable th.dt-center,
 table.dataTable td.dt-center,
 table.dataTable td.dataTables_empty {
   text-align: center;
+
 }
 table.dataTable th.dt-right,
 table.dataTable td.dt-right {
@@ -267,10 +268,11 @@ table.dataTable td {
  * Control feature layout
  */
 .dataTables_wrapper {
-  position: relative;
-  clear: both;
-  *zoom: 1;
-  zoom: 1;
+    position: relative;
+    clear: both;
+    *zoom: 1;
+    zoom: 1;
+
 }
 .dataTables_wrapper .dataTables_length {
   float: left;
@@ -281,11 +283,13 @@ table.dataTable td {
 }
 .dataTables_wrapper .dataTables_filter input {
   margin-left: 0.5em;
+
 }
 .dataTables_wrapper .dataTables_info {
   clear: both;
   float: left;
   padding-top: 0.755em;
+
 }
 .dataTables_wrapper .dataTables_paginate {
   float: right;

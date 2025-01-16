@@ -116,7 +116,13 @@
                     }
                     $("#table1 tbody").html(a);
 
-                    $("#table1").DataTable();
+                    $("#table1").DataTable({
+                        "scrollX": true,    // Enable horizontal scrolling
+                        "paging": false,    // Disable paging, as horizontal scrolling will handle navigation
+                        "scrollCollapse": true,
+                        "scrollY": '60vh'
+
+                    });
                     
                 }
                 else{

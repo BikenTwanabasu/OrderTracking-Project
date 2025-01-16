@@ -5,13 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>GetAdminsHistoryList</h1>
+<h1 style="text-align:center;">GetAdminsHistoryList</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<div style="width:100%;overflow-x:auto;height:60vh;overflow-y:auto;">
-    <table class="table table-bordered table-striped table-hover  mb-2" id="table1" style="height:60vh;width:60%;">
+<div style="width:87%;height:60vh; margin-left:6.5%;">
+    <table class="table table-bordered table-striped table-hover  mb-2" id="table1" style="height:100%;" />
 
         <thead>
             <tr>
@@ -77,7 +74,13 @@
                             `;
                         $("#table1 tbody").html(row);
                     }
-                    $("#table1").DataTable();
+                    $("#table1").DataTable({
+                        "scrollX": true,    // Enable horizontal scrolling
+                        "paging": false,    // Disable paging, as horizontal scrolling will handle navigation
+                        "scrollCollapse": true,
+                        "scrollY": '60vh'
+
+                    });
                 }
             },
             error: function (xhr, status, error) {
