@@ -1,0 +1,76 @@
+﻿@{
+    Layout = null;
+}
+<link href="~/css/custordertracker.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<div id="MainDiv">
+    <div id="SearchDiv">
+        <h1>Track Your Order </h1>
+        <input type="text" placeholder="Enter OrderID here" id="O_id" /><br/>
+        <input type="button" value="Track" onClick="showModal();" id="Track"/>
+    </div>
+</div>
+<div class="modal " tabindex="-1" id="Modal"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Order Details</h5>   
+            </div>
+            <div class="modal-body" id="DetailsBody">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    function showModal(){       
+        var content='';
+        var OrderId = $("#O_id").val();
+               
+        $.ajax({
+            url: '@Url.Action("TrackTheOrder","Project")',
+            type:'Get',
+            dataType:'Json',
+            data:{
+
+                OrderId:OrderId
+            },
+            success: function(response){
+                debugger;
+                if(response!=null){
+
+                        if(response[0].responseCode ==101){
+                            
+                            content = `
+                                    <h4>AgentName : ${response[0].agentName}</h4>
+                                    <h4>AgentPhone : ${response[0].agentPhone}</h4>
+                                    <h4>DeliveryStatus : ${response[0].deliveryStatus}</h4>
+                                  `;
+                        }
+                        else{
+                            content =`
+                                        <h4>${response[0].responseMessage}</h4>
+                                        
+                                     `;
+                        }
+                   $("#DetailsBody").html(content);
+                   $("#Modal").modal('show');
+                   $("#O_id").val('');
+                }
+                else{
+                    alert("Data not fetched");
+                }
+            },
+            error:function(xhr,status,error){
+                alert("Error Occured!!!");
+            }
+        })
+
+    }
+</script>

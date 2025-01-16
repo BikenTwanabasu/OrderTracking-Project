@@ -1,0 +1,87 @@
+﻿@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+
+@{
+    ViewData["Title"] = "AgentPastRecords";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<h1>AgentTask</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<p style="text-align:center;color:darkgreen">
+    Your Previous Tasks
+</p>
+<table class="table table-bordered table-striped table-hover  mb-2" id="table2">
+    <thead>
+        <tr>
+            <th>
+                OrderId
+            </th>
+            <th>
+                VendorName
+            </th>
+            <th>
+                VendorAddress
+            </th>
+            <th>
+                VendorPhone
+            </th>
+            <th>
+                DeliveredDate
+            </th>
+            
+
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        GetPastRecords();
+    })
+    function GetPastRecords(){
+        var AgentId=@ViewBag.Id;
+        $.ajax({
+            url: '@Url.Action("AgentRecord","AgnetDashboard")',
+            type:'Get',
+            data:{
+                AgentId:AgentId
+            },
+            dataType:'Json',
+            success:function(response){
+                if(response!=null){
+                    var row='';
+                    for(var i=0;i<response.length;i++){
+                        row +=`
+
+                            <tr>
+                                <td>${response[i].orderId}</td>
+                                <td>${response[i].vendorName}</td>
+                                <td>${response[i].vendorAddress}</td>
+                                <td>${response[i].vendorPhone}</td>
+                                <td>${response[i].deliveredDate}</td>
+                            </tr>             
+                        `;
+                        $("#table2 tbody").html(row);
+                    }
+                    $("#table2").DataTable();
+
+                }
+                else{
+                    alert("Couldnt Complete the request ");
+                }
+
+            },
+            error:function(xhr,status,error){
+                alert("Error Occured");
+            }
+        })
+    }
+
+</script>

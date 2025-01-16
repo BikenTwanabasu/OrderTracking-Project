@@ -1,0 +1,85 @@
+﻿@model CollegeProject.Models.Agent
+
+@{
+    ViewData["Title"] = "AgentRegistration";
+}
+
+<h1>AgentRegistration</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+       
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AgentName" class="control-label"></label>
+                <input asp-for="AgentName" class="form-control" />
+                <span asp-validation-for="AgentName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AgentPhone" class="control-label"></label>
+                <input asp-for="AgentPhone" class="form-control" />
+                <span asp-validation-for="AgentPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AgentEmail" class="control-label"></label>
+                <input asp-for="AgentEmail" class="form-control" />
+                <span asp-validation-for="AgentEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AgentAddress" class="control-label"></label>
+                <input asp-for="AgentAddress" class="form-control" />
+                <span asp-validation-for="AgentAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AgentPassword" class="control-label"></label>
+                <input asp-for="AgentPassword" class="form-control" type="password"/>
+                <span asp-validation-for="AgentPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" onclick="AgentRegistration()" value="Create" class="btn btn-success" />
+            </div>
+       
+    </div>
+</div>
+
+<div>
+    <a asp-action="AgentLoggingIn" asp-controller="Log" style="color:#f9004d;">Back to LogIn</a>
+</div>
+
+<script>
+    function AgentRegistration(){
+        var AgentName = $("#AgentName").val();
+        var AgentPhone = $("#AgentPhone").val();
+        var AgentEmail = $("#AgentEmail").val();
+        var AgentAddress = $("#AgentAddress").val();
+        var AgentPassword = $("#AgentPassword").val();
+
+        $.ajax({
+            url: '@Url.Action("AgentRegistration","Project")',
+            type:'Post',
+            data:{
+                AgentName:AgentName,
+                AgentEmail:AgentEmail,
+                AgentPhone:AgentPhone,
+                AgentAddress:AgentAddress,
+                AgentPassword:AgentPassword
+            },
+            dataType:'Json',
+            success:function(response){
+                if(response){
+                    alert("Agent Resgistered!!! LogIn now");
+                    window.location.href = '@Url.Action("AgentRegistration","Project")';
+                }
+                else{
+                    alert("Agent Registration Failed!!!");
+                    window.location.href = '@Url.Action("AgentRegistration","Project")';
+                }
+            },
+            error:function(xhr,status,error){
+                alert("Error Occured");
+            }
+        })
+    }
+</script>
+

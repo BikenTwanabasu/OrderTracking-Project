@@ -1,0 +1,119 @@
+﻿@model CollegeProject.Models.OrderAndStudentModel
+
+@{
+    ViewData["Title"] = "Create Order";
+   
+}
+
+<h2>Create Order</h2>
+
+<h3>Customer Details</h3>
+
+
+
+
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.customer.CustomerName, htmlAttributes: new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.customer.CustomerName, new { @class = "form-control", required = "required" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.customer.CustomerAddress, htmlAttributes: new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.customer.CustomerAddress, new { @class = "form-control", required = "required" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.customer.Phone, htmlAttributes: new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.customer.Phone, new { @class = "form-control", required = "required" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.customer.Email, htmlAttributes: new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.customer.Email, new { @class = "form-control", required = "required", type = "email" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.customer.OrderReceiveDate, htmlAttributes: new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.customer.OrderReceiveDate, new { @class = "form-control", required = "required", type = "date" })
+    </div>
+
+    <h3>Order Details</h3>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.order.Amount, htmlAttributes: new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.order.Amount, new { @class = "form-control", type = "number" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.order.PaymentStatus, htmlAttributes: new { @class = "control-label" })
+        @Html.DropDownListFor(model => model.order.PaymentStatus,
+    new SelectList(new[] { "COD", "Pre-Payment", "Online", "Credit" }),
+    "Select Payment Status", new { @class = "form-control", required = "required" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.order.DeliveryAddress, htmlAttributes: new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.order.DeliveryAddress, new { @class = "form-control", required = "required" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.order.DeliveryDate, htmlAttributes: new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.order.DeliveryDate, new { @class = "form-control", required = "required", type = "date" })
+    </div>
+
+    <button type="submit" onclick="CreateOrder()" class="btn btn-primary">Create Order</button>
+
+<script>
+   function CreateOrder() {
+    debugger;
+    var CustomerName = $("#customer_CustomerName").val();
+    var CustomerAddress = $("#customer_CustomerAddress").val();
+    var Phone = $("#customer_Phone").val();
+    var Email = $("#customer_Email").val();
+    var OrderReceiveDate = $("#customer_OrderReceiveDate").val();
+    var Amount = $("#order_Amount").val();
+    var PaymentStatus = $("#order_PaymentStatus").val();
+    var DeliveryAddress = $("#order_DeliveryAddress").val();
+    var DeliveryDate = $("#order_DeliveryDate").val();
+    var CompanyId='@ViewBag.I';
+    var orderAndStudentModel;
+    var customer;
+    var order;
+    $.ajax({
+        url: '@Url.Action("OrderCreation","Project")',
+        type: 'Post',
+        dataType: 'Json',
+        data: {
+            orderAndStudentModel: {
+                customer: {
+                    CustomerName: CustomerName,
+                    CustomerAddress: CustomerAddress,
+                    Phone: Phone,
+                    Email: Email,
+                    OrderReceiveDate: OrderReceiveDate
+                },
+                order: {
+                    Amount: Amount,
+                    PaymentStatus: PaymentStatus,
+                    DeliveryAddress: DeliveryAddress,
+                    DeliveryDate: DeliveryDate,
+                    CompanyId:CompanyId
+                }
+            },
+        },
+        success: function (response) {
+            if (response) {
+                alert("Order Added");
+            } else {
+                alert("Order Could not be added");
+            }
+        },
+        error: function (xhr, status, error) {
+            alert("Error Occurred");
+        }
+    });
+}
+
+</script>

@@ -1,0 +1,89 @@
+﻿@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+
+@{
+    ViewData["Title"] = "GetAdminsHistoryList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>GetAdminsHistoryList</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div style="width:100%;overflow-x:auto;height:60vh;overflow-y:auto;">
+    <table class="table table-bordered table-striped table-hover  mb-2" id="table1" style="height:60vh;width:60%;">
+
+        <thead>
+            <tr>
+                <th>OrderId</th>
+                <th>CompanyID</th>
+                <th>VendorName</th>
+                <th>VendorPhone</th>
+                <th>CustomerId</th>
+                <th>CustomerName</th>
+                <th>CustomerAddress</th>
+                <th>CustomerPhone</th>
+                <th>CreatedDate</th>
+                <th>ReceiverAgentId</th>
+                <th>ReceiverAgentName</th>
+                <th>ReceiverAgentPhone</th>
+                <th>DeliveredDate</th>
+                <th>DeliveryAgentId</th>
+                <th>DeliveryAgentName</th>
+                <th>DeliveryAgentPhone</th>
+                <th>DeliveryStatus</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        GetHistoryList();
+    })
+    function GetHistoryList() {
+        $.ajax({
+            url: '@Url.Action("GetAdminsHistoryJSON","Admin")',
+            type: 'Get',
+            dataType: 'Json',
+            success: function (response) {
+                if (response != null) {
+                    debugger;
+                    var row = '';
+                    for (var i = 0; i < response.length; i++) {
+                        row += `
+                                    <tr>
+                                            <td>${response[i].orderId}</td>
+                                            <td>${response[i].companyID}</td>
+                                            <td>${response[i].vendorName}</td>
+                                            <td>${response[i].vendorPhone}</td>
+                                            <td>${response[i].customerId}</td>
+                                            <td>${response[i].customerName}</td>
+                                            <td>${response[i].customerAddress}</td>
+                                            <td>${response[i].customerPhone}</td>
+                                            <td>${response[i].createdDate}</td>
+                                            <td>${response[i].receiverAgentId}</td>
+                                            <td>${response[i].receiverAgentName}</td>
+                                            <td>${response[i].receiverAgentPhone}</td>
+                                            <td>${response[i].deliveredDate}</td>
+                                            <td>${response[i].deliveryAgentId}</td>
+                                            <td>${response[i].deliveryAgentName}</td>
+                                            <td>${response[i].deliveryAgentPhone}</td>
+                                            <td>${response[i].deliveryStatus}</td>
+
+                                    </tr>
+                            `;
+                        $("#table1 tbody").html(row);
+                    }
+                    $("#table1").DataTable();
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("Error Occured");
+            }
+
+        })
+    }
+</script>
