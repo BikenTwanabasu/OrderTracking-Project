@@ -1,0 +1,90 @@
+﻿#SuperMainDiv {
+    height: 100vh;
+    width: 100%;
+}
+
+#MainDiv {
+    display: flex;
+    height: 90vh;
+    width: 100%;
+}
+
+#radioDiv {
+    height: 100%;
+    width: 50%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.9)), url('../image/Gaubesi 2.0.jfif');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#rad {
+    height: 20vh;
+    width: 50%;
+    margin-top: 55vh;
+    margin-left: 10%;
+}
+
+    #rad label {
+        color: white;
+        font-size: 18px;
+        letter-spacing: 1px;
+        font-family: Arial;
+    }
+
+    #rad input[type="radio"] {
+        
+        zoom: 1.5;
+    }
+
+    #rad input[type="button"]{
+        height:5.5vh;
+        width:30%;
+        font-size:16px;
+        letter-spacing:1px;
+        border-radius:10px;
+        background-color:cornflowerblue;
+        border:none;
+        color:white;
+        margin-left:8%;
+    }
+#paraDiv {
+    height: 100%;
+    width: 50%;
+}
+
+#Divvvvv {
+    height: 60%;
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 15%;
+}
+
+    #Divvvvv p {
+        text-align: justify;
+        line-height: 30px;
+        font-family: Arial;
+        font-size: 17px;
+    }
+
+#paraDiv {
+    height: 100%;
+    width: 50%;
+    background-color: black; /* Matching background color */
+}
+
+#Divvvvv {
+    height: 60%;
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 15%;
+
+}
+
+    #Divvvvv p {
+        text-align: justify;
+        line-height: 30px;
+        font-family: Arial;
+        font-size: 17px;
+        color: white; /* White text for readability */
+    }

@@ -1,0 +1,162 @@
+﻿/* General Styles */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #000000; /* Black background */
+    color: #FFFFFF; /* White text */
+}
+
+h1, h2, h3, p {
+    color: #FF6600; /* Bright orange for headings and accents */
+}
+
+.MainDiv {
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 1200px;
+    background-color: #1A1A1A; /* Slightly lighter black for content area */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    color: #FF6600; /* Bright orange */
+    border-bottom: 2px solid #FF6600;
+    padding-bottom: 10px;
+}
+
+a {
+    color: #FF6600; /* Orange for links */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #1A1A1A; /* Slightly lighter black for table background */
+    border-radius: 10px;
+    overflow-x: auto;
+    overflow-y: auto;
+    color: #FFFFFF; /* White for table text */
+}
+
+    table thead {
+        background-color: #FF6600; /* Bright orange for table headers */
+        color: #000000; /* Black text for header */
+        text-transform: uppercase;
+        font-size: 0.9em;
+        letter-spacing: 1px;
+    }
+
+    table th, table td {
+        padding: 12px 15px;
+        text-align: left;
+        border: 1px solid #333333; /* Subtle border for separation */
+    }
+
+    table tbody tr:nth-child(odd) {
+        background-color: #1A1A1A; /* Slightly lighter black for contrast */
+    }
+
+    table tbody tr:hover {
+        background-color: #FF6600; /* Orange highlight on hover */
+        color: #000000; /* Black text on hover */
+        cursor: pointer;
+    }
+
+/* Buttons */
+button, input[type="button"] {
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    color: #FFFFFF; /* White text */
+    background-color: #FF6600; /* Bright orange for buttons */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    button:hover, input[type="button"]:hover {
+        background-color: #CC5200; /* Darker orange on hover */
+    }
+
+    button:disabled, input[type="button"]:disabled {
+        background-color: #4C4C4C; /* Gray for disabled buttons */
+        cursor: not-allowed;
+    }
+
+/* Alerts */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.alert-success {
+    background-color: #FF6600; /* Bright orange for success alerts */
+    color: #000000; /* Black text for success */
+}
+
+.alert-danger {
+    background-color: #CC0000; /* Red for danger alerts */
+    color: #FFFFFF;
+}
+
+/* Scrollable Table */
+.dataTables_wrapper .dataTables_scroll {
+    background-color: #1A1A1A;
+}
+
+.dataTables_wrapper .dataTables_scrollHead {
+    border-bottom: 2px solid #FF6600;
+}
+
+/* Centered Section Titles */
+p {
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #FF6600; /* Orange for section titles */
+}
+
+.MainDiv {
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 1200px;
+    background-color: #1A1A1A; /* Slightly lighter black for content area */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .MainDiv {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    table th, table td {
+        font-size: 0.9em;
+        padding: 10px;
+    }
+
+    button, input[type="button"] {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+}

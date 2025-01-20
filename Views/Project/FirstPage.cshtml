@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "FirstPage";
+    Layout = null;
+}
+<link href="~/css/FirstPage.css" rel="stylesheet" />
+<div id="SuperMainDiv">
+    <h1 style="text-align:center">GAU BESI</h1>
+    <div id="MainDiv">
+        <div id="radioDiv">
+            <div id="rad">
+            <input type="radio" name="radio123" id="agent" value="Agent" />
+                <label>Agent</label></br>
+            <input type="radio" name="radio123" id="vendor" value="Vendor" />
+                <label>Vendor</label></br>
+            <input type="radio" name="radio123" id="TrackYourOrder" value="TrackYourOrder" />
+            <label>TrackYourOrder</label></br></br>
+            <input type="button" onclick="Redirect()" value="Log In" />
+           </div>
+        </div>
+        <div id="paraDiv">
+            <div id="Divvvvv">
+             <p>
+                Welcome to Gaaubesi Logistics Pvt. Ltd., your trusted partner in logistics solutions. Based in Kathmandu, Nepal, we specialize in delivering exceptional services that help businesses grow. With over 5 million successful deliveries, we have built a strong presence across 400 locations, collaborating with 4,200 vendors to ensure seamless operations.
+
+                At Gaaubesi, we utilize the best tools and technologies to offer reliable and efficient logistics services, tailored to meet your needs. Our extensive network of service stations ensures that we are always ready to assist, no matter where you are.
+
+                We are committed to providing top-notch customer service and ensuring your business thrives with our innovative solutions. Contact us today to learn more about how we can support your logistics needs and help you reach your goals
+             </p>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    function Redirect() {
+        debugger;
+        var RadioValue = document.getElementsByName("radio123");
+        
+        var SelectedValue =null;
+
+        for(const radio of RadioValue){
+            if(radio.checked){
+                SelectedValue=radio.value;
+                break;
+            }
+        }
+        if(SelectedValue == 'Vendor'){
+            window.location.href='@Url.Action("VendorLoggingIn","log")';
+        }
+        else if (SelectedValue == 'Agent') {
+            window.location.href='@Url.Action("AgentLoggingIn","log")';
+        }
+        else if (SelectedValue == 'TrackYourOrder') {
+            window.location.href = '@Url.Action("CustOrderTracker","Project")';
+        }
+        else{
+            alert("Please select  the LogIn role");
+        }
+        S
+
+    
+    }
+
+</script>

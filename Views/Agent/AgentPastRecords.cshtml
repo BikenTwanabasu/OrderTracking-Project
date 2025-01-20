@@ -5,16 +5,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
+<link href="~/css/agentpastrecords.css" rel="stylesheet" />
+<div class="MainDiv">
+ <h1>Agent Past Records</h1>
 
-<h1>AgentTask</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<p style="text-align:center;color:darkgreen">
+ <p style="text-align:center;color:burlywood">
     Your Previous Tasks
-</p>
-<table class="table table-bordered table-striped table-hover  mb-2" id="table2">
+ </p>
+ <table class="table table-bordered table-striped table-hover  mb-2" id="table2">
     <thead>
         <tr>
             <th>
@@ -38,7 +37,8 @@
     </thead>
     <tbody>
     </tbody>
-</table>
+ </table>
+</div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
@@ -48,7 +48,7 @@
     function GetPastRecords(){
         var AgentId=@ViewBag.Id;
         $.ajax({
-            url: '@Url.Action("AgentRecord","AgnetDashboard")',
+            url: '@Url.Action("AgentRecord","Agent")',
             type:'Get',
             data:{
                 AgentId:AgentId

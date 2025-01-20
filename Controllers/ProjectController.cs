@@ -36,7 +36,7 @@ namespace CollegeProject.Controllers
             return View();
 
         }
-        
+        [Permission("Vendor")]
         public IActionResult OrderCreation(OrderAndStudentModel orderAndStudentModel)
         {
 
@@ -68,6 +68,11 @@ namespace CollegeProject.Controllers
         {
             var a =_services.getStatusByOrderID(agent);
             return Json(a);
+        }
+
+        public IActionResult FirstPage()
+        {
+            return View();
         }
     }
 }

@@ -14,10 +14,10 @@ builder.Services.AddSingleton<IAdminServices, AdminServices>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                  .AddCookie(options =>
                  {
-                     options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                     options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                      options.LoginPath = "/Log/AgentLoggingIn";
-                     options.LogoutPath = "/Project/AgentRegistration";
-                     //options.AccessDeniedPath = "/Account/UserAccessDenied";
+                     options.LogoutPath = "/Log/Logout";
+                     options.AccessDeniedPath = "/Account/UserAccessDenied";
                  });
 var app = builder.Build();
 
@@ -38,6 +38,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Log}/{action=VendorLoggingIn}/{id?}");
+    pattern: "{controller=Project}/{action=FirstPage}/{id?}");
 
 app.Run();

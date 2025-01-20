@@ -5,16 +5,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
-
+<link href="~/css/agenttask.css" rel="stylesheet" />
+<div class="MainDiv">
 <h1>AgentTask</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<p style="text-align:center;color:darkgreen">
+
+ <p id="p1">
     Today's Recieve Tasks
-</p>
-<div>
+ </p>
+ <div>
   <table class="table table-bordered table-striped table-hover  mb-2" id="table1">
     <thead>
         <tr>
@@ -43,13 +42,13 @@
 
     </tbody>
   </table>
-</div>
+ </div>
 
 
-<p style="text-align:center;color:darkgreen">
+ <p id="p1">
     Today's Delivery Tasks
-</p>
-<div>
+ </p>
+ <div>
   <table class="table table-bordered table-striped table-hover  mb-2" id="table2">
     <thead>
         <tr>
@@ -80,6 +79,7 @@
     <tbody>
     </tbody>
   </table>
+ </div>
 </div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -89,10 +89,11 @@
         AgentTaskList();
     });
     function AgentTaskList(){
+        debugger;
         var AgentId=@ViewBag.Id;
         var a ='';
         $.ajax({
-            url: '@Url.Action("AgentReceiverTaskJson","AgnetDashboard")',
+            url: '@Url.Action("AgentReceiverTaskJson","Agent")',
             type:'Get',
             dataType:'Json',
             data:{
@@ -100,7 +101,7 @@
             },
             success:function(response){
                 $("#table1 tbody").html('');
-                if(response!=null){
+                if(response !=null){
                     for(var i=0;i<response.length;i++){
                         a +=`
                             <tr>
@@ -123,7 +124,7 @@
                         "scrollY": '60vh'
 
                     });
-                    
+                   
                 }
                 else{
                     alert("Failed");
@@ -141,7 +142,7 @@
         debugger;
         var button = document.getElementById("button"+orderID);
             $.ajax({
-            url: '@Url.Action("DeliveryStatusAgent1","AgnetDashboard")',
+            url: '@Url.Action("DeliveryStatusAgent1","Agent")',
             type:'Get',
             data:{
                 orderID:orderID
@@ -173,7 +174,7 @@
         var Agentid = @ViewBag.Id;
 
         $.ajax({
-            url: '@Url.Action("AgentDeliveryTaskJson","AgnetDashboard")',
+            url: '@Url.Action("AgentDeliveryTaskJson","Agent")',
             type: 'Get',
             data: {
                 Agentid: Agentid
@@ -197,7 +198,12 @@
                         $("#table2 tbody").html(row);
 
                     }
-                    $("#table2").DataTable();
+                    $("#table2").DataTable({
+                        "scrollX": true, // Enable horizontal scrolling
+                        "paging": false, // Disable pagination (optional, based on preference)
+                        "scrollCollapse": true
+                    });
+                    
                 }
             },
             error: function (xhr, status, error) {

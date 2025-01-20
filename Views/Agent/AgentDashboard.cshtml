@@ -1,0 +1,36 @@
+﻿@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+
+@{
+    Layout = null;
+}
+
+<link href="~/css/agentdashboard.css" rel="stylesheet" />
+
+<div class="MainDiv">
+    <div class="nav">
+        <div class="logo">
+            <h6>Gaubesi</h6>
+        </div>
+        <ul class="nav-links">
+            <li><a asp-controller="Agent" asp-action="AgentDashboard">Home</a></li>
+            <li><a asp-controller="Agent" asp-action="AgentPastRecords">PastRecords</a></li>
+            <li><a asp-controller="Agent" asp-action="AgentTask">Tasks</a></li>
+            <li><a asp-controller="Log" asp-action="Logout">Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="video-background">
+        <video autoplay muted loop id="video-background">
+                <source src="~/video/vecteezy_black-friday-delivery-man-on-scooter_4575774.mp4" type="video/mp4" />
+        </video>
+        <div class="agent">
+            <h1>Welcome</h1>
+            <h2>@ViewBag.Name</h2>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Gaubesi. All rights reserved.</p>
+    </div>
+</div>
+
