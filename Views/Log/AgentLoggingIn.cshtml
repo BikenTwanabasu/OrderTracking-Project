@@ -100,15 +100,18 @@
                         $("#DivErrorView").html('<div class="alert alert-danger">'+response.responseMessage+'</div>');
                         $("#DivErrorView").show();
                         $('#DivErrorView').delay(1500).slideUp();
+
+                       
                     }
                     else{
                         document.getElementById('DivErrorView').style.display = 'block';
                         $("#DivErrorView").html('<div class="alert alert-success">' + response.responseMessage + '</div>');
                         $("#DivErrorView").show();
                         $('#DivErrorView').delay(1500).slideUp();
+                        window.location.href = '@Url.Action("AgentDashboard","Agent")';
                     }
                 }
-                window.location.href = '@Url.Action("AgentDashboard","Agent")';
+               
               
             },
             error:function(xhr,status,error){

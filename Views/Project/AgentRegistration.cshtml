@@ -67,14 +67,15 @@
             },
             dataType:'Json',
             success:function(response){
-                if(response){
-                    alert("Agent Resgistered!!! LogIn now");
+                if(response.responseCode!=null){
+                    alert(response.responseMessage);
                     window.location.href = '@Url.Action("AgentRegistration","Project")';
                 }
                 else{
                     alert("Agent Registration Failed!!!");
                     window.location.href = '@Url.Action("AgentRegistration","Project")';
                 }
+
             },
             error:function(xhr,status,error){
                 alert("Error Occured");

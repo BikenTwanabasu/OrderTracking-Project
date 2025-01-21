@@ -25,6 +25,12 @@ namespace CollegeProject.Controllers
             var a = _adminServices.getAdminPresentList(model);
             return Json(a);
         }
+        public IActionResult UpdateDeliveryStatus(AgentTaskModel model)
+        {
+            var response = _adminServices.UpdateDeliveryStatusByAdmin(model);
+            return Json(response);
+        }
+        
         public IActionResult GetAdminsHistoryList()
         {
             return View();
@@ -33,6 +39,11 @@ namespace CollegeProject.Controllers
         {
             var a = _adminServices.getAdminHistoryList(model);
             return Json(a);
+        }
+
+        public IActionResult AdminDashboard()
+        {
+            return View();
         }
     }
 }

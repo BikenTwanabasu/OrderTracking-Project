@@ -55,7 +55,27 @@ namespace CollegeProject.RepoClass
             }
         }
 
-        public List<AgentTaskModel> getAdminHistoryList(AgentTaskModel model)
+        public AgentTaskModel UpdateDeliveryStatusByAdmin(AgentTaskModel model)
+        {
+            using (SqlConnection con = new SqlConnection(Connection()))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@flag", "UpdateStatusByAdmin");
+                cmd.Parameters.AddWithValue("@OrderId",model.OrderId );
+                SqlDataReader rdr =cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    model.DeliveryStatus = rdr["DeliveryStatus"].ToString();
+                }
+                return model;
+
+            }
+        }
+
+            public List<AgentTaskModel> getAdminHistoryList(AgentTaskModel model)
         {
             using (SqlConnection con = new SqlConnection(Connection()))
             {

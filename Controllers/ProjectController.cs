@@ -17,7 +17,7 @@ namespace CollegeProject.Controllers
         {
             
             var a=_services.RegisterVendor(vendor);
-            if (a)
+            if (a.CompanyEmail!=null)
             {
                 return Json(a);
             }
@@ -29,7 +29,7 @@ namespace CollegeProject.Controllers
         {
 
             var a = _services.RegisterAgent(agent);
-            if (a)
+            if (a.AgentEmail!=null)
             {
                 return Json(a);
             }

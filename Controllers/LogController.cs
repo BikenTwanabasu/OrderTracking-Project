@@ -64,8 +64,26 @@ namespace CollegeProject.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("AgentLoggingIn","Log");
+            var ClaimData = HttpContext.User;
+            if(ClaimData != null) {
+                var Role = ClaimData.FindFirst(ClaimTypes.Role);
+
+                if (Role.Value == "Agent")
+                {
+                    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                    return RedirectToAction("AgentLoggingIn", "Log");
+                }
+                else if (Role.Value == "Vendor")
+                {
+                    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                    return RedirectToAction("VendorLoggingIn", "Log");
+
+                }
+            }
+            return RedirectToAction("Index","Log");
+
+            
+            
         }
 
        

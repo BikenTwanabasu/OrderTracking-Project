@@ -89,7 +89,6 @@
         AgentTaskList();
     });
     function AgentTaskList(){
-        debugger;
         var AgentId=@ViewBag.Id;
         var a ='';
         $.ajax({
@@ -139,7 +138,6 @@
 </script>
 <script>
     function StatusUpdate1(orderID){
-        debugger;
         var button = document.getElementById("button"+orderID);
             $.ajax({
             url: '@Url.Action("DeliveryStatusAgent1","Agent")',
@@ -186,13 +184,13 @@
                     for (var i = 0; i < response.length; i++) {
                         row += `
                                             <tr>
-                                                    <td>${response[i].OrderId}</td>
-                                                    <td>${response[i].VendorName}</td>
-                                                    <td>${response[i].CustomerName}</td>
-                                                    <td>${response[i].CustomerAddress}</td>
-                                                    <td>${response[i].CustomerPhone}</td>
-                                                    <td>${response[i].DeliveredDate}</td>
-                                                    <td><input type=button id='button2${response.OrderId}' onClick="button2(${response.OrderId})"  >${response[i].DeliveryStatus}</td>
+                                                    <td>${response[i].orderId}</td>
+                                                    <td>${response[i].vendorName}</td>
+                                                    <td>${response[i].customerName}</td>
+                                                    <td>${response[i].customerAddress}</td>
+                                                    <td>${response[i].customerPhone}</td>
+                                                    <td>${response[i].deliveredDate}</td>
+                                                                <td><input type=button id='button${response[i].orderId}' onClick="StatusUpdate1(${response[i].orderId})" value="${response[i].deliveryStatus}"</td>
                                             </tr>
                                     `;
                         $("#table2 tbody").html(row);

@@ -38,6 +38,24 @@
     </table>
  </div>
 </div>
+<div class="modal " tabindex="-1" id="Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Status Update</h5>
+            </div>
+            <div class="modal-body" id="DetailsBody">
+                <p>Are you sure want to update the status?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="ConfirmButton" >Confirm</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
     $(document).ready(function(){
@@ -53,6 +71,14 @@
                     debugger;
                     var row='';
                     for(var i =0;i<response.length;i++){
+                        if (response[i].deliveryStatus == 'Arrived at Warehouse' || response[i].deliveryStatus == 'Picked up by agent'){
+                           
+                            var disableButton = '';
+                        }
+                        else{
+                            var disableButton = 'disabled'
+                        }
+                        
                         row +=`
                                 <tr>
                                         <td>${response[i].orderId}</td>
@@ -71,7 +97,7 @@
                                         <td>${response[i].deliveryAgentId}</td>
                                         <td>${response[i].deliveryAgentName}</td>
                                         <td>${response[i].deliveryAgentPhone}</td>
-                                        <td>${response[i].deliveryStatus}</td>
+                                                <td><input type="button" value="${response[i].deliveryStatus}" id=Status${response[i].orderId} ${disableButton} onclick="ShowModal(${response[i].orderId})" class="btn btn-success"/></td>
       
                                 </tr>                                              
                         `;
@@ -90,6 +116,55 @@
                 alert("Error Occured");
             }
           
+        })
+    }
+</script>
+<script>
+    function ShowModal(OrderId){
+      
+        $("#Modal").modal('show');
+        $("#Modal").data('OrderId',OrderId);
+
+        $("#ConfirmButton").click(function(){
+            var OrderID = $("#Modal").data('OrderID');
+            UpdateStatus(OrderId);
+            $("#Modal").modal('hide');
+        });
+        
+    }
+</script>
+
+<script>
+    function UpdateStatus(OrderId){
+      
+        $.ajax({
+            url:'@Url.Action("UpdateDeliveryStatus","Admin")',
+            type:'Get',
+            data:{
+                OrderId: OrderId
+            },
+            dataType:'Json',
+            success:function(response){
+                if (response.deliveryStatus != null) {
+                    if (response.deliveryStatus != 'Arrived at Warehouse' || response.deliveryStatus != 'Dispatched For Delivery') {
+                        $("#Status" + OrderId).val(response.deliveryStatus);
+                        
+                        if (response.deliveryStatus = 'Dispatched For Delivery'){
+                            $("#Status"+OrderId).prop("disabled",true);
+                            
+                        }
+                    }
+                    
+                    else{
+                        $("#Status" + OrderId).val(response.deliveryStatus);
+                        alert("Cannot update the this status by the admin");
+
+                    }
+                }
+            },
+            error:function(xhr,status,error){
+                alert("error occured");
+            }
         })
     }
 </script>

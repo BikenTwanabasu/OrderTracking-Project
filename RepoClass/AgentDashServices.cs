@@ -85,7 +85,7 @@ namespace collegeproject.repoclass
                 cmd.Parameters.AddWithValue("@flag", "DeliveryStatusAgent1");
                 SqlDataReader rdr =cmd.ExecuteReader();
 
-                while (rdr.Read())
+                while(rdr.Read())
                 {
                     orderS.DeliveryStatus = rdr["DeliveryStatus"].ToString();
                 }

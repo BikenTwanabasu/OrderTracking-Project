@@ -1,0 +1,19 @@
+﻿@{
+    Layout = null;
+}
+<link href="~/css/vendordashboard.css" rel="stylesheet" />
+<div class="MainDiv">
+    <div class="nav">
+        <div class="logo">
+            <h6>Gaubesi</h6>
+        </div>
+        <ul class="nav-links">
+            <li><a asp-controller="Admin" asp-action="AdminDashboard">Home</a></li>
+            <li><a asp-controller="Admin" asp-action="GetAdminsHistoryList">Past Deliveries</a></li>
+            <li><a asp-controller="Admin" asp-action="GetAdminsPresentList">Live Deliveries</a></li>
+            <li><a asp-controller="Log" asp-action="Logout">Logout</a></li>
+        </ul>
+    </div>
+</div>
+
+<h4 style="text-align:center">Admin Dashboard</h4>

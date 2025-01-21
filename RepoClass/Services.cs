@@ -18,10 +18,10 @@ namespace CollegeProject.RepoClass
             string Constr=_configuration.GetConnectionString("Dbss");
             return Constr;
         }
-        public bool RegisterVendor(Vendor vendor)
+        public Vendor RegisterVendor(Vendor vendor)
         {
-            int i = 0;
-            if (vendor.CompanyName == null && vendor.CompanyEmail == null) { return false; }
+            
+            if (vendor.CompanyName == null && vendor.CompanyEmail == null) { return vendor; }
 
             
             using (SqlConnection con = new SqlConnection(ConnectionString()))
@@ -36,17 +36,25 @@ namespace CollegeProject.RepoClass
                 cmd.Parameters.AddWithValue("@CompanyPassword",vendor.Password);
                 cmd.Parameters.AddWithValue("@flag", "VendorRegistration");
 
-                i = cmd.ExecuteNonQuery();
-                return i > 0;
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    vendor.ResponseCode = (int)rdr["ResponseCode"];
+                    vendor.ResponseMessage = rdr["ResponseMessage"].ToString();
+
+                }
+                return vendor;
+                
             }
             
         }
 
-        public bool RegisterAgent(Agent agent)
+        public Agent RegisterAgent(Agent agent)
         {
-            int i = 0;
+            
             if(agent.AgentEmail==null && agent.AgentPhone==null && agent.AgentAddress==null && agent.AgentPassword==null) 
-            { return false; }
+            { return agent; }
 
 
             using (SqlConnection con = new SqlConnection(ConnectionString()))
@@ -61,8 +69,14 @@ namespace CollegeProject.RepoClass
                 cmd.Parameters.AddWithValue("@AgentPassword", agent.AgentPassword);
                 cmd.Parameters.AddWithValue("@flag", "AgentRegistration");
 
-                i = cmd.ExecuteNonQuery();
-                return i > 0;
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    agent.ResponseCode = (int)rdr["ResponseCode"];
+                    agent.ResponseMessage = rdr["ResponseMessage"].ToString();
+                }
+                return agent;
             }
 
         }

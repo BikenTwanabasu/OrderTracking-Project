@@ -68,8 +68,8 @@
             },
             dataType:'Json',
             success:function(response){
-                if(response){
-                    alert("Data Inserted Successfully");
+                if(response.responseCode!=null){
+                    alert(response.responseMessage);
                     window.location.href = '@Url.Action("VendorRegistration","Project")'
                 }
                 else{

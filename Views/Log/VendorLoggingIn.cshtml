@@ -109,8 +109,9 @@
                         $("#DivError").html('<div class="alert alert-success">'+response.responseMessage+'</div>');
                         $("#DivError").show();
                         $('#DivError').delay(1500).slideUp();
+                        window.location.href = '@Url.Action("VendorDashboard","VendorDashboard")'
                     }
-                    window.location.href = '@Url.Action("VendorDashboard","VendorDashboard")'
+                    
                 }
             },
             error:function(xhr,status,error){
