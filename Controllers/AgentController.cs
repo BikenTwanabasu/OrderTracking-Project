@@ -72,7 +72,10 @@ namespace CollegeProject.Controllers
         public IActionResult AgentDashboard()
         {
             var claimData = HttpContext.GetClaimsData();
-            ViewBag.Name = claimData.Name;
+            if(claimData.Name != null) {
+                ViewBag.Name = claimData.Name;
+            }
+            
             return View();
         }
 

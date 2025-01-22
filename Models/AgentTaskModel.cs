@@ -26,5 +26,8 @@
         public string? DeliveryAgentPhone { get; set; } 
         public string? ResponseMessage { get; set; }
         public string? ResponseCode { get; set; }
+
+        public string? DeliveryCharge { get; set; }
+        public string? TotalAmount { get; set; }
     }
 }

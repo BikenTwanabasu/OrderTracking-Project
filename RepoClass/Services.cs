@@ -1,4 +1,5 @@
 ﻿using CollegeProject.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 using System.Security.Claims;
 
@@ -212,6 +213,7 @@ namespace CollegeProject.RepoClass
                 return list;
             }
         }
-
+        
+        
     }
 }

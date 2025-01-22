@@ -46,5 +46,12 @@ namespace CollegeProject.Controllers
         {
             return View();
         }
+
+        public IActionResult DeleteOrderByVednor(AgentTaskModel model)
+        {
+            var a = _vendorDashServices.DeleteOrderByVendor(model);
+            return Json(a);
+
+        }
     }
 }

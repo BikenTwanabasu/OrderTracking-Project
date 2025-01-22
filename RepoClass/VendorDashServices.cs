@@ -78,6 +78,26 @@ namespace CollegeProject.RepoClass
             }
 
         }
+        public AgentTaskModel DeleteOrderByVendor(AgentTaskModel model)
+        {
+            using (SqlConnection con = new SqlConnection(Connection()))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@flag", "DeleteOrderByVendor");
+                cmd.Parameters.AddWithValue("@OrderId", model.OrderId);
+                SqlDataReader rdr = cmd.ExecuteReader();
 
+                while (rdr.Read())
+                {
+                    model.ResponseCode = rdr["ResponseCode"].ToString();
+                    model.ResponseMessage = rdr["ResponseMessage"].ToString();
+                }
+                return model;
+
+
+            }
+        }
     }
 }

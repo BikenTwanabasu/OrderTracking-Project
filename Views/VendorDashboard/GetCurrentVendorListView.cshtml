@@ -41,12 +41,33 @@
                 <th>
                     DeliveryStatus
                 </th>
+                <th>
+                    Delete Order
+                </th>
+
 
             </tr>
         </thead>
         <tbody>
         </tbody>
     </table>
+</div>
+<div class="modal " tabindex="-1" id="Modal" data-bs-backdrop="static" data-bs-keyboard="false"  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Order Details</h5>
+            </div>
+            <div class="modal-body" id="DetailsBody">
+                Are you sure you want to delete the Order?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="ConfirmButton" >Confirm</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
@@ -79,6 +100,7 @@
                                         <td>${response[i].deliveryAgentName}</td>
                                         <td>${response[i].deliveryAgentPhone}</td>
                                         <td>${response[i].deliveryStatus}</td>
+                                        <td><input type = "button" id="DeleteButton${response[i].orderId}" value="Delete" onClick="ShowModal(${response[i].orderId})"/></td>
                                   </tr>
                                         
                         `;
@@ -98,5 +120,43 @@
                 alert("Error Occured!!!");
             }
         })
+    }
+</script>
+<script>
+    function DeleteByVendor(OrderId){
+        debugger;
+        $.ajax({
+            url: '@Url.Action("DeleteOrderByVednor","VendorDashboard")',
+            type:'Get',
+            data:{
+                OrderId:OrderId
+            },
+            dataType:'Json',
+            success:function(response){debugger;
+                if(response.responseCode!=null){
+                    alert(response.responseMessage);
+                    window.location.href = '@Url.Action("GetCurrentVendorListView","VendorDashboard")';
+                }
+            },
+            error:function(xhr,status,error){     
+                alert("Error Occured!!!")
+            }
+        })
+    }
+
+</script>
+<script>
+    function ShowModal(OrderId){
+        debugger;
+        $("#Modal").data('OrderId',OrderId);
+        $("#Modal").modal('show');
+        $("#ConfirmButton").click(function(){
+            var OrderId=$("#Modal").data('OrderId');
+                DeleteByVendor(OrderId);
+
+            $("#Modal").modal("hide");
+
+
+        });
     }
 </script>

@@ -46,6 +46,8 @@ namespace CollegeProject.RepoClass
                     modelA.DeliveryAgentId= rdr["DeliveryAgentID"].ToString();
                     modelA.DeliveryAgentName= rdr["DeliveryAgentName"].ToString();
                     modelA.DeliveryAgentPhone= rdr["DeliveryAgentPhone"].ToString();
+                    modelA.DeliveryCharge = rdr["DeliveryCharge"].ToString();
+                    modelA.TotalAmount = rdr["TotalAmount"].ToString();
                     modelA.DeliveryStatus= rdr["DeliveryStatus"].ToString();
 
                     list.Add(modelA);
@@ -106,6 +108,8 @@ namespace CollegeProject.RepoClass
                     modelA.DeliveryAgentId = rdr["DeliveryAgentID"].ToString();
                     modelA.DeliveryAgentName = rdr["DeliveryAgentName"].ToString();
                     modelA.DeliveryAgentPhone = rdr["DeliveryAgentPhone"].ToString();
+                    modelA.DeliveryCharge = rdr["DeliveryCharge"].ToString();
+                    modelA.TotalAmount = rdr["TotalAmount"].ToString();
                     modelA.DeliveryStatus = rdr["DeliveryStatus"].ToString();
 
                     list.Add(modelA);

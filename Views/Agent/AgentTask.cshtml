@@ -5,12 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
-<link href="~/css/agenttask.css" rel="stylesheet" />
+@*<link href="~/css/agenttask.css" rel="stylesheet" />*@
 <div class="MainDiv">
-<h1>AgentTask</h1>
+<h1 style="text-align:center;">AgentTask</h1>
 
 
- <p id="p1">
+    <p style="text-align:center;" id=" p1">
     Today's Recieve Tasks
  </p>
  <div>
@@ -45,7 +45,7 @@
  </div>
 
 
- <p id="p1">
+    <p id="p1" style="text-align:center;">
     Today's Delivery Tasks
  </p>
  <div>
@@ -53,25 +53,31 @@
     <thead>
         <tr>
             <th>
-                OrderId
+                Order Id
             </th>
             <th>
-                VendorName
+                Vendor Name
             </th>
             <th>
-                CustomerName
+                Customer Name
             </th>
             <th>
-                CustomerAddress
+                Customer Address
             </th>
             <th>
-                CustomerPhone
+                Customer Phone
             </th>
             <th>
-                DeliveryDate 
+                Delivery Date 
             </th>
             <th>
-                DeliveryStatus
+                Delivery Charge
+            </th>
+            <th>
+                Total Amount
+            </th>
+            <th>
+                Delivery Status
             </th>
 
         </tr>
@@ -109,7 +115,7 @@
                                 <td>${response[i].vendorAddress}</td>
                                 <td>${response[i].vendorPhone}</td>
                                 <td>${response[i].createdDate}</td>
-                                <td><input type="button" id="button${response[i].orderId}" class="btn btn-success " onClick="StatusUpdate1(${response[i].orderId})" value="OrderReceived"/></td>
+                                <td><input type="button" id="button${response[i].orderId}" class="btn btn-success " onClick="StatusUpdate1(${response[i].orderId})" value="${response[i].deliveryStatus}"/></td>
                             </tr>
                             `;
                        
@@ -190,6 +196,8 @@
                                                     <td>${response[i].customerAddress}</td>
                                                     <td>${response[i].customerPhone}</td>
                                                     <td>${response[i].deliveredDate}</td>
+                                                    <td>${response[i].deliveryCharge}</td>
+                                                    <td>${response[i].totalAmount}</td>
                                                                 <td><input type=button id='button${response[i].orderId}' onClick="StatusUpdate1(${response[i].orderId})" value="${response[i].deliveryStatus}"</td>
                                             </tr>
                                     `;

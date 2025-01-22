@@ -86,6 +86,11 @@ namespace CollegeProject.Controllers
             
         }
 
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
        
     }
 }

@@ -38,6 +38,7 @@ namespace collegeproject.repoclass
                     agent.VendorAddress = rdr["CompanyAddress"].ToString();
                     agent.VendorPhone = rdr["CompanyPhone"].ToString();
                     agent.CreatedDate = Convert.ToDateTime( rdr["CreatedDate"]).ToString("yyyy/MM/dd");
+                    agent.DeliveryStatus = rdr["DeliveryStatus"].ToString();
 
                     agentTasksList.Add(agent);
                 }
@@ -66,6 +67,8 @@ namespace collegeproject.repoclass
                     agent.CustomerAddress = rdr["Cust_Address"].ToString();
                     agent.CustomerPhone = rdr["Cust_Phone"].ToString();
                     agent.DeliveredDate = Convert.ToDateTime(rdr["DeliveryDate"]).ToString("yyyy/MM/dd");
+                    agent.DeliveryCharge = rdr["DeliveryCharge"].ToString();
+                    agent.TotalAmount = rdr["TotalAmount"].ToString();
                     agent.DeliveryStatus = rdr["DeliveryStatus"].ToString();
 
                     agentDeliveryTasksList.Add(agent);
