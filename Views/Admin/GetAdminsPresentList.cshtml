@@ -4,6 +4,7 @@
     ViewData["Title"] = "GetAdminsPresentList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <div style="height:100vh;width:100%;">
  <h1 style="text-align:center;">GetAdminsPresentList</h1>
 
@@ -32,6 +33,7 @@
                 <th>Delivery Charge</th>
                 <th>Total Amount</th>
                 <th>DeliveryStatus</th>
+                <th>Extras</th>
             </tr>
         </thead>
         <tbody>
@@ -51,6 +53,91 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="ConfirmButton" >Confirm</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal " tabindex="-1" id="DeleteModal" data-bs-backdrop="static" data-bs-keyboard="false"  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Status Update</h5>
+            </div>
+            <div class="modal-body" id="DetailsBody">
+                <p>Are you sure want to Delete the Order?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="DeleteConfirmButton">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal " tabindex="-1" id="EditModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Status Update</h5>
+            </div>
+            <div class="modal-body" id="EditDetailsBody">
+                <table class="table table-bordered" id="EditTable">
+                    <tr>
+                        <th>Order ID</th>
+                        <td><input type="text" id="OrderId" class="form-control" readonly /></td>
+                    </tr>
+                    <tr>
+                        <th>Delivered Date</th>
+                        <td><input type="text" id="DeliveredDate" class="form-control"  /></td>
+                    </tr>
+                    <tr>
+                        <th>Customer Address</th>
+                        <td><input type="text" id="CustomerAddress" class="form-control"  /></td>
+                    </tr>
+                    <tr>
+                        <th>Amount</th>
+                        <td><input type="text" id="Amount" class="form-control"  /></td>
+                    </tr>
+                    <tr>
+                        <th>Delivery Charge</th>
+                        <td><input type="text" id="DeliveryCharge" class="form-control"  /></td>
+                    </tr>
+                    <tr>
+                        <th>Created Date</th>
+                        <td><input type="text" id="CreatedDate" class="form-control"  /></td>
+                    </tr>
+                    <tr>
+                        <th>Delivery Status</th>
+                        <td>
+                            <select  id="DeliveryStatus" class="form-control" > 
+                                <option value="Order Created">Order Created</option>
+                                <option value="Picked up by Agent">Picked up by Agent</option>
+                                <option value="Arrived at Warehouse">Arrived at Warehouse</option>
+                                <option value="Dispatched for Delivery">Dispatched for Delivery</option>
+                                <option value="Successfully Delivered">Successfully Delivered</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Customer Phone</th>
+                        <td><input type="text" id="CustomerPhone" class="form-control"  /></td>
+                    </tr>
+                    <tr>
+                        <th>Vendor Phone</th>
+                        <td><input type="text" id="VendorPhone" class="form-control"  /></td>
+                    </tr>
+
+                       
+                </table>
+                    <div>
+                    <input type="button" class="btn btn-primary" onclick="UpdateDataByAdmin()" value="Update Order" />
+                    </div>
+            </div>
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 
 
@@ -102,10 +189,14 @@
                                         <td>${response[i].deliveryAgentPhone}</td>
                                         <td>${response[i].deliveryCharge}</td>
                                         <td>${response[i].totalAmount}</td>
-                                                <td><input type="button" value="${response[i].deliveryStatus}" id=Status${response[i].orderId} ${disableButton} onclick="ShowModal(${response[i].orderId})" class="btn btn-success"/></td>
+                                        <td><input type="button" value="${response[i].deliveryStatus}" id=Status${response[i].orderId} ${disableButton} onclick="ShowModal(${response[i].orderId})" class="btn btn-success"/></td>
+                                        <td><div class="Btns" style="display:flex;"><div><input type="button" class="btn btn-warning" value="Edit" id=Edit${response[i].orderId} onclick="EditOrderModal(${response[i].orderId})"/></div>
+                                                <div><input type="button" value = "Delete" id = Delete${response[i].orderID} class="btn btn-danger" onclick = "DeleteOrderModal(${response[i].orderId})" />
+                                            </div></div></td>
       
                                 </tr>                                              
                         `;
+                            
                         $("#table1 tbody").html(row);
                     }
                     $("#table1").DataTable({
@@ -121,6 +212,122 @@
                 alert("Error Occured");
             }
           
+        })
+    }
+</script>
+<script>
+    function UpdateDataByAdmin(){
+        debugger;
+
+        var OrderId = $("#OrderId").val();
+        var CustomerAddress = $("#CustomerAddress").val();
+        var DeliveredDate = $("#DeliveredDate").val();
+        var Amount = $("#Amount").val();
+        var DeliveryCharge = $("#DeliveryCharge").val();
+        var CreatedDate = $("#CreatedDate").val();
+        var DeliveryStatus = $("#DeliveryStatus").val();
+        var VendorPhone = $("#VendorPhone").val();
+        var CustomerPhone = $("#CustomerPhone").val();
+                                                         
+        $.ajax({
+            url: '@Url.Action("UpdateOrderByAdmin","Admin")',
+            type:'Post',
+            dataType:'Json',
+            data:{
+                OrderId: OrderId,
+                CustomerAddress:CustomerAddress,
+                DeliveredDate:DeliveredDate,
+                Amount: Amount,
+                DeliveryCharge:DeliveryCharge,
+                CreatedDate: CreatedDate,
+                DeliveryStatus:DeliveryStatus,
+                VendorPhone :VendorPhone,
+                CustomerPhone:CustomerPhone                
+            },
+            success:function(response){
+                if(response){
+                    alert("Data updated successfully");
+                    $("#EditModal").modal('hide');
+                    window.location.href = '@Url.Action("GetAdminsPresentList","Admin")'
+                }
+            },
+            error:function(xhr,status,error){
+                alert("Error Occured!!!");
+            }
+        });
+    }
+</script>
+<script>
+    function EditOrderModal(OrderId){
+
+        $("#EditModal").modal('show');
+        $("#EditModal").data('OrderId',OrderId);
+
+
+        $.ajax({
+            url:'@Url.Action("GetOrderById","Admin")',
+            type:'Get',
+            data:{
+                OrderId:OrderId
+            },
+            dataType:'Json',
+            success:function(response){
+                if(response.orderId!=null){
+                    debugger;
+                    $("#OrderId").val(response.orderId);
+                    $("#DeliveredDate").val(response.deliveredDate);
+                    $("#CustomerAddress").val(response.customerAddress);
+                    $("#Amount").val(response.amount);
+                    $("#DeliveryCharge").val(response.deliveryCharge);
+                    $("#CreatedDate").val(response.createdDate);
+                    if(response.deliveryStatus) {
+                    $("#DeliveryStatus").val(response.deliveryStatus);
+                    }
+                    $("#CustomerPhone").val(response.customerPhone);
+                    $("#VendorPhone").val(response.vendorPhone);
+
+
+                    
+                }
+            },
+            error:function(xhr,status,error){
+                alert("Error Occured!!!");
+            }
+
+        });
+     
+    }
+
+</script>
+<script>
+    function DeleteOrderModal(OrderId){
+        $("#DeleteModal").modal('show');
+        $("#DeleteModal").data('OrderId',OrderId);
+
+        $("#DeleteConfirmButton").click(function(){
+            var OrderID= $("DeleteModal").data('OrderID');
+            DeleteOrderbyAdmin(OrderId);
+            $("#DeleteModal").modal('hide');
+        })
+    }
+
+    function DeleteOrderbyAdmin(OrderId){
+        $.ajax({
+            url: '@Url.Action("DeleteByAdmin","Admin")',
+            type:'Get',
+            data:{
+                OrderId:OrderId
+            },
+            dataType:'Json',
+            success:function(response){
+                if(response.responseCode!=null){
+                    alert(response.responseMessage);
+                    window.location.href = '@Url.Action("GetAdminsPresentList","Admin")';
+                }
+            },
+            error:function(xhr,status,error){
+                alert("Error occured while deleting the data ");
+            }
         })
     }
 </script>

@@ -14,7 +14,7 @@ builder.Services.AddSingleton<IAdminServices, AdminServices>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                  .AddCookie(options =>
                  {
-                     options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                     options.ExpireTimeSpan = TimeSpan.FromMinutes(40);
                      options.LoginPath = "/Log/AgentLoggingIn";
                      options.LogoutPath = "/Log/Logout";
                      options.AccessDeniedPath = "/Log/AccessDenied";

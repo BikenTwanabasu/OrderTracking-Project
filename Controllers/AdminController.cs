@@ -45,5 +45,25 @@ namespace CollegeProject.Controllers
         {
             return View();
         }
+
+        public IActionResult DeleteByAdmin(AgentTaskModel model)
+        {
+            var a = _adminServices.deleteByAdmin(model);
+            return Json(a);
+        }
+        public IActionResult GetOrderById(AgentTaskModel model)
+        {
+            var a = _adminServices.Getorder(model);
+            return Json(a);
+        }
+
+        public IActionResult UpdateOrderByAdmin(AgentTaskModel model)
+        {
+            var a=_adminServices.updateOrderDataByAdmin(model);
+        
+            
+                return Json(a);
+            
+        }
     }
 }

@@ -89,7 +89,15 @@
             success:function(response){
                 if(response!=null){
                     var row='';
+                   
                     for(var i=0;i<response.length;i++){
+                        if (response[i].deliveryStatus != "Order Created") {
+                            var disableButton = "Disabled";
+
+                        }
+                        else {
+                            var disableButton = "";
+                        }
                         row +=`<tr>
                                         <td>${response[i].orderId}</td>
                                         <td>${response[i].customerName}</td>
@@ -100,7 +108,7 @@
                                         <td>${response[i].deliveryAgentName}</td>
                                         <td>${response[i].deliveryAgentPhone}</td>
                                         <td>${response[i].deliveryStatus}</td>
-                                        <td><input type = "button" id="DeleteButton${response[i].orderId}" value="Delete" onClick="ShowModal(${response[i].orderId})"/></td>
+                                        <td><input type = "button" id="DeleteButton${response[i].orderId}" value="Delete" ${disableButton} onClick="ShowModal(${response[i].orderId})"/></td>
                                   </tr>
                                         
                         `;

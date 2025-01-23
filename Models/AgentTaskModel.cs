@@ -29,5 +29,6 @@
 
         public string? DeliveryCharge { get; set; }
         public string? TotalAmount { get; set; }
+        public string? Amount { get; set; }
     }
 }
