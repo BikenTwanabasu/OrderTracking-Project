@@ -36,7 +36,7 @@ namespace CollegeProject.RepoClass
                     modelA.VendorPhone= rdr["CompanyPhone"].ToString();
                     modelA.CustomerId= rdr["Cust_ID"].ToString();
                     modelA.CustomerName= rdr["Cust_Name"].ToString();
-                    modelA.CustomerAddress= rdr["Cust_Address"].ToString();
+                    modelA.CustomerAddress= rdr["DeliveryAddress"].ToString();
                     modelA.CustomerPhone= rdr["Cust_Phone"].ToString();
                     modelA.CreatedDate= rdr["OrderPlacementDate"].ToString();
                     modelA.ReceiverAgentId= rdr["ReceiverAgentID"].ToString();

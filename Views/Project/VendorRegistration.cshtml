@@ -56,6 +56,14 @@
         var CompanyPhone = $("#CompanyPhone").val();
         var CompanyEmail =$("#CompanyEmail").val();
         var CompanyPassword=$('#Password').val();
+
+        if (!/^(98|97)[\d]{8}$/.test(CompanyPhone) && !/^(01)[\d]{6}$/.test(CompanyPhone)) {
+            alert("Company Phone Number must start from 98/97/01 and must be of 8 or 10 numbers");
+            return;
+        }
+     
+
+
         $.ajax({
             url: '@Url.Action("VendorRegistration","Project")',
             type:'POST',

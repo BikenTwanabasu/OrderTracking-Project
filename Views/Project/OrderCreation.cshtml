@@ -91,6 +91,24 @@
     var orderAndStudentModel;
     var customer;
     var order;
+
+        if (!CustomerPhone || !OrderId || !CustomerAddress || !DeliveredDate || !Amount || !CreatedDate || !DeliveryCharge || !DeliveryStatus || !VendorPhone || !CustomerPhone) {
+            alert("Please fill in all the fields.");
+            return ;
+        }
+        if (!/^(98|97)[\d]{8}$/.test(Phone) && !/^(01)[\d]{6}$/.test(Phone)) {
+            alert("Customer Phone Number must start from 98/97/01 and must be of 8 or 10 numbers");
+            return;
+        }
+
+        var OrderReceiveDateObj = new Date(OrderReceiveDate)
+        var DeliveryDateObj = new Date(DeliveryDate)
+
+        if(OrderReceiveDate>=DeliveryDateObj){
+            alert("DeliveryDate  must be later than Order Created Date");
+            return;
+        }
+
     $.ajax({
         url: '@Url.Action("OrderCreation","Project")',
         type: 'Post',

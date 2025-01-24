@@ -92,7 +92,7 @@
                     </tr>
                     <tr>
                         <th>Delivered Date</th>
-                        <td><input type="text" id="DeliveredDate" class="form-control"  /></td>
+                        <td><input type="text" id="DeliveredDate" class="form-control"/></td>
                     </tr>
                     <tr>
                         <th>Customer Address</th>
@@ -100,7 +100,7 @@
                     </tr>
                     <tr>
                         <th>Amount</th>
-                        <td><input type="text" id="Amount" class="form-control"  /></td>
+                        <td><input type="text" id="Amount" class="form-control" /></td>
                     </tr>
                     <tr>
                         <th>Delivery Charge</th>
@@ -108,17 +108,18 @@
                     </tr>
                     <tr>
                         <th>Created Date</th>
-                        <td><input type="text" id="CreatedDate" class="form-control"  /></td>
+                        <td><input type="text" id="CreatedDate" class="form-control" /></td>
                     </tr>
                     <tr>
                         <th>Delivery Status</th>
                         <td>
-                            <select  id="DeliveryStatus" class="form-control" > 
+                            <select id="DeliveryStatus" class="form-control" >
                                 <option value="Order Created">Order Created</option>
                                 <option value="Picked up by Agent">Picked up by Agent</option>
                                 <option value="Arrived at Warehouse">Arrived at Warehouse</option>
                                 <option value="Dispatched for Delivery">Dispatched for Delivery</option>
                                 <option value="Successfully Delivered">Successfully Delivered</option>
+
                             </select>
                         </td>
                     </tr>
@@ -228,6 +229,38 @@
         var DeliveryStatus = $("#DeliveryStatus").val();
         var VendorPhone = $("#VendorPhone").val();
         var CustomerPhone = $("#CustomerPhone").val();
+
+        if (!OrderId || !CustomerAddress || !DeliveredDate || !Amount || !CreatedDate || !DeliveryCharge || !DeliveryStatus || !VendorPhone || !CustomerPhone) {
+            alert("Please fill in all the feilds");
+            return;
+        }
+
+        var CreatedDateObj =new Date(CreatedDate);
+        var DeliveredDateObj=new Date(DeliveredDate);
+
+        if(DeliveredDateObj<=CreatedDateObj){
+            alert("DeliveryDate must be later than CreatedDate ");
+            return;
+        }
+
+        if(Amount < 1){
+            alert("Amount cannot be 0 or less than 0");
+            return;
+        }
+
+        if(DeliveryCharge<1)
+        {
+            alert("Delivery Charge cannot be 0 or less than 0");
+            return;
+        }
+        if (!/^(98|97)[\d]{8}$/.test(CustomerPhone) && !/^(01)[\d]{6}$/.test(CustomerPhone)) {
+            alert("Customer Phone Number must start from 98/97/01 and must be of 8 or 10 numbers");
+            return;
+        }
+        if (!/^(98|97)[\d]{8}$/.test(VendorPhone) && !/^(01)[\d]{6}$/.test(VendorPhone)) {
+            alert("Vendor Phone Number must start from 98/97/01 and must be of 8 or 10 numbers");
+            return;
+        }
                                                          
         $.ajax({
             url: '@Url.Action("UpdateOrderByAdmin","Admin")',
