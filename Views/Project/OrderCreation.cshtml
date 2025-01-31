@@ -108,6 +108,23 @@
             alert("DeliveryDate  must be later than Order Created Date");
             return;
         }
+        var emailRegex =/^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        if(!emailRegex.test(Email)){
+            alert("Invalid Email Format");
+            return;
+        }
+
+        var passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@@#$%^&*(),.?":{}|<>])[A-Za-z\d!@@#$%^&*(),.?":{}|<>]{8,20}$/;
+
+        if (!passwordRegex.test(AgentPassword)) {
+            alert("Password must meet the following requirements:\n" +
+                "1. Have at least one uppercase letter\n" +
+                "2. Have at least one lowercase letter\n" +
+                "3. Have at least one number\n" +
+                "4. Have at least one special character\n" +
+                "5. Be between 8 and 20 characters in length");
+            return;
+        }
 
     $.ajax({
         url: '@Url.Action("OrderCreation","Project")',

@@ -2,10 +2,11 @@
 
 @{
     ViewData["Title"] = "AgentRegistration";
+   
 }
 
 <h1>AgentRegistration</h1>
-
+<link href="~/css/agentregistration.css" rel="stylesheet" />
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -39,13 +40,14 @@
             <div class="form-group">
                 <input type="submit" onclick="AgentRegistration()" value="Create" class="btn btn-success" />
             </div>
+            <div class="center-container">
+            <a asp-action="AgentLoggingIn" asp-controller="Log" class="centered-link" style="color:#f9004d;">Back to LogIn</a>
+            </div>
        
     </div>
 </div>
 
-<div>
-    <a asp-action="AgentLoggingIn" asp-controller="Log" style="color:#f9004d;">Back to LogIn</a>
-</div>
+
 
 <script>
     function AgentRegistration(){
@@ -54,6 +56,29 @@
         var AgentEmail = $("#AgentEmail").val();
         var AgentAddress = $("#AgentAddress").val();
         var AgentPassword = $("#AgentPassword").val();
+
+        if (!/^(98|97)[\d]{8}$/.test(AgentPhone)) {
+            alert("Company Phone Number must start from 98/97 and must be 10 numbers");
+            return;
+        }
+        var emailRegex = /^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(AgentEmail)){
+            alert("Invalid Email Format");
+            return;
+        }
+        
+        var passwordRegex=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@@#$%^&*(),.?":{}|<>])[A-Za-z\d!@@#$%^&*(),.?":{}|<>]{8,20}$/;
+
+        if (!passwordRegex.test(AgentPassword)) {
+            alert("Password must meet the following requirements:\n" +
+                "1. Have at least one uppercase letter\n" +
+                "2. Have at least one lowercase letter\n" +
+                "3. Have at least one number\n" +
+                "4. Have at least one special character\n" +
+                "5. Be between 8 and 20 characters in length");
+                return;
+        }
+
 
         $.ajax({
             url: '@Url.Action("AgentRegistration","Project")',
