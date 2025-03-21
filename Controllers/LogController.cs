@@ -26,6 +26,7 @@ namespace CollegeProject.Controllers
                 {
                     new Claim("Name",a.AgentName),
                     new Claim("Email",a.AgentEmail),
+                    new Claim("Address",a.AgentAddress),
                     new Claim("Id",a.AgentId),
                     new Claim(ClaimTypes.Role,"Agent")
                     
@@ -47,6 +48,7 @@ namespace CollegeProject.Controllers
                     new Claim("Name",a.CompanyName),
                     new Claim("Id",a.CompanyId),
                     new Claim("Email",a.CompanyEmail),
+                    new Claim("Address",a.CompanyAddress),
                     new Claim(ClaimTypes.Role,"Vendor")
                 };
                 var claimsIdentity=new ClaimsIdentity(claims,CookieAuthenticationDefaults.AuthenticationScheme);    

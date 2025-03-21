@@ -1,16 +1,19 @@
 ﻿using CollegeProject.Models;
 using CollegeProject.RepoClass;
 using Microsoft.AspNetCore.Mvc;
+using StackExchange.Redis;
 
 namespace CollegeProject.Controllers
 {
     public class ProjectController : Controller
     {
         private IServices _services;
+        private IConnectionMultiplexer _redis;
 
-        public ProjectController(IServices services)
+        public ProjectController(IServices services, IConnectionMultiplexer redis)
         {
             _services = services;
+            _redis = redis; 
         }
       
         public IActionResult VendorRegistration(Vendor vendor)
@@ -51,6 +54,8 @@ namespace CollegeProject.Controllers
             var Info = HttpContext.GetClaimsData();
             ViewBag.I = Info.Id;
             ViewBag.E = Info.Email;
+            var cache = _redis.GetDatabase();
+            cache.KeyDeleteAsync($"AgentDeliveryTask:{Info.Address}");
             return View();
 
         }

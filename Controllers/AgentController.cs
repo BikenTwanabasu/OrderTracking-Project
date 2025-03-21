@@ -2,6 +2,7 @@
 using CollegeProject.RepoClass;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StackExchange.Redis;
 
 namespace CollegeProject.Controllers
 {
@@ -9,10 +10,12 @@ namespace CollegeProject.Controllers
     public class AgentController : Controller
     {
         private readonly Iagentdashservices _agentdashservices;
+        private IConnectionMultiplexer _redis;
 
-        public AgentController(Iagentdashservices agentdashservices)
+        public AgentController(Iagentdashservices agentdashservices,IConnectionMultiplexer redis)
         {
             _agentdashservices = agentdashservices;
+            _redis = redis;
         }
         [Permission("Agent")]
 
@@ -30,6 +33,7 @@ namespace CollegeProject.Controllers
         {
             var claimdata = HttpContext.GetClaimsData();
             ViewBag.Id = claimdata.Id;
+            ViewBag.Address = claimdata.Address;
             return View();
 
 
@@ -52,6 +56,9 @@ namespace CollegeProject.Controllers
         public IActionResult DeliveryStatusAgent1(OrderStatus order)
         {
             var a = _agentdashservices.getOrderStatusByAgent1(order);
+            var claimdata = HttpContext.GetClaimsData();
+            var cache = _redis.GetDatabase();
+            cache.KeyDeleteAsync($"AgentDeliveryTask:{claimdata.Address}");
             return Json(a);
         }
         [Permission("Agent")]

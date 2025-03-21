@@ -35,7 +35,7 @@
             <th>
                 DeliveryStatus
             </th>
-           
+
         </tr>
     </thead>
     <tbody >
@@ -91,18 +91,20 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
     $(document).ready(function(){
-       
+
         AgentTaskList();
     });
     function AgentTaskList(){
         var AgentId=@ViewBag.Id;
+        var AgentAddress='@ViewBag.Address';
         var a ='';
         $.ajax({
-            url: '@Url.Action("AgentReceiverTaskJson","Agent")',
+            url: '@Url.Action("AgentReceiverTaskJson", "Agent")',
             type:'Get',
             dataType:'Json',
             data:{
-                AgentId:AgentId
+                AgentId:AgentId,
+                AgentAddress:AgentAddress
             },
             success:function(response){
                 $("#table1 tbody").html('');
@@ -118,7 +120,7 @@
                                 <td><input type="button" id="button${response[i].orderId}" class="btn btn-success " onClick="StatusUpdate1(${response[i].orderId})" value="${response[i].deliveryStatus}"/></td>
                             </tr>
                             `;
-                       
+
                     }
                     $("#table1 tbody").html(a);
 
@@ -129,7 +131,7 @@
                         "scrollY": '60vh'
 
                     });
-                   
+
                 }
                 else{
                     alert("Failed");
@@ -140,13 +142,13 @@
             }
         })
     }
-   
+
 </script>
 <script>
     function StatusUpdate1(orderID){
         var button = document.getElementById("button"+orderID);
             $.ajax({
-            url: '@Url.Action("DeliveryStatusAgent1","Agent")',
+            url: '@Url.Action("DeliveryStatusAgent1", "Agent")',
             type:'Get',
             data:{
                 orderID:orderID
@@ -158,9 +160,10 @@
                    $("#button"+orderID).val(response.deliveryStatus);
                     button.disabled = true;
                     
-                    
+
+
                 }
-               
+
 
             },
             error:function(xhr,status,error){
@@ -176,12 +179,14 @@
     function GetAgentDeliveryTask() {
         debugger;
         var Agentid = @ViewBag.Id;
+        var AgentAddress= '@ViewBag.Address';
 
         $.ajax({
-            url: '@Url.Action("AgentDeliveryTaskJson","Agent")',
+            url: '@Url.Action("AgentDeliveryTaskJson", "Agent")',
             type: 'Get',
             data: {
-                Agentid: Agentid
+                Agentid: Agentid,
+                AgentAddress : AgentAddress
             },
             dataType: 'Json',
             success: function (response) {
@@ -209,7 +214,7 @@
                         "paging": false, // Disable pagination (optional, based on preference)
                         "scrollCollapse": true
                     });
-                    
+
                 }
             },
             error: function (xhr, status, error) {

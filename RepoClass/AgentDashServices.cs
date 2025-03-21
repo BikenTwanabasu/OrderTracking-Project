@@ -1,6 +1,8 @@
 ﻿
 using CollegeProject.Models;
 using CollegeProject.RepoClass;
+using Newtonsoft.Json;
+using StackExchange.Redis;
 using System.Data.SqlClient;
 
 namespace collegeproject.repoclass
@@ -8,9 +10,11 @@ namespace collegeproject.repoclass
     public class agentdashservices: Iagentdashservices
     {
         private IConfiguration _configuration;
-        public agentdashservices(IConfiguration configuration)
+        private readonly IConnectionMultiplexer _redisConnection;
+        public agentdashservices(IConfiguration configuration,IConnectionMultiplexer redisConnection)
         {
             _configuration = configuration;
+            _redisConnection = redisConnection;
         }
 
         public string Connection()
@@ -21,6 +25,14 @@ namespace collegeproject.repoclass
 
         public List<AgentTaskModel> GetAgentTask(AgentTaskModel agentM)
         {
+            var db = _redisConnection.GetDatabase();
+            string Cache = $"AgentDeliveryTask:{agentM.AgentAddress}";
+
+            var CachedData = db.StringGet(Cache);
+            if (!CachedData.IsNullOrEmpty)
+            {
+                return JsonConvert.DeserializeObject<List<AgentTaskModel>>(CachedData.ToString());
+            }
             using (SqlConnection con = new SqlConnection(Connection()))
             {   List<AgentTaskModel> agentTasksList = new List<AgentTaskModel>();
                 con.Open();
@@ -42,12 +54,21 @@ namespace collegeproject.repoclass
 
                     agentTasksList.Add(agent);
                 }
+                db.StringSet(Cache, JsonConvert.SerializeObject(agentTasksList), TimeSpan.FromMinutes(10));
                 return agentTasksList;
             }
         }
 
         public List<AgentTaskModel> GetAgentDeliveryTask(AgentTaskModel agentA)
         {
+            var db = _redisConnection.GetDatabase();
+            string Cache = $"AgentDeliveryTask:{agentA.AgentAddress}";
+
+            var CachedData = db.StringGet(Cache);
+            if (!CachedData.IsNullOrEmpty)
+            {
+                return JsonConvert.DeserializeObject<List<AgentTaskModel>>(CachedData.ToString());
+            }
             using (SqlConnection con = new SqlConnection(Connection()))
             {
                 List<AgentTaskModel> agentDeliveryTasksList = new List<AgentTaskModel>();
@@ -73,6 +94,7 @@ namespace collegeproject.repoclass
 
                     agentDeliveryTasksList.Add(agent);
                 }
+                db.StringSet(Cache, JsonConvert.SerializeObject(agentDeliveryTasksList), TimeSpan.FromMinutes(10));
                 return agentDeliveryTasksList;
             }
         }

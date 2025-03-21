@@ -18,6 +18,7 @@
         public string? DeliveryDate { get; set; }
         public string? AgentName { get; set; }
         public string? AgentPhone { get; set; }
+        public  string? AgentAddress { get; set; }
         public string? ReceiverAgentId { get; set; }
         public string? ReceiverAgentName { get; set; }
         public string? ReceiverAgentPhone { get; set; }
