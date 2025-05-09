@@ -1,64 +1,77 @@
-﻿@{
-    ViewData["Title"] = "FirstPage";
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Welcome";
     Layout = null;
 }
-<link href="~/css/FirstPage.css" rel="stylesheet" />
-<div id="SuperMainDiv">
-    <h1 style="text-align:center">GAU BESI</h1>
-    <div id="MainDiv">
-        <div id="radioDiv">
-            <div id="rad">
-            <input type="radio" name="radio123" id="agent" value="Agent" />
-                <label>Agent</label></br>
-            <input type="radio" name="radio123" id="vendor" value="Vendor" />
-                <label>Vendor</label></br>
-            <input type="radio" name="radio123" id="TrackYourOrder" value="TrackYourOrder" />
-            <label>TrackYourOrder</label></br></br>
-            <input type="button" onclick="Redirect()" value="Log In" />
-           </div>
+<!DOCTYPE html>
+<link rel="stylesheet" href="~/css/FirstPage.css" asp-append-version="true" />
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Gaubesi</title>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+    <!-- Custom CSS -->
+
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Gaubesi Logo" />
         </div>
-        <div id="paraDiv">
-            <div id="Divvvvv">
-             <p>
-                Welcome to Gaaubesi Logistics Pvt. Ltd., your trusted partner in logistics solutions. Based in Kathmandu, Nepal, we specialize in delivering exceptional services that help businesses grow. With over 5 million successful deliveries, we have built a strong presence across 400 locations, collaborating with 4,200 vendors to ensure seamless operations.
+    </nav>
 
-                At Gaaubesi, we utilize the best tools and technologies to offer reliable and efficient logistics services, tailored to meet your needs. Our extensive network of service stations ensures that we are always ready to assist, no matter where you are.
-
-                We are committed to providing top-notch customer service and ensuring your business thrives with our innovative solutions. Contact us today to learn more about how we can support your logistics needs and help you reach your goals
-             </p>
-            </div>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Welcome to <span>Gaubesi Logistics</span></h1>
+            <p>Your reliable logistics partner in Nepal. With 1M+ deliveries across 200 locations.</p>
+            <!-- Role Selection -->
+            <form id="roleForm" class="role-form">
+                <div class="radio-group">
+                    <label class="radio-item">
+                        <input type="radio" name="role" value="Agent" />
+                        <i class="fas fa-user-tie"></i>
+                        <span>Agent</span>
+                    </label>
+                    <label class="radio-item">
+                        <input type="radio" name="role" value="Vendor" />
+                        <i class="fas fa-warehouse"></i>
+                        <span>Vendor</span>
+                    </label>
+                    <label class="radio-item">
+                        <input type="radio" name="role" value="TrackYourOrder" />
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Track Order</span>
+                    </label>
+                </div>
+                <button type="button" class="btn-primary" onclick="redirect()">
+                    <i class="fas fa-sign-in-alt"></i> Log In
+                </button>
+            </form>
         </div>
-    </div>
-</div>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script>
-    function Redirect() {
-        debugger;
-        var RadioValue = document.getElementsByName("radio123");
-        
-        var SelectedValue =null;
+        <div class="hero-image">
+            <img src="https://gaaubesi.com/static/assets/images/logo300.gif" alt="Delivery Illustration" />
+        </div>
+    </section>
 
-        for(const radio of RadioValue){
-            if(radio.checked){
-                SelectedValue=radio.value;
-                break;
+    <script>
+        function redirect() {
+            const sel = document.querySelector("input[name='role']:checked");
+            if (!sel) {
+                alert("Please select a role.");
+                return;
+            }
+            switch (sel.value) {
+                case 'Vendor': window.location.href = '@Url.Action("VendorLoggingIn", "Log")'; break;
+                case 'Agent': window.location.href = '@Url.Action("AgentLoggingIn", "Log")'; break;
+                case 'TrackYourOrder': window.location.href = '@Url.Action("CustOrderTracker", "Project")'; break;
             }
         }
-        if(SelectedValue == 'Vendor'){
-            window.location.href='@Url.Action("VendorLoggingIn","log")';
-        }
-        else if (SelectedValue == 'Agent') {
-            window.location.href='@Url.Action("AgentLoggingIn","log")';
-        }
-        else if (SelectedValue == 'TrackYourOrder') {
-            window.location.href = '@Url.Action("CustOrderTracker","Project")';
-        }
-        else{
-            alert("Please select  the LogIn role");
-        }
-        S
-
-    
-    }
-
-</script>
+    </script>
+</body>
+</html>

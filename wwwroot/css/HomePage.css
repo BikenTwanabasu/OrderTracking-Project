@@ -1,0 +1,415 @@
+﻿/* ===========================
+   General Resets & Layout
+=========================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif; /* Or your preferred font */
+    color: #333;
+    /* Offset for fixed navbar */
+    padding-top: 80px;
+    position: relative;
+    /* Eye-catching gradient background */
+    background: linear-gradient( to bottom right, #ffffff, #f9f9f9 35%, #ffe6e6 100% );
+}
+
+/* ===========================
+   Navbar
+=========================== */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(to right, #ffffff, #ffe6e6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+}
+
+    .navbar .logo img {
+        height: 40px;
+    }
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+    .nav-links li a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        transition: color 0.3s;
+    }
+
+        .nav-links li a:hover {
+            color: #d80000; /* A red hover color for extra contrast */
+        }
+
+.auth-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-login,
+.btn-track {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: #d80000; /* Red for buttons */
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+    .btn-login:hover,
+    .btn-track:hover {
+        background: #a50000; /* Darker red on hover */
+    }
+
+/* ===========================
+   Hero Section
+=========================== */
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4rem 2rem;
+    /* Subtle gradient to stand out */
+    background: linear-gradient( to right, #ffe6e6, #fff 50%, #ffe6e6 );
+}
+
+.hero-content {
+    max-width: 50%;
+}
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+        .hero-content h1 span {
+            color: #d80000; /* Highlight text in red */
+        }
+
+    .hero-content p {
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+.hero-buttons .btn-primary {
+    background: #d80000;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+    .hero-buttons .btn-primary:hover {
+        background: #a50000;
+    }
+
+.hero-image img {
+    max-width: 400px;
+    width: 100%;
+}
+
+/* ===========================
+   Services Section
+=========================== */
+.services-section {
+    padding: 4rem 2rem;
+    background: #fefefe; /* Lighter background than before */
+    text-align: center;
+}
+
+    .services-section h2 {
+        margin-bottom: 1rem;
+    }
+
+.services-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.service-card {
+    background: #fff;
+    padding: 2rem;
+    width: 250px;
+    border-radius: 4px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+    .service-card img {
+        height: 80px;
+        margin-bottom: 1rem;
+    }
+
+/* ===========================
+   Why Choose Us Section
+=========================== */
+.why-choose-us {
+    padding: 4rem 2rem;
+    background: #fff;
+    text-align: center;
+}
+
+.why-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.why-card {
+    background: #f9f9f9;
+    padding: 2rem;
+    width: 250px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* ===========================
+   Testimonials Section
+=========================== */
+.testimonials-section {
+    padding: 4rem 2rem;
+    background: #ffe6e6;
+    text-align: center;
+}
+
+.testimonials-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.testimonial-card {
+    background: #fff;
+    padding: 2rem;
+    width: 300px;
+    border-radius: 4px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* ===========================
+   Locations Section
+=========================== */
+.locations-section {
+    padding: 4rem 2rem;
+    background: #fff;
+    text-align: center;
+}
+
+.locations-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.location-card {
+    background: #f9f9f9;
+    padding: 2rem;
+    width: 250px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* ===========================
+   About Section
+=========================== */
+.about-section {
+    padding: 4rem 2rem;
+    background: #f0f0f0;
+    text-align: center;
+}
+
+.about-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* ===========================
+   Contact Section
+=========================== */
+.contact-section {
+    padding: 4rem 2rem;
+    background: #fff;
+    text-align: center;
+}
+
+.contact-details {
+    margin-top: 2rem;
+    line-height: 1.8;
+}
+
+/* ===========================
+   Footer
+=========================== */
+.footer {
+    background: #d80000;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+}
+
+/* ===========================
+   Modals
+=========================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 2rem;
+    width: 300px;
+    position: relative;
+    border-radius: 4px;
+}
+
+.close {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.btn-submit {
+    background: #d80000;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+    .btn-submit:hover {
+        background: #a50000;
+    }
+
+/* ===========================
+   Floating Shapes (Optional)
+=========================== */
+.floating-shapes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none; /* so user can click through them */
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: float 10s infinite ease-in-out;
+}
+
+.shape1 {
+    width: 100px;
+    height: 100px;
+    background: #007bff;
+    top: 10%;
+    left: 20%;
+}
+
+.shape2 {
+    width: 150px;
+    height: 150px;
+    background: #ffbf00;
+    top: 40%;
+    left: 60%;
+}
+
+.shape3 {
+    width: 80px;
+    height: 80px;
+    background: #28a745;
+    top: 70%;
+    left: 30%;
+}
+
+/* New shape4 for "GBL" text */
+.shape4 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: red;
+    font-size: 250px;
+    font-weight: 900;
+    opacity: 0.2; /* Temporarily higher for testing */
+    animation: float 10s infinite ease-in-out;
+    pointer-events: none;
+}
+
+    .shape4::before {
+        content: "GBL";
+    }
+
+@keyframes float {
+    0% {
+        transform: translate(-50%, -50%) translateY(0);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) translateY(-20px);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) translateY(0);
+    }
+}
+
+/* ===========================
+   Fade In Animations (Optional)
+=========================== */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1s forwards;
+}
+
+.delay-1 {
+    animation-delay: 0.5s;
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

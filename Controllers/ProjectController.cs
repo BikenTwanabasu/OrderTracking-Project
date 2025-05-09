@@ -64,7 +64,10 @@ namespace CollegeProject.Controllers
         {
             return View();
         }
-        
+        public IActionResult HomePage()
+        {
+            return View();
+        }
         public IActionResult CustOrderTracker()
         {
             return View();

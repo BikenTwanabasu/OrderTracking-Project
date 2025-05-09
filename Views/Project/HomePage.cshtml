@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logistics Company</title>
+
+   
+    <link href="~/css/homepage.css" rel="stylesheet" />
+
+
+    <!--
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    >
+    -->
+</head>
+<body>
+
+    <!-- Animated Background Elements (optional) -->
+    <div class="floating-shapes">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+        <div class="shape shape4"></div>
+    </div>
+
+    <!-- Navigation (Sticky) -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Icon" />
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#why-choose-us">Why Choose Us</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#locations">Locations</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+            <div class="auth-buttons">
+
+                <a href="@Url.Action("FirstPage", "Log")" class="btn btn-primary">Login</a>
+                <button class="btn-track" id="btn-track">Track Your Order</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="hero-content fade-in-up">
+            <h1>
+                Enhance your <span>Business</span> with our
+                <br />Fast and Reliable Delivery Solutions
+            </h1>
+            <p>
+                We offer Express Cash on Delivery Services to 400+ destinations across Nepal,
+                ensuring your packages arrive on time and in perfect condition.
+            </p>
+            <div class="hero-buttons">
+                <a href="#services" class="btn-primary">Explore Services</a>
+            </div>
+        </div>
+        <div class="hero-image fade-in-up delay-1">
+            <img src="https://gaaubesi.com/static/assets/images/logo300.gif" alt="Hero Image" />
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services-section fade-in-up">
+        <h2>Our Services</h2>
+        <p>Discover the range of services we offer to help grow your business.</p>
+        <div class="services-container">
+            <div class="service-card">
+                <img src="https://static.vecteezy.com/system/resources/previews/030/345/349/non_2x/home-delivery-icon-vector.jpg"
+                     alt="Home Delivery Icon" />
+                <h3>Home Delivery</h3>
+                <p>Door-to-door delivery with speed and reliability.</p>
+            </div>
+            <div class="service-card">
+                <img src="https://png.pngtree.com/png-clipart/20210530/original/pngtree-cash-on-delivery-with-black-truck-png-image_6352666.jpg"
+                     alt="COD Icon" />
+                <h3>Cash on Delivery</h3>
+                <p>Secure and efficient payment solutions for customers.</p>
+            </div>
+            <div class="service-card">
+                <img src="https://img.favpng.com/7/5/24/warehouse-euclidean-vector-logistics-png-favpng-KGbqVnmZgUQ0KUamMwdNZKEwr.jpg"
+                     alt="Logistics Icon" />
+                <h3>Warehouse & Logistics</h3>
+                <p>Streamlined storage and inventory management services.</p>
+            </div>
+            <div class="service-card">
+                <img src="https://cdn3.iconfinder.com/data/icons/solid-webi-con-1-two-color/128/Ecommerce_Solution_Business_Retail-512.png"
+                     alt="E-commerce Icon" />
+                <h3>E-commerce Solutions</h3>
+                <p>Seamless integration with online platforms and marketplaces.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section id="why-choose-us" class="why-choose-us fade-in-up delay-1">
+        <h2>Why Choose Us?</h2>
+        <div class="why-container">
+            <div class="why-card">
+                <h3>Extensive Network</h3>
+                <p>We cover over 400 destinations, ensuring widespread coverage for your deliveries.</p>
+            </div>
+            <div class="why-card">
+                <h3>Fast & Reliable</h3>
+                <p>We prioritize timely deliveries, giving you peace of mind and happy customers.</p>
+            </div>
+            <div class="why-card">
+                <h3>24/7 Support</h3>
+                <p>Our dedicated support team is here to assist you at any time.</p>
+            </div>
+            <div class="why-card">
+                <h3>Cost-Effective</h3>
+                <p>Flexible pricing models tailored to your business size and needs.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials-section fade-in-up">
+        <h2>Testimonials</h2>
+        <p>What our clients say about our services</p>
+        <div class="testimonials-container">
+            <div class="testimonial-card">
+                <p>"GaauBesi has transformed our delivery process. We can now reach remote areas easily."</p>
+                <span>- Local Shop Owner</span>
+            </div>
+            <div class="testimonial-card">
+                <p>"Their cash on delivery service is seamless. Our customers love the convenience."</p>
+                <span>- E-commerce Manager</span>
+            </div>
+            <div class="testimonial-card">
+                <p>"They offer the best support team! Any issue we have is resolved quickly."</p>
+                <span>- Small Business Owner</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Locations Section -->
+    <section id="locations" class="locations-section fade-in-up delay-1">
+        <h2>Our Locations</h2>
+        <p>We operate in 400+ destinations all over Nepal.</p>
+        <div class="locations-container">
+            <div class="location-card">
+                <h3>Kathmandu</h3>
+                <p>Main Hub</p>
+            </div>
+            <div class="location-card">
+                <h3>Pokhara</h3>
+                <p>Regional Distribution</p>
+            </div>
+            <div class="location-card">
+                <h3>Biratnagar</h3>
+                <p>Express Service Center</p>
+            </div>
+            <!-- Add more as needed -->
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section fade-in-up">
+        <div class="about-content">
+            <h2>About Us</h2>
+            <p>
+                We are dedicated to delivering excellence in logistics and delivery solutions.
+                With our extensive network and experienced team, we ensure that your packages
+                reach their destination on time, every time.
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section fade-in-up">
+        <h2>Contact Us</h2>
+        <p>We’d love to hear from you! Reach out via phone, email, or social media.</p>
+        <div class="contact-details">
+            <p><strong>Phone:</strong> +977-9843127642</p>
+            <p><strong>Email:</strong> info@gaaubesi.com</p>
+            <p><strong>Facebook:</strong> <a href="#" target="_blank">facebook.com/gaaubesi</a></p>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 GaauBesi Delivery. All rights reserved.</p>
+    </footer>
+</body>
+</html>
