@@ -1,162 +1,111 @@
-﻿/* General Styles */
-body {
+﻿* {
     margin: 0;
-    font-family: 'Arial', sans-serif;
-    background-color: #000000; /* Black background */
-    color: #FFFFFF; /* White text */
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-h1, h2, h3, p {
-    color: #FF6600; /* Bright orange for headings and accents */
+body {
+    background: #fdfdfd;
 }
 
-.MainDiv {
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 1200px;
-    background-color: #1A1A1A; /* Slightly lighter black for content area */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+/* Navbar */
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(to right, #fff, #ffe6e6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1000;
 }
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 2.5em;
-    color: #FF6600; /* Bright orange */
-    border-bottom: 2px solid #FF6600;
-    padding-bottom: 10px;
+.logo img {
+    height: 40px; /* Adjust logo size */
+    width: auto; /* Maintain aspect ratio */
+    cursor: pointer;
+    transition: transform 0.3s;
 }
 
-a {
-    color: #FF6600; /* Orange for links */
-    text-decoration: none;
-    font-weight: bold;
-}
-
-    a:hover {
-        text-decoration: underline;
+    .logo img:hover {
+        transform: scale(1.1);
     }
 
-/* Tables */
-table {
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+    .nav-links li a {
+        text-decoration: none;
+        font-weight: 600;
+        color: #d80000;
+        transition: color 0.3s;
+    }
+
+        .nav-links li a:hover {
+            color: #a50000;
+            text-decoration: underline;
+        }
+
+/* Card */
+.content-card {
+    min-height: calc(100vh - 80px - 2rem);
+    width: calc(100% - 4rem);
+    margin: 100px auto 2rem auto;
+    background: #fff;
+    padding: 2rem;
+    border: 2px solid #d80000;
+    border-radius: 1rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+    /* Headings */
+    .content-card h3 {
+        color: #d80000;
+        text-align: center;
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .content-card .subtitle {
+        text-align: center;
+        color: #555;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+/* Table */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.records-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
-    background-color: #1A1A1A; /* Slightly lighter black for table background */
-    border-radius: 10px;
-    overflow-x: auto;
-    overflow-y: auto;
-    color: #FFFFFF; /* White for table text */
+    background: #fff;
 }
 
-    table thead {
-        background-color: #FF6600; /* Bright orange for table headers */
-        color: #000000; /* Black text for header */
-        text-transform: uppercase;
-        font-size: 0.9em;
-        letter-spacing: 1px;
-    }
-
-    table th, table td {
-        padding: 12px 15px;
+    .records-table th {
+        color: #d80000;
+        font-weight: 600;
+        padding: 0.75rem;
+        border-bottom: 2px solid #ddd;
         text-align: left;
-        border: 1px solid #333333; /* Subtle border for separation */
     }
 
-    table tbody tr:nth-child(odd) {
-        background-color: #1A1A1A; /* Slightly lighter black for contrast */
+    .records-table td {
+        padding: 0.75rem;
+        border-top: 1px solid #eee;
+        color: #333;
     }
 
-    table tbody tr:hover {
-        background-color: #FF6600; /* Orange highlight on hover */
-        color: #000000; /* Black text on hover */
-        cursor: pointer;
-    }
-
-/* Buttons */
-button, input[type="button"] {
-    padding: 10px 20px;
-    font-size: 1em;
-    font-weight: bold;
-    color: #FFFFFF; /* White text */
-    background-color: #FF6600; /* Bright orange for buttons */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-    button:hover, input[type="button"]:hover {
-        background-color: #CC5200; /* Darker orange on hover */
-    }
-
-    button:disabled, input[type="button"]:disabled {
-        background-color: #4C4C4C; /* Gray for disabled buttons */
-        cursor: not-allowed;
-    }
-
-/* Alerts */
-.alert {
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-}
-
-.alert-success {
-    background-color: #FF6600; /* Bright orange for success alerts */
-    color: #000000; /* Black text for success */
-}
-
-.alert-danger {
-    background-color: #CC0000; /* Red for danger alerts */
-    color: #FFFFFF;
-}
-
-/* Scrollable Table */
-.dataTables_wrapper .dataTables_scroll {
-    background-color: #1A1A1A;
-}
-
-.dataTables_wrapper .dataTables_scrollHead {
-    border-bottom: 2px solid #FF6600;
-}
-
-/* Centered Section Titles */
-p {
-    text-align: center;
-    font-size: 1.2em;
-    margin-bottom: 20px;
-    font-weight: bold;
-    color: #FF6600; /* Orange for section titles */
-}
-
-.MainDiv {
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 1200px;
-    background-color: #1A1A1A; /* Slightly lighter black for content area */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .MainDiv {
-        padding: 10px;
-    }
-
-    h1 {
-        font-size: 2em;
-    }
-
-    table th, table td {
-        font-size: 0.9em;
-        padding: 10px;
-    }
-
-    button, input[type="button"] {
-        padding: 8px 15px;
-        font-size: 0.9em;
-    }
+.dataTables_wrapper {
+    background: none !important;
 }

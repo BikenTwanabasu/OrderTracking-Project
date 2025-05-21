@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+﻿@*
+@model IEnumerable<CollegeProject.Models.AgentTaskModel>
 
 @{
     ViewData["Title"] = "GetCurrentVendorListView";
@@ -168,3 +169,152 @@
         });
     }
 </script>
+*@
+
+@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Live Deliveries – Gaubesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts & icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+
+   
+	<link href="~/css/getcurrentlist.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="MainDiv">
+        <!-- Navbar -->
+        <nav class="nav">
+            <div class="logo">
+                <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Gaubesi Logo" />
+            </div>
+            <ul class="nav-links">
+                <li><a asp-controller="VendorDashboard" asp-action="VendorDashboard">Home</a></li>
+                <li><a asp-controller="VendorDashboard" asp-action="GetPastVendorListView">Past Records</a></li>
+                <li><a asp-controller="VendorDashboard" asp-action="GetCurrentVendorListView" class="active">Live Deliveries</a></li>
+                <li><a asp-controller="Project" asp-action="OrderCreation">Create Order</a></li>
+                <li><a asp-controller="Log" asp-action="Logout">Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Content Card -->
+        <section class="content-card">
+            <h3>Live Deliveries</h3>
+            <p class="subtitle">Current Orders in Progress</p>
+
+            <div class="table-wrapper">
+                <table id="table1" class="records-table display nowrap">
+                    <thead>
+                        <tr>
+                            <th>OrderId</th>
+                            <th>CustomerName</th>
+                            <th>CustomerAddress</th>
+                            <th>CustomerNumber</th>
+                            <th>ReceiverAgentName</th>
+                            <th>ReceiverAgentPhone</th>
+                            <th>DeliveryAgentName</th>
+                            <th>DeliveryAgentPhone</th>
+                            <th>DeliveryStatus</th>
+                            <th>Delete Order</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts (unchanged) -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            GetVendorCurrentList();
+        });
+
+        function GetVendorCurrentList(){
+            var CompanyId = @ViewBag.Id;
+           
+
+            $.ajax({
+                url: '@Url.Action("GetCurrentVendorListJSON", "VendorDashboard")',
+                type:'GET',
+                data: { CompanyId: CompanyId },
+                dataType:'json',
+                success:function(response){
+                    if(response){
+                        var row = '';
+                        for(var i=0; i<response.length; i++){
+                            var disable = response[i].deliveryStatus !== "Order Created" ? "disabled" : "";
+                            row += `<tr>
+                                <td>${response[i].orderId}</td>
+                                <td>${response[i].customerName}</td>
+                                <td>${response[i].customerAddress}</td>
+                                <td>${response[i].customerPhone}</td>
+                                <td>${response[i].receiverAgentName}</td>
+                                <td>${response[i].receiverAgentPhone}</td>
+                                <td>${response[i].deliveryAgentName}</td>
+                                <td>${response[i].deliveryAgentPhone}</td>
+                                <td>${response[i].deliveryStatus}</td>
+                                <td>
+                                  <input type="button"
+                                         id="DeleteButton${response[i].orderId}"
+                                         value="Delete"
+                                         ${disable}
+                                         onClick="ShowModal(${response[i].orderId})" />
+                                </td>
+                              </tr>`;
+                        }
+                        $("#table1 tbody").html(row);
+                        $("#table1").DataTable({
+                            scrollX: true,
+                            paging: false,
+                            scrollCollapse: true,
+                            scrollY: '60vh'
+                        });
+                    }
+                },
+                    error:function(xhr,status,error){
+                    alert("Error Occured!!!");; }
+            });
+        }
+
+        function DeleteByVendor(OrderId){
+            $.ajax({
+                url: '@Url.Action("DeleteOrderByVednor", "VendorDashboard")',
+                type:'GET',
+                data:{ OrderId: OrderId },
+                dataType:'json',
+                success:function(response){
+                    if(response.responseCode!=null){
+                        alert(response.responseMessage);
+                        window.location.href = '@Url.Action("GetCurrentVendorListView", "VendorDashboard")';
+                    }
+                },
+                    error:function(xhr,status,error){
+                    alert("Error Occured!!!"); }
+            });
+        }
+
+        function ShowModal(OrderId){
+            $("#Modal").data('OrderId', OrderId).modal('show');
+            $("#ConfirmButton").off('click').on('click', function(){
+                var id = $("#Modal").data('OrderId');
+                DeleteByVendor(id);
+                $("#Modal").modal("hide");
+            });
+        }
+    </script>
+</body>
+</html>

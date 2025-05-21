@@ -1,4 +1,5 @@
-﻿@model CollegeProject.Models.Agent
+﻿@*
+@model CollegeProject.Models.Agent
 
 @{
     ViewData["Title"] = "AgentRegistration";
@@ -108,4 +109,126 @@
         })
     }
 </script>
+*@
+
+@model CollegeProject.Models.Agent
+
+@{
+    ViewData["Title"] = "AgentRegistration";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] – Gaubesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+
+	<!-- Your CSS -->
+	<link href="~/css/AgentRegistration.css" rel="stylesheet" />
+    
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Gaubesi Logo" />
+        </div>
+    </nav>
+
+    <div class="form-container">
+        <form id="agentRegForm" class="reg-form" onsubmit="return false;">
+            <h3>Agent Registration</h3>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="form-group">
+                <label asp-for="AgentName"></label>
+                <input asp-for="AgentName" id="AgentName" class="form-control" />
+                <span asp-validation-for="AgentName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AgentPhone"></label>
+                <input asp-for="AgentPhone" id="AgentPhone" class="form-control" />
+                <span asp-validation-for="AgentPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AgentEmail"></label>
+                <input asp-for="AgentEmail" id="AgentEmail" class="form-control" />
+                <span asp-validation-for="AgentEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AgentAddress"></label>
+                <input asp-for="AgentAddress" id="AgentAddress" class="form-control" />
+                <span asp-validation-for="AgentAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AgentPassword"></label>
+                <input asp-for="AgentPassword" id="AgentPassword" type="password" class="form-control" />
+                <span asp-validation-for="AgentPassword" class="text-danger"></span>
+            </div>
+
+            <button type="button" class="btn-submit" onclick="AgentRegistration()">Create Account</button>
+            <a asp-action="AgentLoggingIn" asp-controller="Log" class="back-link">Back to Login</a>
+        </form>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        function AgentRegistration() {
+            var AgentName    = $("#AgentName").val();
+            var AgentPhone   = $("#AgentPhone").val();
+            var AgentEmail   = $("#AgentEmail").val();
+            var AgentAddress = $("#AgentAddress").val();
+            var AgentPassword= $("#AgentPassword").val();
+
+                  
+            if (!/^(98|97)[\d]{8}$/.test(AgentPhone)) {
+            alert("Company Phone Number must start from 98/97 and must be 10 numbers");
+            return;
+        }
+        var emailRegex = /^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(AgentEmail)){
+            alert("Invalid Email Format");
+            return;
+        }
+
+        var passwordRegex=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@@#$%^&*(),.?":{}|<>])[A-Za-z\d!@@#$%^&*(),.?":{}|<>]{8,20}$/;
+            
+        if (!passwordRegex.test(AgentPassword)) {
+                alert("Password must meet:\n1 uppercase\n1 lowercase\n1 number\n1 special char\n8–20 chars");
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("AgentRegistration","Project")',
+                type: 'POST',
+                data: {
+                    AgentName: AgentName,
+                    AgentEmail: AgentEmail,
+                    AgentPhone: AgentPhone,
+                    AgentAddress: AgentAddress,
+                    AgentPassword: AgentPassword
+                },
+                dataType: 'Json',
+                success: function(response) {
+                    if (response.responseCode != null) {
+                        alert(response.responseMessage);
+                        window.location.href = '@Url.Action("AgentRegistration","Project")';
+                    } else {
+                        alert("Agent Registration Failed!!!");
+                        window.location.href = '@Url.Action("AgentRegistration","Project")';
+                    }
+                },
+                error: function() {
+                    alert("Error Occured");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
 

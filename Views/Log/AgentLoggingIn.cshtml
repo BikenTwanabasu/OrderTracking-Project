@@ -1,4 +1,6 @@
-﻿@model CollegeProject.Models.Agent
+﻿
+@*
+@model CollegeProject.Models.Agent
 @{
     ViewData["Title"] = "Agent Login";
     Layout = null;
@@ -120,3 +122,125 @@
         })
     }
 </script>
+*@
+
+
+
+@model CollegeProject.Models.Agent
+
+@{
+    ViewData["Title"] = "Agent Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] – Gaubesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+
+    <!-- Agent Login CSS -->
+	<link href="~/css/agentloggingin.css" rel="stylesheet" />
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Gaubesi Logo" />
+        </div>
+        <a asp-action="FirstPage" asp-controller="Project" class="back-home">BACK TO WELCOME</a>
+    </nav>
+
+    <div class="login-container">
+        <div class="login-form">
+            <div id="DivErrorView" style="display:none;"></div>
+            <h3>Agent Login</h3>
+
+            <div class="form-group">
+                <label for="AgentEmail" class="control-label">Email</label>
+                <input type="email" class="form-control" id="AgentEmail" name="AgentEmail" required />
+                @if (ViewData.ModelState.ContainsKey("AgentEmail"))
+                {
+                    <span class="text-danger">@ViewData.ModelState["AgentEmail"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+                }
+            </div>
+
+            <div class="form-group">
+                <label for="AgentPassword" class="control-label">Password</label>
+                <input type="password" class="form-control" id="AgentPassword" name="AgentPassword" required />
+                @if (ViewData.ModelState.ContainsKey("AgentPassword"))
+                {
+                    <span class="text-danger">@ViewData.ModelState["AgentPassword"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+                }
+            </div>
+
+            <div class="form-group mt-3">
+                <button type="button" onclick="AgentLogIn()" class="btn-submit">Login</button>
+            </div>
+
+            <a asp-action="AgentRegistration" asp-controller="Project" class="back-link">Don’t Have an Account? Sign Up Now</a>
+
+            @if (!string.IsNullOrEmpty(ViewData["LoginError"]?.ToString()))
+            {
+                <div class="alert alert-danger mt-3" role="alert">
+                    @ViewData["LoginError"]
+                </div>
+            }
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function AgentLogIn(){
+            var AgentEmail    = $("#AgentEmail").val();
+            var AgentPassword = $("#AgentPassword").val();
+
+            if (AgentEmail === '' || AgentPassword === '') {
+                $("#DivErrorView")
+                  .html('<div class="alert alert-danger">All fields are mandatory</div>')
+                  .show()
+                  .delay(1500)
+                  .slideUp();
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("AgentLoggingIn", "Log")',
+                type: 'Post',
+                dataType: 'json',
+                data: {
+                    AgentEmail: AgentEmail,
+                    AgentPassword: AgentPassword
+                },
+                success: function(response){
+                    if (response != null) {
+                        if (response.responseCode != 1) {
+                            $("#DivErrorView")
+                              .html('<div class="alert alert-danger">' + response.responseMessage + '</div>')
+                              .show()
+                              .delay(1500)
+                              .slideUp();
+                        } else {
+                            $("#DivErrorView")
+                              .html('<div class="alert alert-success">' + response.responseMessage + '</div>')
+                              .show()
+                              .delay(1500)
+                              .slideUp();
+                            window.location.href = '@Url.Action("AgentDashboard", "Agent")';
+                        }
+                    }
+                },
+                error: function(){
+                    alert("Error Occured");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+

@@ -29,9 +29,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 2rem;
+    padding: 0 8rem 0 2rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 999;
+    z-index: 1000;
 }
 
     .navbar .logo img {
@@ -45,10 +45,10 @@ body {
 }
 
     .nav-links li a {
-        text-decoration: none;
-        color: #333;
-        font-weight: 500;
-        transition: color 0.3s;
+        
+        color: #d80000;
+        font-weight: 700;
+       
     }
 
         .nav-links li a:hover {
@@ -60,19 +60,27 @@ body {
     gap: 1rem;
 }
 
-.btn-login,
-.btn-track {
-    padding: 0.5rem 1rem;
-    border: none;
-    background: #d80000; /* Red for buttons */
+.navbar .auth-buttons .btn-login {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    background: #d80000;
     color: #fff;
-    cursor: pointer;
+    border-radius: 0.25rem;
+    text-decoration: none;
     transition: background 0.3s;
 }
-
-    .btn-login:hover,
-    .btn-track:hover {
-        background: #a50000; /* Darker red on hover */
+.navbar .auth-buttons .btn-track {
+    padding: 0.25rem 0.5rem !important; /* smaller padding */
+    font-size: 0.875rem !important; /* ~14px */
+    font-weight: 700 !important; /* bold */
+    background: #d80000 !important; /* red */
+    color: #fff !important; /* white text *
+    border-radius: 0.25rem !important; /* small rounding */
+}
+    .navbar .auth-buttons .btn-login:hover,
+    .navbar .auth-buttons .btn-track:hover {
+        background: ##d80000 !important;
     }
 
 /* ===========================

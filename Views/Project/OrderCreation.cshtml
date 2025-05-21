@@ -1,4 +1,6 @@
-﻿@model CollegeProject.Models.OrderAndStudentModel
+﻿
+@*
+@model CollegeProject.Models.OrderAndStudentModel
 
 @{
     ViewData["Title"] = "Create Order";
@@ -171,74 +173,197 @@
 }
 </script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<style>
-    *{
-        font-family:Arial;
+*@
 
-    }
-    /* Style the entire form container */
-    .form-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
 
-    /* Style for each form group */
-    .form-group {
-        margin-bottom: 20px;
-    }
+  
+@model CollegeProject.Models.OrderAndStudentModel
+@{
+    ViewData["Title"] = "Create Order";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Create Order – Gaubesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    /* Label styling */
-    .control-label {
-        font-size: 16px;
-        color: #333;
-    }
+    <!-- Fonts & icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
 
-    /* Input field styling */
-    .custom-input {
-        width: 100%;
-        height: 35px;
-        padding: 5px 10px;
-        font-size: 14px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-    }
+    <!-- Dashboard CSS -->
+    <link href="~/css/vendordashboard.css" rel="stylesheet" />
+	<link href="~/css/order creation.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="MainDiv">
+        <!-- Navbar -->
+        <nav class="nav">
+            <div class="logo">
+                <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Gaubesi Logo" />
+            </div>
+            <ul class="nav-links">
+                <li><a asp-controller="VendorDashboard" asp-action="VendorDashboard">Home</a></li>
+                <li><a asp-controller="VendorDashboard" asp-action="GetPastVendorListView">Past Records</a></li>
+                <li><a asp-controller="VendorDashboard" asp-action="GetCurrentVendorListView">Live Deliveries</a></li>
+                <li><a asp-controller="Project" asp-action="OrderCreation" class="active">Create Order</a></li>
+                <li><a asp-controller="Log" asp-action="Logout">Logout</a></li>
+            </ul>
+        </nav>
 
-    /* Add some hover and focus effects to input fields */
-    .custom-input:focus {
-        border-color: #007bff;
-        outline: none;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-    }
+        <!-- Content Card -->
+        <section class="content-card">
+            <h3>Create Order</h3>
 
-    /* Button styling */
-    .custom-submit-btn {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        border-radius: 4px;
-        transition: background-color 0.3s;
-    }
+            <form id="orderForm" class="form-container" onsubmit="return false;">
+                @Html.AntiForgeryToken()
 
-    .custom-submit-btn:hover {
-        background-color: #0056b3;
-    }
+                <h4>Customer Details</h4>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.customer.CustomerName)
+                    @Html.TextBoxFor(m => m.customer.CustomerName, new { @class = "custom-input", required = "required" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.customer.CustomerAddress)
+                    @Html.TextBoxFor(m => m.customer.CustomerAddress, new { @class = "custom-input", required = "required" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.customer.Phone)
+                    @Html.TextBoxFor(m => m.customer.Phone, new { @class = "custom-input", required = "required" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.customer.Email)
+                    @Html.TextBoxFor(m => m.customer.Email, new { @class = "custom-input", required = "required", type = "email" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.customer.OrderReceiveDate)
+                    @Html.TextBoxFor(m => m.customer.OrderReceiveDate, new { @class = "custom-input", required = "required", type = "date" })
+                </div>
 
-    /* Smaller input fields for a cleaner design */
-    .form-group .custom-input {
-        width: 48%;
-        display: inline-block;
-        margin-right: 4%;
-    }
+                <h4>Order Details</h4>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.order.Amount)
+                    @Html.TextBoxFor(m => m.order.Amount, new { @class = "custom-input", type = "number" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.order.PaymentStatus)
+                    @Html.DropDownListFor(m => m.order.PaymentStatus,
+                             new SelectList(new[] { "COD", "Pre-Payment", "Online", "Credit" }),
+                             "Select Payment Status",
+                             new { @class = "custom-input", required = "required" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.order.DeliveryAddress)
+                    @Html.TextBoxFor(m => m.order.DeliveryAddress, new { @class = "custom-input", required = "required" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.order.DeliveryDate)
+                    @Html.TextBoxFor(m => m.order.DeliveryDate, new { @class = "custom-input", required = "required", type = "date" })
+                </div>
 
-    .form-group .custom-input:last-child {
-        margin-right: 0;
-    }
+                <button type="button" onclick="CreateOrder()" class="custom-submit-btn">Create Order</button>
+            </form>
+        </section>
+    </div>
 
-</style>
+   
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        function CreateOrder() {
+              var CustomerName = $("#customer_CustomerName").val();
+        var CustomerAddress = $("#customer_CustomerAddress").val();
+        var Phone = $("#customer_Phone").val();
+        var Email = $("#customer_Email").val();
+        var OrderReceiveDate = $("#customer_OrderReceiveDate").val();
+        var Amount = $("#order_Amount").val();
+        var PaymentStatus = $("#order_PaymentStatus").val();
+        var DeliveryAddress = $("#order_DeliveryAddress").val();
+        var DeliveryDate = $("#order_DeliveryDate").val();
+        var CompanyId=@ViewBag.I;
+        var orderAndStudentModel;
+        var customer;
+        var order;
+
+                if (!Phone || !CustomerAddress || !DeliveryDate || !Amount || !OrderReceiveDate || !PaymentStatus || !Phone) {
+                alert("Please fill in all the fields.");
+                return ;
+            }
+            if (!/^(98|97)[\d]{8}$/.test(Phone) && !/^(01)[\d]{6}$/.test(Phone)) {
+                alert("Customer Phone Number must start from 98/97/01 and must be of 8 or 10 numbers");
+                return;
+            }
+
+            var OrderReceiveDateObj = new Date(OrderReceiveDate)
+            var DeliveryDateObj = new Date(DeliveryDate)
+
+            if(OrderReceiveDate>=DeliveryDateObj){
+                alert("DeliveryDate  must be later than Order Created Date");
+                return;
+            }
+            var emailRegex =/^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+            if(!emailRegex.test(Email)){
+                alert("Invalid Email Format");
+                return;
+            }
+
+        $.ajax({
+            url: '@Url.Action("OrderCreation", "Project")',
+            type: 'Post',
+            dataType: 'Json',
+            data: {
+                orderAndStudentModel: {
+                    customer: {
+                        CustomerName: CustomerName,
+                        CustomerAddress: CustomerAddress,
+                        Phone: Phone,
+                        Email: Email,
+                        OrderReceiveDate: OrderReceiveDate
+                    },
+                    order: {
+                        Amount: Amount,
+                        PaymentStatus: PaymentStatus,
+                        DeliveryAddress: DeliveryAddress,
+                        DeliveryDate: DeliveryDate,
+                        CompanyId:CompanyId
+                    }
+                },
+            },
+            success: function (response) {
+                if (response) {
+                    alert("Order Added");
+                        $("#customer_CustomerName").val('');
+                        $("#customer_CustomerAddress").val('');
+                        $("#customer_Phone").val('');
+                        $("#customer_Email").val('');
+                        $("#customer_OrderReceiveDate").val('');
+                        $("#order_Amount").val('');
+                        $("#order_PaymentStatus").val('');
+                        $("#order_DeliveryAddress").val('');
+                        $("#order_DeliveryDate").val('');
+
+                } else {
+                    alert("Order Could not be added");
+
+
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("Error Occurred");
+                    $("#customer_CustomerName").val('');
+                    $("#customer_CustomerAddress").val('');
+                    $("#customer_Phone").val('');
+                    $("#customer_Email").val('');
+                    $("#customer_OrderReceiveDate").val('');
+                    $("#order_Amount").val('');
+                    $("#order_PaymentStatus").val('');
+                    $("#order_DeliveryAddress").val('');
+                    $("#order_DeliveryDate").val('');
+            }
+        });
+
+        }
+    </script>
+</body>
+</html>

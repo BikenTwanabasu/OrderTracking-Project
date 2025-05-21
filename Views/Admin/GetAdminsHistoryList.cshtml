@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+﻿@*
+@model IEnumerable<CollegeProject.Models.AgentTaskModel>
 
 @{
     ViewData["Title"] = "GetAdminsHistoryList";
@@ -94,3 +95,141 @@
         })
     }
 </script>
+*@
+
+                    @model IEnumerable<CollegeProject.Models.AgentTaskModel>
+@{
+    ViewData["Title"] = "Admin History";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Past Deliveries – Gaubesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts & icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+
+    <!-- Admin History CSS -->
+	<link href="~/css/admithistorylist.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="MainDiv">
+        <!-- Navbar (same as Vendor Dashboard) -->
+        <!-- Navbar -->
+        <nav class="nav">
+            <div class="logo">
+                <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Gaubesi Logo" />
+            </div>
+            <ul class="nav-links">
+                <li><a asp-controller="Admin" asp-action="AdminDashboard">Home</a></li>
+                <li><a asp-controller="Admin" asp-action="GetAdminsHistoryList" class="active">Past Deliveries</a></li>
+                <li><a asp-controller="Admin" asp-action="GetAdminsPresentList">Live Deliveries</a></li>
+                <li><a asp-controller="Log" asp-action="Logout">Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Content Card -->
+        <section class="content-card">
+            <h3>Past Deliveries</h3>
+            <p class="subtitle">Complete history of all orders</p>
+
+            <div class="table-wrapper">
+                <table id="table1" class="records-table display nowrap">
+                    <thead>
+                        <tr>
+                            <th>Order Id</th>
+                            <th>Company ID</th>
+                            <th>Vendor Name</th>
+                            <th>Vendor Phone</th>
+                            <th>Customer Id</th>
+                            <th>Customer Name</th>
+                            <th>Customer Address</th>
+                            <th>Customer Phone</th>
+                            <th>Created Date</th>
+                            <th>Receiver AgentId</th>
+                            <th>Receiver AgentName</th>
+                            <th>Receiver AgentPhone</th>
+                            <th>Delivered Date</th>
+                            <th>Delivery AgentId</th>
+                            <th>Delivery AgentName</th>
+                            <th>Delivery AgentPhone</th>
+                            <th>Delivery Charge</th>
+                            <th>Total Amount</th>
+                            <th>Delivery Status</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts (unchanged) -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function(){
+          GetHistoryList();
+        });
+            function GetHistoryList() {
+            $.ajax({
+                url: '@Url.Action("GetAdminsHistoryJSON", "Admin")',
+                type: 'Get',
+                dataType: 'Json',
+                success: function (response) {
+                    if (response != null) {
+                        
+                        var row = '';
+                        for (var i = 0; i < response.length; i++) {
+                            row += `
+                                        <tr>
+                                                <td>${response[i].orderId}</td>
+                                                <td>${response[i].companyID}</td>
+                                                <td>${response[i].vendorName}</td>
+                                                <td>${response[i].vendorPhone}</td>
+                                                <td>${response[i].customerId}</td>
+                                                <td>${response[i].customerName}</td>
+                                                <td>${response[i].customerAddress}</td>
+                                                <td>${response[i].customerPhone}</td>
+                                                <td>${response[i].createdDate}</td>
+                                                <td>${response[i].receiverAgentId}</td>
+                                                <td>${response[i].receiverAgentName}</td>
+                                                <td>${response[i].receiverAgentPhone}</td>
+                                                <td>${response[i].deliveredDate}</td>
+                                                <td>${response[i].deliveryAgentId}</td>
+                                                <td>${response[i].deliveryAgentName}</td>
+                                                <td>${response[i].deliveryAgentPhone}</td>
+                                                <td>${response[i].deliveryCharge}</td>
+                                                <td>${response[i].totalAmount}</td>
+                                                <td>${response[i].deliveryStatus}</td>
+
+                                        </tr>
+                                `;
+                            $("#table1 tbody").html(row);
+                        }
+                        $("#table1").DataTable({
+                            "scrollX": true,    // Enable horizontal scrolling
+                            "paging": false,    // Disable paging, as horizontal scrolling will handle navigation
+                            "scrollCollapse": true,
+                            "scrollY": '60vh'
+
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("Error Occured");
+                }
+
+            })
+        }
+
+    </script>
+</body>
+</html>

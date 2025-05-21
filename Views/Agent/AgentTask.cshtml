@@ -1,11 +1,14 @@
-﻿@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+﻿
+@*
+
+@model IEnumerable<CollegeProject.Models.AgentTaskModel>
 
 @{
     ViewData["Title"] = "AgentTask";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
-@*<link href="~/css/agenttask.css" rel="stylesheet" />*@
+@*<link href="~/css/agenttask.css" rel="stylesheet" />
 <div class="MainDiv">
 <h1 style="text-align:center;">AgentTask</h1>
 
@@ -159,7 +162,7 @@
                     debugger;       
                    $("#button"+orderID).val(response.deliveryStatus);
                     button.disabled = true;
-                    
+
 
 
                 }
@@ -223,3 +226,219 @@
         })
     }
 </script>
+
+*@
+
+
+
+@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+@{
+    ViewData["Title"] = "AgentTask";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Agent Tasks – Gaubesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+
+    <!-- Custom CSS -->
+	<link href="~/css/agenttask.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="MainDiv">
+        <!-- Navbar -->
+        <nav class="nav">
+            <div class="logo">
+                <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Gaubesi Logo" />
+            </div>
+            <ul class="nav-links">
+                <li><a asp-controller="Agent" asp-action="AgentDashboard">Home</a></li>
+                <li><a asp-controller="Agent" asp-action="AgentTask">Tasks</a></li>
+                <li><a asp-controller="Agent" asp-action="AgentPastRecords">Past Records</a></li>
+                <li><a asp-controller="Log" asp-action="Logout">Logout</a></li>
+            </ul>
+        </nav>
+
+
+        <!-- Content Card -->
+        <section class="content-card">
+            <h3>Agent Tasks</h3>
+
+            <p class="subtitle">Today's Receive Tasks</p>
+            <div class="table-wrapper">
+                <table id="table1" class="records-table display nowrap">
+                    <thead>
+                        <tr>
+                            <th>OrderId</th>
+                            <th>VendorName</th>
+                            <th>VendorAddress</th>
+                            <th>VendorPhone</th>
+                            <th>CreatedDate</th>
+                            <th>DeliveryStatus</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <p class="subtitle">Today's Delivery Tasks</p>
+            <div class="table-wrapper">
+                <table id="table2" class="records-table display nowrap">
+                    <thead>
+                        <tr>
+                            <th>OrderId</th>
+                            <th>VendorName</th>
+                            <th>CustomerName</th>
+                            <th>CustomerAddress</th>
+                            <th>CustomerPhone</th>
+                            <th>DeliveryDate</th>
+                            <th>DeliveryCharge</th>
+                            <th>TotalAmount</th>
+                            <th>DeliveryStatus</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(function(){
+            AgentTaskList();
+            GetAgentDeliveryTask();
+        });
+
+        function styleSearch(tableId) {
+            const input = $("#" + tableId + "_filter input");
+            input.attr("type","text")
+                 .attr("placeholder","Type to search…")
+                 .css({
+                    width: "220px",
+                    padding: "0.5rem",
+                    border: "1px solid #ccc",
+                    "border-radius": "0.5rem",
+                    "background-color": "#f9f9f9",
+                    "margin-left": "0.5rem"
+                 });
+        }
+
+        function AgentTaskList(){
+            var AgentId = @ViewBag.Id;
+            var AgentAddress = '@ViewBag.Address';
+            $.ajax({
+                url: '@Url.Action("AgentReceiverTaskJson", "Agent")',
+                type:'GET',
+                data:{ AgentId, AgentAddress },
+                dataType:'json',
+                success:function(response){
+                    let rows = '';
+                    if(response){
+                        response.forEach(r => {
+                            rows += `<tr>
+                                <td>${r.orderId}</td>
+                                <td>${r.vendorName}</td>
+                                <td>${r.vendorAddress}</td>
+                                <td>${r.vendorPhone}</td>
+                                <td>${r.createdDate}</td>
+                                <td>
+                                    <input type="button"
+                                           id="button${r.orderId}"
+                                           class="btn-status"
+                                           onClick="StatusUpdate1(${r.orderId})"
+                                           value="${r.deliveryStatus}" />
+                                </td>
+                            </tr>`;
+                        });
+                        $("#table1 tbody").html(rows);
+                        $("#table1").DataTable({
+                            scrollX: true,
+                            paging: false,
+                            scrollCollapse: true,
+                            scrollY: '40vh',
+                            initComplete: function() { styleSearch("table1"); }
+                        });
+                    }
+                },
+                error:function(){ alert("Error Occured"); }
+            });
+        }
+
+        function StatusUpdate1(orderID){
+            $.ajax({
+                url: '@Url.Action("DeliveryStatusAgent1", "Agent")',
+                type:'GET',
+                data:{ orderID },
+                dataType:'json',
+                success:function(response){
+                    if(response){
+                        $("#button"+orderID)
+                          .val(response.deliveryStatus)
+                          .prop('disabled', true);
+                    }
+                },
+                error:function(){ alert("Error Occured!!!"); }
+            })
+        }
+
+        function GetAgentDeliveryTask(){
+            var AgentId = @ViewBag.Id;
+            var AgentAddress = '@ViewBag.Address';
+            $.ajax({
+                url: '@Url.Action("AgentDeliveryTaskJson", "Agent")',
+                type:'GET',
+                data:{ Agentid:AgentId, AgentAddress },
+                dataType:'json',
+                success:function(response){
+                    let rows = '';
+                    if(response){
+                        response.forEach(r => {
+                            rows += `<tr>
+                                <td>${r.orderId}</td>
+                                <td>${r.vendorName}</td>
+                                <td>${r.customerName}</td>
+                                <td>${r.customerAddress}</td>
+                                <td>${r.customerPhone}</td>
+                                <td>${r.deliveredDate}</td>
+                                <td>${r.deliveryCharge}</td>
+                                <td>${r.totalAmount}</td>
+                                <td>
+                                    <input type="button"
+                                           id="button${r.orderId}"
+                                           class="btn-status"
+                                           onClick="StatusUpdate1(${r.orderId})"
+                                           value="${r.deliveryStatus}" />
+                                </td>
+                            </tr>`;
+                        });
+                        $("#table2 tbody").html(rows);
+                        $("#table2").DataTable({
+                            scrollX: true,
+                            paging: false,
+                            scrollCollapse: true,
+                            scrollY: '40vh',
+                            initComplete: function() { styleSearch("table2"); }
+                        });
+                    }
+                },
+                error:function(){ alert("Error Occured"); }
+            });
+        }
+    </script>
+</body>
+</html>
+
+

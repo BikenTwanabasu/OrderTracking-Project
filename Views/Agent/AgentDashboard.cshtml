@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+﻿@*
+@model IEnumerable<CollegeProject.Models.AgentTaskModel>
 
 @{
     Layout = null;
@@ -33,4 +34,63 @@
         <p>&copy; 2025 Gaubesi. All rights reserved.</p>
     </div>
 </div>
+
+*@
+@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Agent Dashboard – Gaubesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts & icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+
+    <!-- Your dashboard CSS -->
+    <link href="~/css/agentdashboard.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="MainDiv">
+        <!-- Navbar -->
+        <div class="nav">
+            <div class="logo">
+                <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Gaubesi Logo" />
+
+            </div>
+            <ul class="nav-links">
+                <li><a asp-controller="Agent" asp-action="AgentDashboard">Home</a></li>
+                
+                <li><a asp-controller="Agent" asp-action="AgentTask">Tasks</a></li>
+                <li><a asp-controller="Agent" asp-action="AgentPastRecords">Past Records</a></li>
+                <li><a asp-controller="Log" asp-action="Logout">Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Video background + welcome -->
+        <div class="video-background">
+            <video autoplay muted loop id="video-background">
+                <source src="~/video/vecteezy_black-friday-delivery-man-on-scooter_4575774.mp4" type="video/mp4" />
+            </video>
+            <div class="agent">
+                <h1>Welcome</h1>
+                <h2>@ViewBag.Name</h2>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2025 Gaubesi. All rights reserved.</p>
+        </div>
+    </div>
+
+  
+</body>
+</html>
+
 

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+﻿@*
+@model IEnumerable<CollegeProject.Models.AgentTaskModel>
 
 @{
     ViewData["Title"] = "AgentPastRecords";
@@ -91,3 +92,112 @@
     }
 
 </script>
+*@
+
+
+@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+@{
+    ViewData["Title"] = "AgentPastRecords";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Agent Past Records – Gaubesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+
+    <!-- Page CSS -->
+	<link href="~/css/agentpastrecords.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="MainDiv">
+        <!-- Top Horizontal Navbar -->
+        <div class="nav">
+            <div class="logo">
+                <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Gaubesi Logo" />
+            </div>
+            <ul class="nav-links">
+                <li><a asp-controller="Agent" asp-action="AgentDashboard">Home</a></li>
+                <li><a asp-controller="Agent" asp-action="AgentTask">Tasks</a></li>
+                <li><a asp-controller="Agent" asp-action="AgentPastRecords" class="active">Past Records</a></li>
+                <li><a asp-controller="Log" asp-action="Logout">Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content Card -->
+        <div class="content-card">
+            <h3>Agent Past Records</h3>
+            <p class="subtitle">Your Previous Tasks</p>
+
+            <div class="table-wrapper">
+                <table id="table2" class="records-table display nowrap">
+                    <thead>
+                        <tr>
+                            <th>OrderId</th>
+                            <th>VendorName</th>
+                            <th>VendorAddress</th>
+                            <th>VendorPhone</th>
+                            <th>DeliveredDate</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            GetPastRecords();
+        });
+
+        function GetPastRecords() {
+            var AgentId = @ViewBag.Id;
+            $.ajax({
+                url: '@Url.Action("AgentRecord", "Agent")',
+                type: 'GET',
+                data: { AgentId: AgentId },
+                dataType: 'json',
+                success: function (response) {
+                    if (response != null) {
+                        var rows = '';
+                        for (var i = 0; i < response.length; i++) {
+                            rows += `<tr>
+                                <td>${r.orderId}</td>
+                                <td>${r.vendorName}</td>
+                                <td>${r.vendorAddress}</td>
+                                <td>${r.vendorPhone}</td>
+                                <td>${r.deliveredDate}</td>
+                               </tr>`;
+                        }
+                        $("#table2 tbody").html(rows);
+                        $("#table2").DataTable({
+                            scrollX: true,
+                            paging: false,
+                            scrollCollapse: true,
+                            scrollY: '60vh'
+                        });
+                    } else {
+                        alert("Couldn't complete the request.");
+                    }
+                },
+                   error:function(xhr,status,error){
+                      alert("Error Occured");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+

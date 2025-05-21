@@ -1,4 +1,6 @@
-﻿@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+﻿
+@*
+    @model IEnumerable<CollegeProject.Models.AgentTaskModel>
 
 @{
     ViewData["Title"] = "GetPastVendorListView";
@@ -56,7 +58,7 @@
 
     function GetVendorPastList() {
         var CompanyId = @ViewBag.Id;
-        debugger;
+        
 
         $.ajax({
             url: '@Url.Action("GetPastVendorListJSON","VendorDashboard")',
@@ -100,3 +102,123 @@
         })
     }
 </script>
+*@
+
+                    @model IEnumerable<CollegeProject.Models.AgentTaskModel>
+@{
+    ViewData["Title"] = "Past Records";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Past Records – Gaubesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts & icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+
+	<link href="~/css/vendor past list.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="MainDiv">
+        <!-- Navbar -->
+        <nav class="nav">
+            <div class="logo">
+                <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Gaubesi Logo" />
+            </div>
+            <ul class="nav-links">
+                <li><a asp-controller="VendorDashboard" asp-action="VendorDashboard">Home</a></li>
+                <li><a asp-controller="VendorDashboard" asp-action="GetPastVendorListView" class="active">Past Records</a></li>
+                <li><a asp-controller="VendorDashboard" asp-action="GetCurrentVendorListView">Live Deliveries</a></li>
+                <li><a asp-controller="Project" asp-action="OrderCreation">Create Order</a></li>
+                <li><a asp-controller="Log" asp-action="Logout">Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Content Card -->
+        <section class="content-card">
+            <h3>Past Records</h3>
+            <p class="subtitle">All Completed Orders</p>
+
+            <div class="table-wrapper">
+                <table id="table1" class="records-table display nowrap">
+                    <thead>
+                        <tr>
+                            <th>OrderId</th>
+                            <th>CustomerName</th>
+                            <th>CustomerAddress</th>
+                            <th>CustomerNumber</th>
+                            <th>ReceiverAgentName</th>
+                            <th>ReceiverAgentPhone</th>
+                            <th>DeliveryAgentName</th>
+                            <th>DeliveryAgentPhone</th>
+                            <th>DeliveryStatus</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts  -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function(){
+          GetVendorPastList();
+        });
+             function GetVendorPastList() {
+            var CompanyId = @ViewBag.Id;
+
+
+            $.ajax({
+                url: '@Url.Action("GetPastVendorListJSON", "VendorDashboard")',
+                type: 'Get',
+                data: {
+                    CompanyId: CompanyId
+                },
+                dataType: 'JSON',
+                success: function (response) {
+                    if (response != null) {
+                        var row = '';
+                        for (var i = 0; i < response.length; i++) {
+                            row += `<tr>
+                                                <td>${response[i].orderId}</td>
+                                                <td>${response[i].customerName}</td>
+                                                <td>${response[i].customerAddress}</td>
+                                                <td>${response[i].customerPhone}</td>
+                                                <td>${response[i].receiverAgentName}</td>
+                                                <td>${response[i].receiverAgentPhone}</td>
+                                                <td>${response[i].deliveryAgentName}</td>
+                                                <td>${response[i].deliveryAgentPhone}</td>
+                                                <td>${response[i].deliveryStatus}</td>
+                                          </tr>
+
+                                `;
+                            $("#table1 tbody").html(row);
+
+                        }
+                        $("#table1").DataTable({
+                            "scrollX": true,    // Enable horizontal scrolling
+                            "paging": false,    // Disable paging, as horizontal scrolling will handle navigation
+                            "scrollCollapse": true,
+                            "scrollY": '60vh'
+
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("Error Occured!!!");
+                }
+            })
+        }
+    </script>
+</body>
+</html>

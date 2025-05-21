@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+﻿@*
+@model IEnumerable<CollegeProject.Models.AgentTaskModel>
 
 @{
     ViewData["Title"] = "GetAdminsPresentList";
@@ -413,3 +414,225 @@
         })
     }
 </script>
+*@
+
+@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+@{
+    ViewData["Title"] = "Live Deliveries";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Live Deliveries – Gaubesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+	<link href="~/css/adminpresentlist.css" rel="stylesheet" />
+    
+</head>
+<body>
+    <div class="MainDiv">
+        <!-- Navbar -->
+        <nav class="nav">
+            <div class="logo">
+                <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Gaubesi Logo" />
+            </div>
+            <ul class="nav-links">
+                <li><a asp-controller="Admin" asp-action="AdminDashboard">Home</a></li>
+                <li><a asp-controller="Admin" asp-action="GetAdminsHistoryList">Past Deliveries</a></li>
+                <li><a asp-controller="Admin" asp-action="GetAdminsPresentList" class="active">Live Deliveries</a></li>
+                <li><a asp-controller="Log" asp-action="Logout">Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Content Card -->
+        <section class="content-card">
+            <h3>Live Deliveries</h3>
+            <p class="subtitle">Orders Currently In Transit</p>
+
+            <div class="table-wrapper">
+                <table id="table1" class="records-table display nowrap">
+                    <thead>
+                        <tr>
+                            <th>OrderId</th>
+                            <th>CompanyID</th>
+                            <th>VendorName</th>
+                            <th>VendorPhone</th>
+                            <th>CustomerId</th>
+                            <th>CustomerName</th>
+                            <th>CustomerAddress</th>
+                            <th>CustomerPhone</th>
+                            <th>CreatedDate</th>
+                            <th>ReceiverAgentId</th>
+                            <th>ReceiverAgentName</th>
+                            <th>ReceiverAgentPhone</th>
+                            <th>DeliveredDate</th>
+                            <th>DeliveryAgentId</th>
+                            <th>DeliveryAgentName</th>
+                            <th>DeliveryAgentPhone</th>
+                            <th>Delivery Charge</th>
+                            <th>Total Amount</th>
+                            <th>DeliveryStatus</th>
+                            <th>Extras</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+  
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function(){
+          GetPresentList();
+        });
+             function GetPresentList(){
+            $.ajax({
+                url: '@Url.Action("GetAdminsPresentJSON", "Admin")',
+                type:'Get',
+                dataType:'Json',
+                success:function(response){
+                    if(response!=null){
+                        
+                        var row='';
+                        for(var i =0;i<response.length;i++){
+                            if (response[i].deliveryStatus == 'Arrived at Warehouse' || response[i].deliveryStatus == 'Picked up by Agent'){
+
+                                var disableButton = '';
+                            }
+                            else{
+                                var disableButton = 'disabled'
+                            }
+
+                            row +=`
+                                    <tr>
+                                            <td>${response[i].orderId}</td>
+                                            <td>${response[i].companyID}</td>
+                                            <td>${response[i].vendorName}</td>
+                                            <td>${response[i].vendorPhone}</td>
+                                            <td>${response[i].customerId}</td>
+                                            <td>${response[i].customerName}</td>
+                                            <td>${response[i].customerAddress}</td>
+                                            <td>${response[i].customerPhone}</td>
+                                            <td>${response[i].createdDate}</td>
+                                            <td>${response[i].receiverAgentId}</td>
+                                            <td>${response[i].receiverAgentName}</td>
+                                            <td>${response[i].receiverAgentPhone}</td>
+                                            <td>${response[i].deliveredDate}</td>
+                                            <td>${response[i].deliveryAgentId}</td>
+                                            <td>${response[i].deliveryAgentName}</td>
+                                            <td>${response[i].deliveryAgentPhone}</td>
+                                            <td>${response[i].deliveryCharge}</td>
+                                            <td>${response[i].totalAmount}</td>
+                                            <td><input type="button" value="${response[i].deliveryStatus}" id=Status${response[i].orderId} ${disableButton} onclick="ShowModal(${response[i].orderId})" class="btn btn-success"/></td>
+                                            <td><div class="Btns" style="display:flex;"><div><input type="button" class="btn btn-warning" value="Edit" id=Edit${response[i].orderId} onclick="EditOrderModal(${response[i].orderId})"/></div>
+                                                    <div><input type="button" value = "Delete" id = Delete${response[i].orderID} class="btn btn-danger" onclick = "DeleteOrderModal(${response[i].orderId})" />
+                                                </div></div></td>
+
+                                    </tr>
+                            `;
+
+                            $("#table1 tbody").html(row);
+                        }
+                        $("#table1").DataTable({
+                            "scrollX": true,    // Enable horizontal scrolling
+                            "paging": false,    // Disable paging, as horizontal scrolling will handle navigation
+                            "scrollCollapse": true,
+                            "scrollY": '60vh'
+
+                        });
+                    }
+                },
+                error:function(xhr,status,error){
+                    alert("Error Occured");
+                }
+
+            })
+        }
+    </script>
+    <script>
+        function UpdateDataByAdmin(){
+            
+
+            var OrderId = $("#OrderId").val();
+            var CustomerAddress = $("#CustomerAddress").val();
+            var DeliveredDate = $("#DeliveredDate").val();
+            var Amount = $("#Amount").val();
+            var DeliveryCharge = $("#DeliveryCharge").val();
+            var CreatedDate = $("#CreatedDate").val();
+            var DeliveryStatus = $("#DeliveryStatus").val();
+            var VendorPhone = $("#VendorPhone").val();
+            var CustomerPhone = $("#CustomerPhone").val();
+
+            if (!OrderId || !CustomerAddress || !DeliveredDate || !Amount || !CreatedDate || !DeliveryCharge || !DeliveryStatus || !VendorPhone || !CustomerPhone) {
+                alert("Please fill in all the feilds");
+                return;
+            }
+
+            var CreatedDateObj =new Date(CreatedDate);
+            var DeliveredDateObj=new Date(DeliveredDate);
+
+            if(DeliveredDateObj<=CreatedDateObj){
+                alert("DeliveryDate must be later than CreatedDate ");
+                return;
+            }
+
+            if(Amount < 1){
+                alert("Amount cannot be 0 or less than 0");
+                return;
+            }
+
+            if(DeliveryCharge<1)
+            {
+                alert("Delivery Charge cannot be 0 or less than 0");
+                return;
+            }
+            if (!/^(98|97)[\d]{8}$/.test(CustomerPhone) && !/^(01)[\d]{6}$/.test(CustomerPhone)) {
+                alert("Customer Phone Number must start from 98/97/01 and must be of 8 or 10 numbers");
+                return;
+            }
+            if (!/^(98|97)[\d]{8}$/.test(VendorPhone) && !/^(01)[\d]{6}$/.test(VendorPhone)) {
+                alert("Vendor Phone Number must start from 98/97/01 and must be of 8 or 10 numbers");
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("UpdateOrderByAdmin", "Admin")',
+                type:'Post',
+                dataType:'Json',
+                data:{
+                    OrderId: OrderId,
+                    CustomerAddress:CustomerAddress,
+                    DeliveredDate:DeliveredDate,
+                    Amount: Amount,
+                    DeliveryCharge:DeliveryCharge,
+                    CreatedDate: CreatedDate,
+                    DeliveryStatus:DeliveryStatus,
+                    VendorPhone :VendorPhone,
+                    CustomerPhone:CustomerPhone
+                },
+                success:function(response){
+                    if(response){
+                        alert("Data updated successfully");
+                        $("#EditModal").modal('hide');
+                        window.location.href = '@Url.Action("GetAdminsPresentList", "Admin")'
+                    }
+                },
+                error:function(xhr,status,error){
+                    alert("Error Occured!!!");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
