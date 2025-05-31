@@ -39,6 +39,11 @@ body {
             transform: scale(1.1);
         }
 
+  
+        .navbar .back-home:hover {
+            background: #d80000;
+            color: #fff;
+        }
     .navbar .back-home {
         position: static; /* take it out of absolute flow */
         transform: none; /* no translateY */

@@ -1,4 +1,6 @@
-﻿* {
+﻿
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -40,13 +42,13 @@ body {
         }
 
     .navbar .back-home {
-        position: static; /* take it out of absolute flow */
-        transform: none; /* no translateY */
-        margin-left: auto; /* push it all the way right */
-        align-self: center; /* vertically center in the flex row */
+        position: static; 
+        transform: none;
+        margin-left: auto;
+        align-self: center; 
         text-decoration: none;
         color: #d80000;
-        font-weight: 700; /* bold */
+        font-weight: 700; 
         font-size: 0.9rem;
         padding: 0.25rem 0.5rem;
         border: 1px solid #d80000;
@@ -143,3 +145,4 @@ body {
     color: #d80000;
     font-size: .9rem;
 }
+
