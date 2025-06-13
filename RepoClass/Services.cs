@@ -1,5 +1,6 @@
 ﻿using CollegeProject.Models;
 using Microsoft.AspNetCore.Mvc;
+using Pipelines.Sockets.Unofficial.Arenas;
 using System.Data.SqlClient;
 using System.Security.Claims;
 
@@ -8,10 +9,12 @@ namespace CollegeProject.RepoClass
     public class Services : IServices
     {
         private IConfiguration _configuration;
+        private readonly IPasswordService _passwordService;
 
-        public Services(IConfiguration configuration)
+        public Services(IConfiguration configuration,IPasswordService passwordService)
         {
             _configuration = configuration;
+            _passwordService = passwordService;
         }
 
         public string ConnectionString()
@@ -24,6 +27,8 @@ namespace CollegeProject.RepoClass
             
             if (vendor.CompanyName == null && vendor.CompanyEmail == null) { return vendor; }
 
+            string hashedPassword = _passwordService.HashPassword(vendor.Password);
+
             
             using (SqlConnection con = new SqlConnection(ConnectionString()))
             {
@@ -34,7 +39,7 @@ namespace CollegeProject.RepoClass
                 cmd.Parameters.AddWithValue("@CompanyAddress",vendor.CompanyAddress);
                 cmd.Parameters.AddWithValue("@CompanyPhone",vendor.CompanyPhone);
                 cmd.Parameters.AddWithValue("@CompanyEmail",vendor.CompanyEmail);
-                cmd.Parameters.AddWithValue("@CompanyPassword",vendor.Password);
+                cmd.Parameters.AddWithValue("@CompanyPassword", hashedPassword);
                 cmd.Parameters.AddWithValue("@flag", "VendorRegistration");
 
                 SqlDataReader rdr = cmd.ExecuteReader();
@@ -56,7 +61,7 @@ namespace CollegeProject.RepoClass
             
             if(agent.AgentEmail==null && agent.AgentPhone==null && agent.AgentAddress==null && agent.AgentPassword==null) 
             { return agent; }
-
+            string hashedPassword = _passwordService.HashPassword(agent.AgentPassword);
 
             using (SqlConnection con = new SqlConnection(ConnectionString()))
             {
@@ -67,7 +72,7 @@ namespace CollegeProject.RepoClass
                 cmd.Parameters.AddWithValue("@AgentEmail", agent.AgentEmail);
                 cmd.Parameters.AddWithValue("@AgentPhone", agent.AgentPhone);
                 cmd.Parameters.AddWithValue("@AgentAddress", agent.AgentAddress);
-                cmd.Parameters.AddWithValue("@AgentPassword", agent.AgentPassword);
+                cmd.Parameters.AddWithValue("@AgentPassword", hashedPassword);
                 cmd.Parameters.AddWithValue("@flag", "AgentRegistration");
 
                 SqlDataReader rdr = cmd.ExecuteReader();
@@ -128,13 +133,14 @@ namespace CollegeProject.RepoClass
             {
                 return agent;
             }
+            string hashedPassword = _passwordService.HashPassword(agent.AgentPassword);
             using (SqlConnection con = new SqlConnection(ConnectionString()))
             {   
                 con.Open();
                 SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@AgentEmail", agent.AgentEmail);
-                cmd.Parameters.AddWithValue("@AgentPassword", agent.AgentPassword);               
+                cmd.Parameters.AddWithValue("@AgentPassword", hashedPassword);               
                 cmd.Parameters.AddWithValue("@flag", "AgentLogIn");
                 SqlDataReader rdr=cmd.ExecuteReader();
 
@@ -157,13 +163,14 @@ namespace CollegeProject.RepoClass
             {
                 return vendor;
             }
+            string hashedPassword = _passwordService.HashPassword(vendor.Password);
             using (SqlConnection con = new SqlConnection(ConnectionString()))
             {
                 con.Open();
                 SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@CompanyEmail", vendor.CompanyEmail);
-                cmd.Parameters.AddWithValue("@CompanyPassword", vendor.Password);
+                cmd.Parameters.AddWithValue("@CompanyPassword",hashedPassword);
                 cmd.Parameters.AddWithValue("@flag", "VendorLogIn");
                 SqlDataReader rdr = cmd.ExecuteReader();
 

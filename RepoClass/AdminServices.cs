@@ -1,5 +1,7 @@
 ﻿using CollegeProject.Models;
 using System.Data.SqlClient;
+using System.Reflection;
+using System.Security.Cryptography.Pkcs;
 
 namespace CollegeProject.RepoClass
 {
@@ -142,6 +144,7 @@ namespace CollegeProject.RepoClass
 
         public AgentTaskModel Getorder(AgentTaskModel model)
         {
+              
             using (SqlConnection con = new SqlConnection(Connection()))
             {
                 con.Open();
@@ -194,6 +197,53 @@ namespace CollegeProject.RepoClass
             }
             return i > 0;
 
+        }
+        public List<AgentTaskModel> VendorRegistrationRequest()
+        {
+            List<AgentTaskModel> list = new List<AgentTaskModel>();
+            using (SqlConnection con = new SqlConnection(Connection()))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@flag", "VendorRegistrationRequestList");
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    AgentTaskModel agentTaskModel = new AgentTaskModel();
+                    agentTaskModel.CompanyID = rdr["TempCompanyId"].ToString();
+                    agentTaskModel.VendorName = rdr["CompanyName"].ToString();
+                    agentTaskModel.VendorAddress = rdr["CompanyAddress"].ToString();
+                    agentTaskModel.VendorEmail= rdr["CompanyEmail"].ToString();
+                    agentTaskModel.VendorPhone = rdr["CompanyPhone"].ToString();
+                    agentTaskModel.RegisterStatus = rdr["RegisterStatus"].ToString();
+
+                    list.Add(agentTaskModel);
+                }
+                return list;
+            }
+        }
+        public AgentTaskModel AcceptVendorRegistrationRequest(int TempCompanyId)
+        {
+            AgentTaskModel model = new AgentTaskModel();
+            using (SqlConnection con = new SqlConnection(Connection()))
+            {
+                
+                con.Open();
+                SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@flag", "AcceptVendorRegistrationRequest");
+                cmd.Parameters.AddWithValue("@TempCompanyId", TempCompanyId);
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    model.ResponseCode = rdr["ResponseCode"].ToString();
+                    model.ResponseMessage = rdr["ResponseMessage"].ToString();
+
+                }
+
+            }
+            return model;
         }
     }
 }

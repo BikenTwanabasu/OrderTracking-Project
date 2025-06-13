@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "VendorRegistrationApprovalRequest";
+}
+
+<div style="height:100vh;width:100%;">
+    <h1 style="text-align:center;">Vendor Registration Request</h1>
+
+    <div style="width:87%; height:60vh; margin-left:6.5%;">
+        <table class="table table-bordered table-striped table-hover mb-2 w-100" id="table1">
+            <thead>
+                <tr>
+                    <th style="display:none;">Vendor Id</th>
+                    <th>S.No.</th>
+                    <th>Company Name</th>
+                    <th>Company Address</th>
+                    <th>Company Email</th>
+                    <th>Company Phone</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- DataTables and Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Your Custom Scripts -->
+    <script src="~/js/vendorrequestregistration.js" asp-append-version="true"></script>
+}
+
+
+
+

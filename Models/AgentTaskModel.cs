@@ -31,5 +31,7 @@
         public string? DeliveryCharge { get; set; }
         public string? TotalAmount { get; set; }
         public string? Amount { get; set; }
+        public string? VendorEmail { get; set; }
+        public string? RegisterStatus { get; set; }
     }
 }
