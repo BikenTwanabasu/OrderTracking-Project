@@ -1,4 +1,4 @@
-﻿
+﻿@*
 @model IEnumerable<CollegeProject.Models.AgentTaskModel>
 @{
     Layout = null;
@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Admin Dashboard – Gaubesi</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, iniatial-scale=1.0" />
 
     <!-- Fonts & icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
@@ -58,5 +58,187 @@
                 <p>&copy; 2025 Gaubesi. All rights reserved.</p>
             </div>
         </div>
+</body>
+</html>
+*@
+
+            @model IEnumerable<CollegeProject.Models.AgentTaskModel>
+@using Newtonsoft.Json
+@using System.Linq
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Admin Dashboard – Gaubesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Dashboard CSS -->
+    <link href="~/css/admindashboard.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="MainDiv">
+        <!-- Navbar -->
+        <nav class="nav">
+            <div class="logo">
+                <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Gaubesi Logo" />
+            </div>
+            <ul class="nav-links">
+                <li><a asp-controller="Admin" asp-action="AdminDashboard">Home</a></li>
+                <li><a asp-controller="Admin" asp-action="GetAdminsHistoryList">Past Deliveries</a></li>
+                <li><a asp-controller="Admin" asp-action="GetAdminsPresentList">Live Deliveries</a></li>
+                <li><a asp-controller="Log" asp-action="Logout">Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Welcome Banner -->
+        <div class="admin-welcome">
+            <h1>Welcome</h1>
+            <h2>@ViewBag.Name</h2>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="summary-cards">
+            <div class="card" onclick="updateChart('total')">
+                <i class="fas fa-boxes"></i>
+                <div class="info">
+                    <h3>Total Orders</h3>
+                    <p>@(Model?.Count() ?? 0)</p>
+                </div>
+            </div>
+            <div class="card" onclick="updateChart('live')">
+                <i class="fas fa-truck-loading"></i>
+                <div class="info">
+                    <h3>Live Deliveries</h3>
+                    <p>@(Model?.Count(x => x.DeliveryStatus != "Successfully Delivered") ?? 0)</p>
+                </div>
+            </div>
+            <div class="card" onclick="updateChart('past')">
+                <i class="fas fa-clipboard-list"></i>
+                <div class="info">
+                    <h3>Past Deliveries</h3>
+                    <p>@(Model?.Count(x => x.DeliveryStatus == "Successfully Delivered") ?? 0)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Deliveries Table -->
+        <section class="recent-table">
+            <h3>Recent Deliveries</h3>
+            <div class="table-wrapper">
+                <table id="recentDeliveries" class="records-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Vendor</th>
+                            <th>Customer</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var t in (Model ?? Enumerable.Empty<CollegeProject.Models.AgentTaskModel>())
+                        .OrderByDescending(x => x.DeliveredDate ?? x.CreatedDate)
+                        .Take(5))
+                        {
+                            <tr>
+                                <td>@t.OrderId</td>
+                                <td>@t.VendorName</td>
+                                <td>@t.CustomerName</td>
+                                <td>@t.DeliveryStatus</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Performance Chart -->
+        <section class="performance-chart">
+            <h3 id="chartTitle">Weekly Overview</h3>
+            <canvas id="deliveryChart"></canvas>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-column">
+                <h4>About Gaubesi</h4>
+                <p>Your trusted delivery partner across Nepal.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a asp-controller="Admin" asp-action="AdminDashboard">Home</a></li>
+                    <li><a asp-controller="Admin" asp-action="GetAdminsHistoryList">Past Deliveries</a></li>
+                    <li><a asp-controller="Admin" asp-action="GetAdminsPresentList">Live Deliveries</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contact</h4>
+                <p>Email: support@gaubesi.com</p>
+                <p>Phone: +977-9843127642</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // These arrays should be set in your AdminDashboard action:
+        // ViewBag.ChartLabels, ViewBag.TotalSeries, ViewBag.LiveSeries, ViewBag.PastSeries
+        const labels    = @(ViewBag.ChartLabels != null
+            ? Html.Raw(JsonConvert.SerializeObject(ViewBag.ChartLabels))
+            : "[]");
+        const totalData = @(ViewBag.TotalSeries != null
+            ? Html.Raw(JsonConvert.SerializeObject(ViewBag.TotalSeries))
+            : "[]");
+        const liveData  = @(ViewBag.LiveSeries != null
+            ? Html.Raw(JsonConvert.SerializeObject(ViewBag.LiveSeries))
+            : "[]");
+        const pastData  = @(ViewBag.PastSeries != null
+            ? Html.Raw(JsonConvert.SerializeObject(ViewBag.PastSeries))
+            : "[]");
+
+        const ctx = document.getElementById('deliveryChart').getContext('2d');
+        let chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Total Orders',
+              data: totalData,
+              borderColor: '#d80000',
+              fill: false,
+              tension: 0.3
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } },
+            plugins: { legend: { display: false } }
+          }
+        });
+
+        function updateChart(metric) {
+          let data, title;
+          if (metric === 'total') {
+            data = totalData; title = 'Weekly Total Orders';
+          } else if (metric === 'live') {
+            data = liveData;  title = 'Weekly Live Deliveries';
+          } else {
+            data = pastData;  title = 'Weekly Past Deliveries';
+          }
+          chart.data.datasets[0].data  = data;
+          chart.data.datasets[0].label = title;
+          document.getElementById('chartTitle').innerText = title;
+          chart.update();
+        }
+    </script>
 </body>
 </html>

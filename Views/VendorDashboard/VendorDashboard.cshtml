@@ -17,7 +17,7 @@
         </ul>
     </div>
 </div>
-*@
+
 
 @{
     Layout = null;
@@ -77,5 +77,169 @@
             <p>&copy; 2025 Gaubesi. All rights reserved.</p>
         </div>
     </div>
+</body>
+</html>
+*@
+
+@model IEnumerable<CollegeProject.Models.Vendor>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Vendor Dashboard – Gaubesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Dashboard CSS -->
+    <link href="~/css/vendordashboard.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="MainDiv">
+        <!-- Navbar -->
+        <nav class="nav">
+            <div class="logo">
+                <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Logo" />
+            </div>
+            <ul class="nav-links">
+                <li><a asp-controller="VendorDashboard" asp-action="VendorDashboard">Home</a></li>
+                <li><a asp-controller="VendorDashboard" asp-action="GetPastVendorListView">Past Records</a></li>
+                <li><a asp-controller="VendorDashboard" asp-action="GetCurrentVendorListView">Live Deliveries</a></li>
+                <li><a asp-controller="Project" asp-action="OrderCreation">Create Order</a></li>
+                <li><a asp-controller="Log" asp-action="Logout">Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Welcome Banner -->
+        <div class="vendor-welcome">
+            <h1>Welcome</h1>
+            <h2>@ViewBag.Name</h2>
+        </div>
+
+        <!-- Key Metrics (clickable) -->
+        <div class="summary-cards">
+            <div class="card" data-metric="total" onclick="updateChart('total')">
+                <i class="fas fa-boxes"></i>
+                <div class="info">
+                    <h3>Total Orders</h3>
+                    <p>@ViewBag.TotalOrders</p>
+                </div>
+            </div>
+            <div class="card" data-metric="inTransit" onclick="updateChart('inTransit')">
+                <i class="fas fa-shipping-fast"></i>
+                <div class="info">
+                    <h3>In Transit</h3>
+                    <p>@ViewBag.InTransitCount</p>
+                </div>
+            </div>
+            <div class="card" data-metric="delivered" onclick="updateChart('delivered')">
+                <i class="fas fa-check-circle"></i>
+                <div class="info">
+                    <h3>Delivered</h3>
+                    <p>@ViewBag.DeliveredCount</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Deliveries Table (now above chart) -->
+        <section class="recent-table">
+            <h3>Recent Deliveries</h3>
+            <div class="table-wrapper">
+                <table id="recentDeliveries" class="records-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @* your existing AJAX or Razor loop *@
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Performance Chart (below table) -->
+        <section class="performance-chart">
+            <h3 id="chartTitle">Weekly Deliveries</h3>
+            <canvas id="deliveryChart"></canvas>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-column">
+                <h4>About Gaubesi</h4>
+                <p>Your trusted delivery partner across Nepal.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a asp-controller="VendorDashboard" asp-action="VendorDashboard">Home</a></li>
+                    <li><a asp-controller="VendorDashboard" asp-action="GetPastVendorListView">Past Records</a></li>
+                    <li><a asp-controller="VendorDashboard" asp-action="GetCurrentVendorListView">Live Deliveries</a></li>
+                    <li><a asp-controller="Project" asp-action="OrderCreation">Create Order</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contact</h4>
+                <p>Email: support@gaubesi.com</p>
+                <p>Phone: +977-9843127642</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Chart Initialization and Update Logic -->
+    <script>
+        const labels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ChartLabels));
+        const totalData     = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.TotalSeries));
+        const inTransitData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.InTransitSeries));
+        const deliveredData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.DeliveredSeries));
+
+        const ctx = document.getElementById('deliveryChart').getContext('2d');
+        let chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Total Orders',
+              data: totalData,
+              borderColor: '#d80000',
+              fill: false,
+              tension: 0.3
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } },
+            plugins: { legend: { display: false } }
+          }
+        });
+
+        function updateChart(metric) {
+          let dataset, title;
+          if (metric === 'total') {
+            dataset = totalData; title = 'Weekly Total Orders';
+          } else if (metric === 'inTransit') {
+            dataset = inTransitData; title = 'Weekly In-Transit Orders';
+          } else {
+            dataset = deliveredData; title = 'Weekly Delivered Orders';
+          }
+          chart.data.datasets[0].data = dataset;
+          chart.data.datasets[0].label = title;
+          document.getElementById('chartTitle').innerText = title;
+          chart.update();
+        }
+    </script>
 </body>
 </html>

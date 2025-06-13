@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Logistics Company</title>
 
-   
-    <link href="~/css/homepage.css" rel="stylesheet" />
+	<link href="~/css/homepage.css" rel="stylesheet" />
+    
 
 
     <!--
@@ -34,6 +34,7 @@
             <div class="logo">
                 <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Icon" />
             </div>
+            <button class="menu-toggle" aria-label="Toggle menu">☰</button>  <!-- ↗︎ RESPONSIVE -->
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#services">Services</a></li>
@@ -178,6 +179,12 @@
             </p>
         </div>
     </section>
+    <script>
+        document.querySelector('.menu-toggle')
+          .addEventListener('click', () => {
+            document.querySelector('.nav-links').classList.toggle('open');
+          });
+    </script>
 
     <!-- Contact Section -->
     <section id="contact" class="contact-section fade-in-up">
