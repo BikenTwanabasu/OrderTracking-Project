@@ -11,7 +11,7 @@ namespace CollegeProject.RepoClass
         private IConfiguration _configuration;
         private readonly IPasswordService _passwordService;
 
-        public Services(IConfiguration configuration,IPasswordService passwordService)
+        public Services(IConfiguration configuration, IPasswordService passwordService)
         {
             _configuration = configuration;
             _passwordService = passwordService;
@@ -19,26 +19,26 @@ namespace CollegeProject.RepoClass
 
         public string ConnectionString()
         {
-            string Constr=_configuration.GetConnectionString("Dbss");
+            string Constr = _configuration.GetConnectionString("Dbss");
             return Constr;
         }
         public Vendor RegisterVendor(Vendor vendor)
         {
-            
+
             if (vendor.CompanyName == null && vendor.CompanyEmail == null) { return vendor; }
 
             string hashedPassword = _passwordService.HashPassword(vendor.Password);
 
-            
+
             using (SqlConnection con = new SqlConnection(ConnectionString()))
             {
                 con.Open();
                 SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
-                cmd.CommandType=System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@CompanyName",vendor.CompanyName);
-                cmd.Parameters.AddWithValue("@CompanyAddress",vendor.CompanyAddress);
-                cmd.Parameters.AddWithValue("@CompanyPhone",vendor.CompanyPhone);
-                cmd.Parameters.AddWithValue("@CompanyEmail",vendor.CompanyEmail);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@CompanyName", vendor.CompanyName);
+                cmd.Parameters.AddWithValue("@CompanyAddress", vendor.CompanyAddress);
+                cmd.Parameters.AddWithValue("@CompanyPhone", vendor.CompanyPhone);
+                cmd.Parameters.AddWithValue("@CompanyEmail", vendor.CompanyEmail);
                 cmd.Parameters.AddWithValue("@CompanyPassword", hashedPassword);
                 cmd.Parameters.AddWithValue("@flag", "VendorRegistration");
 
@@ -51,15 +51,15 @@ namespace CollegeProject.RepoClass
 
                 }
                 return vendor;
-                
+
             }
-            
+
         }
 
         public Agent RegisterAgent(Agent agent)
         {
-            
-            if(agent.AgentEmail==null && agent.AgentPhone==null && agent.AgentAddress==null && agent.AgentPassword==null) 
+
+            if (agent.AgentEmail == null && agent.AgentPhone == null && agent.AgentAddress == null && agent.AgentPassword == null)
             { return agent; }
             string hashedPassword = _passwordService.HashPassword(agent.AgentPassword);
 
@@ -89,18 +89,18 @@ namespace CollegeProject.RepoClass
         public bool OrderCreations(OrderAndStudentModel orderAndStudentModel)
         {
             int i = 0;
-            if (orderAndStudentModel==null )
+            if (orderAndStudentModel == null)
             {
-                return false; 
+                return false;
             }
             if (orderAndStudentModel.customer == null || orderAndStudentModel.order == null)
             {
                 return false;
             }
-          
-           
-            if (orderAndStudentModel.customer.CustomerName==null || orderAndStudentModel.customer.OrderReceiveDate == null || orderAndStudentModel.customer.Email==null || orderAndStudentModel.customer.CustomerAddress==null
-                || orderAndStudentModel.order.DeliveryAddress==null || orderAndStudentModel.order.DeliveryDate==null || orderAndStudentModel.order.PaymentStatus==null )
+
+
+            if (orderAndStudentModel.customer.CustomerName == null || orderAndStudentModel.customer.OrderReceiveDate == null || orderAndStudentModel.customer.Email == null || orderAndStudentModel.customer.CustomerAddress == null
+                || orderAndStudentModel.order.DeliveryAddress == null || orderAndStudentModel.order.DeliveryDate == null || orderAndStudentModel.order.PaymentStatus == null)
             { return false; }
 
 
@@ -109,7 +109,7 @@ namespace CollegeProject.RepoClass
                 con.Open();
                 SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@Cust_Name",orderAndStudentModel.customer.CustomerName );
+                cmd.Parameters.AddWithValue("@Cust_Name", orderAndStudentModel.customer.CustomerName);
                 cmd.Parameters.AddWithValue("@Cust_Address", orderAndStudentModel.customer.CustomerAddress);
                 cmd.Parameters.AddWithValue("@Cust_Phone", orderAndStudentModel.customer.Phone);
                 cmd.Parameters.AddWithValue("@Cust_Email", orderAndStudentModel.customer.Email);
@@ -119,7 +119,7 @@ namespace CollegeProject.RepoClass
                 cmd.Parameters.AddWithValue("@DeliveryAddress", orderAndStudentModel.order.DeliveryAddress);
                 cmd.Parameters.AddWithValue("@DeliveryDate", orderAndStudentModel.order.DeliveryDate);
                 cmd.Parameters.AddWithValue("@CompanyId", orderAndStudentModel.order.CompanyId);
-                
+
                 cmd.Parameters.AddWithValue("@flag", "OrderCreation");
 
                 i = cmd.ExecuteNonQuery();
@@ -135,14 +135,14 @@ namespace CollegeProject.RepoClass
             }
             string hashedPassword = _passwordService.HashPassword(agent.AgentPassword);
             using (SqlConnection con = new SqlConnection(ConnectionString()))
-            {   
+            {
                 con.Open();
                 SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@AgentEmail", agent.AgentEmail);
-                cmd.Parameters.AddWithValue("@AgentPassword", hashedPassword);               
+                cmd.Parameters.AddWithValue("@AgentPassword", hashedPassword);
                 cmd.Parameters.AddWithValue("@flag", "AgentLogIn");
-                SqlDataReader rdr=cmd.ExecuteReader();
+                SqlDataReader rdr = cmd.ExecuteReader();
 
                 if (rdr.Read())
                 {
@@ -150,10 +150,10 @@ namespace CollegeProject.RepoClass
                     agent.ResponseMessage = rdr["ResponseMessage"].ToString();
                     agent.AgentId = rdr["AgentId"].ToString();
                     agent.AgentName = rdr["AgentName"].ToString();
-                    agent.AgentAddress = rdr["AgentAddress"].ToString(); 
+                    agent.AgentAddress = rdr["AgentAddress"].ToString();
                 }
                 return agent;
-              
+
             }
 
         }
@@ -163,14 +163,13 @@ namespace CollegeProject.RepoClass
             {
                 return vendor;
             }
-            string hashedPassword = _passwordService.HashPassword(vendor.Password);
+            string UIPassword = vendor.Password;
             using (SqlConnection con = new SqlConnection(ConnectionString()))
             {
                 con.Open();
                 SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@CompanyEmail", vendor.CompanyEmail);
-                cmd.Parameters.AddWithValue("@CompanyPassword",hashedPassword);
                 cmd.Parameters.AddWithValue("@flag", "VendorLogIn");
                 SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -178,10 +177,18 @@ namespace CollegeProject.RepoClass
                 {
                     vendor.ResponseCode = (int)rdr["ResponseCode"];
                     vendor.ResponseMessage = rdr["ResponseMessage"].ToString();
+                    vendor.Password = rdr["CompanyPassword"].ToString();
                     vendor.CompanyId = rdr["CompanyId"].ToString();
                     vendor.CompanyName = rdr["CompanyName"].ToString();
                     vendor.CompanyAddress = rdr["CompanyAddress"].ToString();
 
+                }
+
+                bool _passwordIsCorrect = _passwordService.VerifyPassword(vendor.Password, UIPassword);
+                if(_passwordIsCorrect)
+                {
+                    vendor.ResponseCode = 1;
+                    vendor.ResponseMessage = "Login Successful";
                 }
                 return vendor;
 
@@ -221,7 +228,7 @@ namespace CollegeProject.RepoClass
                 return list;
             }
         }
-        
-        
+
+
     }
 }

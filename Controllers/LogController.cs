@@ -41,6 +41,10 @@ namespace CollegeProject.Controllers
         public IActionResult VendorLoggingIn(Vendor vendor)
         {
             var a = _services.VendorLogIn(vendor);
+            if (a.ResponseCode == 0) 
+            {
+                return Json(a);
+            }
             if (a.ResponseCode!=null)
             {
                 var claims = new List<Claim>

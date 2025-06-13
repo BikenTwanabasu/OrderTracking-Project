@@ -78,13 +78,13 @@
 			url:'@Url.Action("VendorLoggingIn", "Log")',
 			type:'Post',
 			dataType:'Json',
-			data:{
+			data:{	
 				CompanyEmail: CompanyEmail,
 				Password: Password
 			},
 			success:function(response){
 				if(response!=null){
-					if(response.responseCode!=1){
+					if(response.responseCode != 1){
 						 document.getElementById('DivError').style.display = 'block';
 							$("#DivError").html('<div class="alert alert-danger">' + response.responseMessage + '</div>');
 							$("#DivError").show();

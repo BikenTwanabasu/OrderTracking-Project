@@ -60,8 +60,11 @@ function RegisterVendor(companyId) {
             tempCompanyId : companyId
         },
         success: function (response) {
+            debugger;
             if (response.responseMessage!= null) {
                 alert(response.responseMessage);
+                debugger;
+                window.location.href = '/Admin/VendorRegistrationApprovalRequest';
             }
             else {
                 alert("Vendor Account Creation Failed")
