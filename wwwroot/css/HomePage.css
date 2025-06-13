@@ -45,14 +45,12 @@ body {
 }
 
     .nav-links li a {
-        
         color: #d80000;
         font-weight: 700;
-       
     }
 
         .nav-links li a:hover {
-            color: #d80000; /* A red hover color for extra contrast */
+            color: #a50000;
         }
 
 .auth-buttons {
@@ -60,7 +58,8 @@ body {
     gap: 1rem;
 }
 
-.navbar .auth-buttons .btn-login {
+.navbar .auth-buttons .btn-login,
+.navbar .auth-buttons .btn-track {
     padding: 0.25rem 0.5rem;
     font-size: 0.875rem;
     font-weight: 700;
@@ -70,17 +69,10 @@ body {
     text-decoration: none;
     transition: background 0.3s;
 }
-.navbar .auth-buttons .btn-track {
-    padding: 0.25rem 0.5rem !important; /* smaller padding */
-    font-size: 0.875rem !important; /* ~14px */
-    font-weight: 700 !important; /* bold */
-    background: #d80000 !important; /* red */
-    color: #fff !important; /* white text *
-    border-radius: 0.25rem !important; /* small rounding */
-}
+
     .navbar .auth-buttons .btn-login:hover,
     .navbar .auth-buttons .btn-track:hover {
-        background: ##d80000 !important;
+        background: #a50000;
     }
 
 /* ===========================
@@ -91,8 +83,7 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 4rem 2rem;
-    /* Subtle gradient to stand out */
-    background: linear-gradient( to right, #ffe6e6, #fff 50%, #ffe6e6 );
+    background: linear-gradient(to right, #ffe6e6, #fff 50%, #ffe6e6);
 }
 
 .hero-content {
@@ -105,7 +96,7 @@ body {
     }
 
         .hero-content h1 span {
-            color: #d80000; /* Highlight text in red */
+            color: #d80000;
         }
 
     .hero-content p {
@@ -136,7 +127,7 @@ body {
 =========================== */
 .services-section {
     padding: 4rem 2rem;
-    background: #fefefe; /* Lighter background than before */
+    background: #fefefe;
     text-align: center;
 }
 
@@ -281,52 +272,6 @@ body {
 }
 
 /* ===========================
-   Modals
-=========================== */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content {
-    background-color: #fff;
-    margin: 10% auto;
-    padding: 2rem;
-    width: 300px;
-    position: relative;
-    border-radius: 4px;
-}
-
-.close {
-    position: absolute;
-    top: 8px;
-    right: 16px;
-    font-size: 24px;
-    cursor: pointer;
-}
-
-.btn-submit {
-    background: #d80000;
-    color: #fff;
-    padding: 0.5rem 1rem;
-    border: none;
-    margin-top: 1rem;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-    .btn-submit:hover {
-        background: #a50000;
-    }
-
-/* ===========================
    Floating Shapes (Optional)
 =========================== */
 .floating-shapes {
@@ -336,7 +281,7 @@ body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    pointer-events: none; /* so user can click through them */
+    pointer-events: none;
 }
 
 .shape {
@@ -370,18 +315,16 @@ body {
     left: 30%;
 }
 
-/* New shape4 for "GBL" text */
 .shape4 {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%,-50%);
     color: red;
     font-size: 250px;
     font-weight: 900;
-    opacity: 0.2; /* Temporarily higher for testing */
+    opacity: 0.2;
     animation: float 10s infinite ease-in-out;
-    pointer-events: none;
 }
 
     .shape4::before {
@@ -390,20 +333,20 @@ body {
 
 @keyframes float {
     0% {
-        transform: translate(-50%, -50%) translateY(0);
+        transform: translate(-50%,-50%) translateY(0);
     }
 
     50% {
-        transform: translate(-50%, -50%) translateY(-20px);
+        transform: translate(-50%,-50%) translateY(-20px);
     }
 
     100% {
-        transform: translate(-50%, -50%) translateY(0);
+        transform: translate(-50%,-50%) translateY(0);
     }
 }
 
 /* ===========================
-   Fade In Animations (Optional)
+   Fade‑In Animations (Optional)
 =========================== */
 .fade-in-up {
     opacity: 0;
@@ -419,5 +362,106 @@ body {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* ↗︎ RESPONSIVE NAVIGATION */
+.menu-toggle {
+    display: none; /* ↗︎ RESPONSIVE */
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #d80000;
+    cursor: pointer;
+    margin-left: 1rem;
+}
+
+@media (max-width:599px) {
+    .menu-toggle {
+        display: block;
+    }
+    /* show hamburger */
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        background: #ffe6e6;
+        width: 100%;
+        position: absolute;
+        top: 60px; /* just beneath your 60px navbar */
+        left: 0;
+        margin: 0;
+        padding: 1rem 0;
+    }
+
+        .nav-links.open {
+            display: flex;
+        }
+        /* show when toggled */
+        .nav-links li {
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+    .auth-buttons {
+        display: none;
+    }
+
+    .nav-links.open ~ .auth-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        background: #ffe6e6;
+        width: 100%;
+        padding-bottom: 1rem;
+    }
+}
+
+/* ↗︎ RESPONSIVE HERO */
+@media (max-width:800px) {
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 1rem;
+    }
+
+    .hero-content, .hero-image {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .hero-image {
+        margin-top: 1.5rem;
+    }
+}
+
+/* ↗︎ FLEX‑WRAP ENFORCED */
+.services-container,
+.why-container,
+.testimonials-container,
+.locations-container {
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* ↗︎ BUTTONS & NAV TWEAKS */
+@media (max-width:599px) {
+    .navbar .auth-buttons {
+        gap: 0.5rem;
+    }
+
+        .navbar .auth-buttons .btn-login,
+        .navbar .auth-buttons .btn-track {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+}
+
+/* ↗︎ DESKTOP LAYOUT TWEAK */
+@media (min-width:900px) {
+    .hero-section {
+        padding: 4rem 2rem;
+    }
+
+    .navbar {
+        padding: 0 8rem 0 2rem;
     }
 }
