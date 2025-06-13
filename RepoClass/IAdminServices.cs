@@ -10,5 +10,7 @@ namespace CollegeProject.RepoClass
         public AgentTaskModel deleteByAdmin(AgentTaskModel model);
         public AgentTaskModel Getorder(AgentTaskModel model);
         public bool updateOrderDataByAdmin(AgentTaskModel model);
+        public List<AgentTaskModel> VendorRegistrationRequest();
+        public AgentTaskModel AcceptVendorRegistrationRequest(int TempCompanyId);
     }
 }

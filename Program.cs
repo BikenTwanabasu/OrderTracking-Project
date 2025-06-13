@@ -11,6 +11,7 @@ builder.Services.AddSingleton<IServices,Services>();
 builder.Services.AddSingleton<Iagentdashservices, agentdashservices>();
 builder.Services.AddSingleton<IVendorDashServices, VendorDashServices>();
 builder.Services.AddSingleton<IAdminServices, AdminServices>();
+builder.Services.AddSingleton<IPasswordService, PasswordService>();
 builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost:6379"));
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                  .AddCookie(options =>
