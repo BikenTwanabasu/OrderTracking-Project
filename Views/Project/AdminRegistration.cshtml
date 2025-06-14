@@ -52,6 +52,11 @@
                 <span asp-validation-for="AdminEmail" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="AdminAddress"></label>
+                <input asp-for="AdminAddress" id="AdminAddress" class="form-control" />
+                <span asp-validation-for="AdminAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="AdminPassword"></label>
                 <input asp-for="AdminPassword" id="AdminPassword" type="password" class="form-control" />
                 <span asp-validation-for="AdminPassword" class="text-danger"></span>
@@ -74,6 +79,7 @@
             var AdminPhone    = $("#AdminPhone").val();
             var AdminEmail    = $("#AdminEmail").val();
             var AdminPassword = $("#AdminPassword").val();
+            var AdminAddress = $("#AdminAddress").val();
                   if (!/^(98|97)[\d]{8}$/.test(AdminPhone)) {
             alert("Company Phone Number must start from 98/97 and must be 10 numbers");
             return;
@@ -113,7 +119,8 @@
                 AdminEmail: AdminEmail,
                 AdminPhone: AdminPhone,
                 _isSuperAdmin : isSuperAdmin,
-                AdminPassword: AdminPassword
+                AdminPassword: AdminPassword,
+                AdminAddress : AdminAddress
             },
             dataType: 'Json',
             success: function (response) {

@@ -83,6 +83,7 @@ namespace CollegeProject.Controllers
                     new Claim("Name",a.AdminName),
                     new Claim("Id",a.AdminId),
                     new Claim("Email",a.AdminEmail),
+                    new Claim("Address",a.AdminAddress),
                     new Claim(ClaimTypes.Role,Role)
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
