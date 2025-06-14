@@ -76,7 +76,7 @@ function RegisterVendor(companyId) {
     })
 }
 
-function DeleteVendor(companyId) {
+function DeleteVendor(companyId) {  
     $.ajax({
         url: '',
         type: 'POST',

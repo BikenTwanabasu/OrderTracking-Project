@@ -80,10 +80,9 @@ namespace CollegeProject.Controllers
                 
                 var claims = new List<Claim>
                 {
-                    new Claim("AdminName",a.AdminName),
-                    new Claim("AdminId",a.AdminId),
-                    new Claim("AdminEmail",a.AdminEmail),
-                    new Claim("isSuperAdmin",isSuperAdmin.ToString()),
+                    new Claim("Name",a.AdminName),
+                    new Claim("Id",a.AdminId),
+                    new Claim("Email",a.AdminEmail),
                     new Claim(ClaimTypes.Role,Role)
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -113,6 +112,18 @@ namespace CollegeProject.Controllers
                 {
                     await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                     return RedirectToAction("VendorLoggingIn", "Log");
+
+                }
+                else if (Role.Value == "Admin")
+                {
+                    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                    return RedirectToAction("AdminLoggingIn", "Log");
+
+                }
+                else if (Role.Value == "SuperAdmin")
+                {
+                    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                    return RedirectToAction("AdminLoggingIn", "Log");
 
                 }
             }

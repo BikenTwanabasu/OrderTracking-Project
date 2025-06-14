@@ -40,6 +40,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Project}/{action=AdminRegistration}/{id?}");
+    pattern: "{controller=Project}/{action=FirstPage}/{id?}");
 
 app.Run();

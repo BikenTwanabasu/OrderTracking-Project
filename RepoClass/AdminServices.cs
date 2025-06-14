@@ -1,4 +1,5 @@
 ﻿using CollegeProject.Models;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Security.Cryptography.Pkcs;
@@ -291,6 +292,31 @@ namespace CollegeProject.RepoClass
 
             }
             return model;
+        }
+        public List<VendorOrderChartData> AdminDashboardGraph()
+        {
+            var list = new List<VendorOrderChartData>();
+            using (SqlConnection con = new SqlConnection(Connection()))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@flag", "AdminDashboardGraph");
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    list.Add(new VendorOrderChartData
+                    {
+                        DayName = rdr["DayName"].ToString(),
+                        TotalOrders = Convert.ToInt32(rdr["TotalOrders"]),
+                        InTransitOrders = Convert.ToInt32(rdr["InTransitOrders"]),
+                        DeliveredOrders = Convert.ToInt32(rdr["DeliveredOrders"])
+                    });
+                }
+            }
+
+            return list;
         }
     }
 }

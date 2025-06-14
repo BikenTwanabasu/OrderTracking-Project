@@ -77,4 +77,11 @@
         public int ResponseCode { get; set; }
         public string? ResponseMessage { get; set;}
     }
+    public class VendorOrderChartData
+    {
+        public string DayName { get; set; }
+        public int TotalOrders { get; set; }
+        public int InTransitOrders { get; set; }
+        public int DeliveredOrders { get; set; }
+    }
 }

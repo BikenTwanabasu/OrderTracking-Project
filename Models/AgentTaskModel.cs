@@ -34,5 +34,8 @@
         public string? VendorEmail { get; set; }
         public string? RegisterStatus { get; set; }
         public string? AgentEmail { get; set; }
+        public int TotalOrder { get; set; } 
+        public int LiveOrder { get; set; }  
+        public int CompletedOrder { get; set; }
     }
 }

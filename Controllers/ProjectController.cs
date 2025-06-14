@@ -39,6 +39,7 @@ namespace CollegeProject.Controllers
             return View();
 
         }
+        [Permission("SuperAdmin")]
         public IActionResult AdminRegistration(Admin admin) 
         {
             var a =_services.RegisterAdmin(admin);

@@ -78,14 +78,30 @@ namespace CollegeProject.Controllers
         [Permission("Agent")]
         public IActionResult AgentDashboard()
         {
+            AgentDashboardGraph();
             var claimData = HttpContext.GetClaimsData();
             if(claimData.Name != null) {
                 ViewBag.Name = claimData.Name;
             }
-            
+            ViewBag.ChartLabels = new[] { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+            var TotalOrder = TempData["TotalOrder"];
+            var LiveOrder = TempData["LiveOrder"];
+            var CompletedOrder = TempData["CompletedOrder"];
+            ViewBag.TotalSeries = TotalOrder;
+            ViewBag.LiveSeries = LiveOrder;
+            ViewBag.PastSeries = CompletedOrder;
             return View();
         }
+        public IActionResult AgentDashboardGraph()
+        {
+            var a = HttpContext.GetClaimsData();
+            ViewBag.ID = a.Id;
+            var b = _agentdashservices.AgentDashboardGraph(Convert.ToInt32(a.Id));
+            TempData["TotalOrder"] = b.TotalOrder;
+            TempData["LiveOrder"] = b.LiveOrder;
+            TempData["CompletedOrder"] = b.CompletedOrder;
+            return Json(b);
+        }
 
-        
     }
 }

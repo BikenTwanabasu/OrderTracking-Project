@@ -170,5 +170,36 @@ namespace collegeproject.repoclass
                 return DeliveryList;
             }
         }
+        public AgentTaskModel AgentDashboardGraph(int AgentId)
+        {
+            AgentTaskModel model = new AgentTaskModel();
+            using (SqlConnection con = new SqlConnection(Connection()))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@flag", "AgentDashboardGraph");
+                cmd.Parameters.AddWithValue("@AgentId", AgentId);
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                if (rdr.Read())
+                {
+                    model.TotalOrder = Convert.ToInt32(rdr["TotalOrder"]);
+                }
+
+                if (rdr.NextResult() && rdr.Read())
+                {
+                    model.LiveOrder = Convert.ToInt32(rdr["LiveOrder"]);
+                }
+
+                if (rdr.NextResult() && rdr.Read())
+                {
+                    model.CompletedOrder = Convert.ToInt32(rdr["CompletedOrder"]);
+                }
+                return model;
+
+
+            }
+        }
     }
 }

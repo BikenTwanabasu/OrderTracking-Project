@@ -52,21 +52,21 @@
                 <i class="fas fa-boxes"></i>
                 <div class="info">
                     <h3>Total Orders</h3>
-                    <p>@(Model?.Count() ?? 0)</p>
+                    <p>@ViewBag.TotalOrders</p>
                 </div>
             </div>
             <div class="card" onclick="updateChart('live')">
                 <i class="fas fa-truck-loading"></i>
                 <div class="info">
                     <h3>Live Deliveries</h3>
-                    <p>@(Model?.Count(x => x.DeliveryStatus != "Successfully Delivered") ?? 0)</p>
+                    <p>@ViewBag.InTransitCount</p>
                 </div>
             </div>
             <div class="card" onclick="updateChart('past')">
                 <i class="fas fa-clipboard-list"></i>
                 <div class="info">
                     <h3>Past Deliveries</h3>
-                    <p>@(Model?.Count(x => x.DeliveryStatus == "Successfully Delivered") ?? 0)</p>
+                    <p>@ViewBag.DeliveredCount</p>
                 </div>
             </div>
         </div>
@@ -103,56 +103,57 @@
         </footer>
     </div>
 
+    @{
+        var labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ChartLabels ?? new List<string>());
+        var totalJson = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.TotalSeries ?? new List<int>());
+        var liveJson = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.LiveSeries ?? new List<int>());
+        var pastJson = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.PastSeries ?? new List<int>());
+    }
+
     <script>
-        // These arrays should be set in your AdminDashboard action:
-        // ViewBag.ChartLabels, ViewBag.TotalSeries, ViewBag.LiveSeries, ViewBag.PastSeries
-        const labels    = @(ViewBag.ChartLabels != null
-            ? Html.Raw(JsonConvert.SerializeObject(ViewBag.ChartLabels))
-            : "[]");
-        const totalData = @(ViewBag.TotalSeries != null
-            ? Html.Raw(JsonConvert.SerializeObject(ViewBag.TotalSeries))
-            : "[]");
-        const liveData  = @(ViewBag.LiveSeries != null
-            ? Html.Raw(JsonConvert.SerializeObject(ViewBag.LiveSeries))
-            : "[]");
-        const pastData  = @(ViewBag.PastSeries != null
-            ? Html.Raw(JsonConvert.SerializeObject(ViewBag.PastSeries))
-            : "[]");
+        const labels = @Html.Raw(labelsJson);
+        const totalData = @Html.Raw(totalJson);
+        const liveData = @Html.Raw(liveJson);
+        const pastData = @Html.Raw(pastJson);
 
         const ctx = document.getElementById('deliveryChart').getContext('2d');
         let chart = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: 'Total Orders',
-              data: totalData,
-              borderColor: '#d80000',
-              fill: false,
-              tension: 0.3
-            }]
-          },
-          options: {
-            responsive: true,
-            scales: { y: { beginAtZero: true } },
-            plugins: { legend: { display: false } }
-          }
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Total Orders',
+                    data: totalData,
+                    borderColor: '#d80000',
+                    fill: false,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: { y: { beginAtZero: true } },
+                plugins: { legend: { display: false } }
+            }
         });
 
         function updateChart(metric) {
-          let data, title;
-          if (metric === 'total') {
-            data = totalData; title = 'Weekly Total Orders';
-          } else if (metric === 'live') {
-            data = liveData;  title = 'Weekly Live Deliveries';
-          } else {
-            data = pastData;  title = 'Weekly Past Deliveries';
-          }
-          chart.data.datasets[0].data  = data;
-          chart.data.datasets[0].label = title;
-          document.getElementById('chartTitle').innerText = title;
-          chart.update();
+            let data, title;
+            if (metric === 'total') {
+                data = totalData;
+                title = 'Weekly Total Orders';
+            } else if (metric === 'live') {
+                data = liveData;
+                title = 'Weekly Live Deliveries';
+            } else {
+                data = pastData;
+                title = 'Weekly Past Deliveries';
+            }
+            chart.data.datasets[0].data = data;
+            chart.data.datasets[0].label = title;
+            document.getElementById('chartTitle').innerText = title;
+            chart.update();
         }
     </script>
+
 </body>
 </html>

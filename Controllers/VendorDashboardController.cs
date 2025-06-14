@@ -44,6 +44,16 @@ namespace CollegeProject.Controllers
         }
         public IActionResult VendorDashboard()
         {
+            var a = HttpContext.GetClaimsData();
+            ViewBag.Name = a.Name;
+            VendorDashboardGraph();
+            ViewBag.ChartLabels = new[] { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+            var TotalOrder = TempData["TotalOrder"];
+            var LiveOrder = TempData["LiveOrder"];
+            var CompletedOrder = TempData["CompletedOrder"];
+            ViewBag.TotalSeries = TotalOrder;
+            ViewBag.LiveSeries = LiveOrder;
+            ViewBag.PastSeries = CompletedOrder;
             return View();
         }
 
@@ -52,6 +62,15 @@ namespace CollegeProject.Controllers
             var a = _vendorDashServices.DeleteOrderByVendor(model);
             return Json(a);
 
+        }
+        public IActionResult VendorDashboardGraph()
+        {
+            var a = HttpContext.GetClaimsData();
+            var b = _vendorDashServices.VendorDashboardGraph(Convert.ToInt32(a.Id));
+            TempData["TotalOrder"] = b.TotalOrder;
+            TempData["LiveOrder"] = b.LiveOrder;
+            TempData["CompletedOrder"] = b.CompletedOrder;
+            return Json(b);
         }
     }
 }

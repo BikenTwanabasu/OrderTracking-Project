@@ -14,5 +14,6 @@ namespace CollegeProject.RepoClass
         public AgentTaskModel AcceptVendorRegistrationRequest(int TempCompanyId);
         public List<AgentTaskModel> AgentRegistrationRequest();
         public AgentTaskModel AcceptAgentRegistrationRequest(int TempAgentId);
+        public List<VendorOrderChartData> AdminDashboardGraph();
     }
 }
