@@ -2,7 +2,6 @@
 using CollegeProject.RepoClass;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Reflection.Emit;
 
 namespace CollegeProject.Controllers
 {

@@ -1,4 +1,4 @@
-﻿@*
+﻿
 @model IEnumerable<CollegeProject.Models.AgentTaskModel>
 
 @{
@@ -414,9 +414,9 @@
         })
     }
 </script>
-*@
 
-@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+
+@* @model IEnumerable<CollegeProject.Models.AgentTaskModel>
 @{
     ViewData["Title"] = "Live Deliveries";
     Layout = null;
@@ -636,5 +636,128 @@
             });
         }
     </script>
+    <script>
+        function EditOrderModal(OrderId) {
+
+            $("#EditModal").modal('show');
+            $("#EditModal").data('OrderId', OrderId);
+
+
+            $.ajax({
+                url: '@Url.Action("GetOrderById","Admin")',
+                type: 'Get',
+                data: {
+                    OrderId: OrderId
+                },
+                dataType: 'Json',
+                success: function (response) {
+                    if (response.orderId != null) {
+                        debugger;
+                        $("#OrderId").val(response.orderId);
+                        $("#DeliveredDate").val(response.deliveredDate);
+                        $("#CustomerAddress").val(response.customerAddress);
+                        $("#Amount").val(response.amount);
+                        $("#DeliveryCharge").val(response.deliveryCharge);
+                        $("#CreatedDate").val(response.createdDate);
+                        if (response.deliveryStatus) {
+                            $("#DeliveryStatus").val(response.deliveryStatus);
+                        }
+                        $("#CustomerPhone").val(response.customerPhone);
+                        $("#VendorPhone").val(response.vendorPhone);
+
+
+
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("Error Occured!!!");
+                }
+
+            });
+
+        }
+
+    </script>
+    <script>
+        function DeleteOrderModal(OrderId) {
+            $("#DeleteModal").modal('show');
+            $("#DeleteModal").data('OrderId', OrderId);
+
+            $("#DeleteConfirmButton").click(function () {
+                var OrderID = $("DeleteModal").data('OrderID');
+                DeleteOrderbyAdmin(OrderId);
+                $("#DeleteModal").modal('hide');
+            })
+        }
+
+        function DeleteOrderbyAdmin(OrderId) {
+            $.ajax({
+                url: '@Url.Action("DeleteByAdmin","Admin")',
+                type: 'Get',
+                data: {
+                    OrderId: OrderId
+                },
+                dataType: 'Json',
+                success: function (response) {
+                    if (response.responseCode != null) {
+                        alert(response.responseMessage);
+                        window.location.href = '@Url.Action("GetAdminsPresentList","Admin")';
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("Error occured while deleting the data ");
+                }
+            })
+        }
+    </script>
+    <script>
+        function ShowModal(OrderId) {
+
+            $("#Modal").modal('show');
+            $("#Modal").data('OrderId', OrderId);
+
+            $("#ConfirmButton").click(function () {
+                var OrderID = $("#Modal").data('OrderID');
+                UpdateStatus(OrderId);
+                $("#Modal").modal('hide');
+            });
+
+        }
+    </script>
+
+    <script>
+        function UpdateStatus(OrderId) {
+
+            $.ajax({
+                url: '@Url.Action("UpdateDeliveryStatus","Admin")',
+                type: 'Get',
+                data: {
+                    OrderId: OrderId
+                },
+                dataType: 'Json',
+                success: function (response) {
+                    if (response.deliveryStatus != null) {
+                        if (response.deliveryStatus != 'Arrived at Warehouse' || response.deliveryStatus != 'Dispatched For Delivery') {
+                            $("#Status" + OrderId).val(response.deliveryStatus);
+
+                            if (response.deliveryStatus = 'Dispatched For Delivery') {
+                                $("#Status" + OrderId).prop("disabled", true);
+
+                            }
+                        }
+
+                        else {
+                            $("#Status" + OrderId).val(response.deliveryStatus);
+                            alert("Cannot update the this status by the admin");
+
+                        }
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("error occured");
+                }
+            })
+        }
+    </script>
 </body>
-</html>
+</html> *@
