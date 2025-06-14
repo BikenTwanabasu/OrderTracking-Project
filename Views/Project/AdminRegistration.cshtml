@@ -28,6 +28,7 @@
         <div class="logo">
             <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Gaubesi Logo" />
         </div>
+      
     </nav>
 
     <div class="form-container">
@@ -61,6 +62,7 @@
             </div>
 
             <button type="button" class="btn-submit" onclick="AdminRegistration()">Create Account</button>
+            <a asp-action="AdminDashboard" asp-controller="Admin" class="back-link">Home</a>
            
         </form>
     </div>
@@ -103,27 +105,26 @@
             isSuperAdmin = false;
         }
 
-
-                $.ajax({
-                url: '@Url.Action("AdminRegistration", "Project")',
-                type: 'Post',
-                data: {
-                    AdminName: AdminName,
-                    AdminEmail: AdminEmail,
-                    AdminPhone: AdminPhone,
-                    _isSuperAdmin : isSuperAdmin,
-                    AdminPassword: AdminPassword
-                },
-                dataType: 'Json',
-                success: function (response) {
-                    if (response.responseCode != null) {
-                        alert(response.responseMessage);
-                        window.location.href = '@Url.Action("AdminRegistration", "Project")';
-                    }
-                    else {
-                        alert("Agent Registration Failed!!!");
-                        window.location.href = '@Url.Action("AdminRegistration", "Project")';
-                    }
+        $.ajax({
+            url: '@Url.Action("AdminRegistration","Project")',
+            type: 'Post',
+            data: {
+                AdminName: AdminName,
+                AdminEmail: AdminEmail,
+                AdminPhone: AdminPhone,
+                _isSuperAdmin : isSuperAdmin,
+                AdminPassword: AdminPassword
+            },
+            dataType: 'Json',
+            success: function (response) {
+                if (response.responseCode != null) {
+                    alert(response.responseMessage);
+                    window.location.href = '@Url.Action("AdminRegistration","Project")';
+                }
+                else {
+                    alert("Agent Registration Failed!!!");
+                    window.location.href = '@Url.Action("AdminRegistration","Project")';
+                }
 
                 },
                 error: function (xhr, status, error) {
