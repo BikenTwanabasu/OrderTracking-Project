@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<CollegeProject.Models.AgentTaskModel>
+
 @{
     ViewData["Title"] = "GetAdminsPresentList";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,17 +8,17 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>@ViewData["Title"] – Gaubesi</title>
+    <title>Admin Dashboard – Gaubesi</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
 
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Page CSS -->
+    <!-- Dashboard CSS -->
 	<link href="~/css/adminpresentlist.css" rel="stylesheet" />
 </head>
 <body>
@@ -29,210 +30,421 @@
             </div>
             <ul class="nav-links">
                 <li><a asp-controller="Admin" asp-action="AdminDashboard">Home</a></li>
+                <li><a asp-controller="Project" asp-action="AdminRegistration">Register</a></li>
                 <li><a asp-controller="Admin" asp-action="GetAdminsHistoryList">Past Deliveries</a></li>
-                <li><a asp-controller="Admin" asp-action="GetAdminsPresentList" class="active">Live Deliveries</a></li>
+                <li><a asp-controller="Admin" asp-action="GetAdminsPresentList">Live Deliveries</a></li>
                 <li><a asp-controller="Admin" asp-action="AgentRegistrationApprovalRequest">Agent Approval</a></li>
                 <li><a asp-controller="Admin" asp-action="VendorRegistrationApprovalRequest">Vendor Approval</a></li>
                 <li><a asp-controller="Log" asp-action="Logout">Logout</a></li>
             </ul>
         </nav>
+</body>
 
-        <!-- Page Title -->
-        <h1 style="text-align:center; margin-top:2rem;">GetAdminsPresentList</h1>
 
-        <!-- Table -->
-        <div style="width:87%; height:60vh; margin: 1rem auto;">
-            <table class="table table-bordered table-striped table-hover mb-2" id="table1">
-                <thead>
+<div style="height:100vh;width:100%;">
+    <h1 style="text-align:center;">GetAdminsPresentList</h1>
+
+
+    <div style="width:87%;height:60vh; margin-left:6.5%;">
+        <table class="table table-bordered table-striped table-hover  mb-2" id="table1" />
+
+        <thead>
+            <tr>
+                <th>OrderId</th>
+                <th>CompanyID</th>
+                <th>VendorName</th>
+                <th>VendorPhone</th>
+                <th>CustomerId</th>
+                <th>CustomerName</th>
+                <th>CustomerAddress</th>
+                <th>CustomerPhone</th>
+                <th>CreatedDate</th>
+                <th>ReceiverAgentId</th>
+                <th>ReceiverAgentName</th>
+                <th>ReceiverAgentPhone</th>
+                <th>DeliveredDate</th>
+                <th>DeliveryAgentId</th>
+                <th>DeliveryAgentName</th>
+                <th>DeliveryAgentPhone</th>
+                <th>Delivery Charge</th>
+                <th>Total Amount</th>
+                <th>DeliveryStatus</th>
+                <th>Extras</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal " tabindex="-1" id="Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Status Update</h5>
+            </div>
+            <div class="modal-body" id="DetailsBody">
+                <p>Are you sure want to update the status?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="ConfirmButton">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal " tabindex="-1" id="DeleteModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Status Update</h5>
+            </div>
+            <div class="modal-body" id="DetailsBody">
+                <p>Are you sure want to Delete the Order?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="DeleteConfirmButton">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal " tabindex="-1" id="EditModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Status Update</h5>
+            </div>
+            <div class="modal-body" id="EditDetailsBody">
+                <table class="table table-bordered" id="EditTable">
                     <tr>
-                        <th>OrderId</th>
-                        <th>CompanyID</th>
-                        <th>VendorName</th>
-                        <th>VendorPhone</th>
-                        <th>CustomerId</th>
-                        <th>CustomerName</th>
-                        <th>CustomerAddress</th>
-                        <th>CustomerPhone</th>
-                        <th>CreatedDate</th>
-                        <th>ReceiverAgentId</th>
-                        <th>ReceiverAgentName</th>
-                        <th>ReceiverAgentPhone</th>
-                        <th>DeliveredDate</th>
-                        <th>DeliveryAgentId</th>
-                        <th>DeliveryAgentName</th>
-                        <th>DeliveryAgentPhone</th>
-                        <th>Delivery Charge</th>
-                        <th>Total Amount</th>
-                        <th>DeliveryStatus</th>
-                        <th>Extras</th>
+                        <th>Order ID</th>
+                        <td><input type="text" id="OrderId" class="form-control" readonly /></td>
                     </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+                    <tr>
+                        <th>Delivered Date</th>
+                        <td><input type="text" id="DeliveredDate" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th>Customer Address</th>
+                        <td><input type="text" id="CustomerAddress" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th>Amount</th>
+                        <td><input type="text" id="Amount" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th>Delivery Charge</th>
+                        <td><input type="text" id="DeliveryCharge" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th>Created Date</th>
+                        <td><input type="text" id="CreatedDate" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th>Delivery Status</th>
+                        <td>
+                            <select id="DeliveryStatus" class="form-control">
+                                <option value="Order Created">Order Created</option>
+                                <option value="Picked up by Agent">Picked up by Agent</option>
+                                <option value="Arrived at Warehouse">Arrived at Warehouse</option>
+                                <option value="Dispatched for Delivery">Dispatched for Delivery</option>
+                                <option value="Successfully Delivered">Successfully Delivered</option>
 
-        <!-- Status Confirmation Modal -->
-        <div class="modal" id="Modal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Status Update</h5>
-                    </div>
-                    <div class="modal-body" id="DetailsBody">
-                        <p>Are you sure want to update the status?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="ConfirmButton">Confirm</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Customer Phone</th>
+                        <td><input type="text" id="CustomerPhone" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th>Vendor Phone</th>
+                        <td><input type="text" id="VendorPhone" class="form-control" /></td>
+                    </tr>
+
+
+                </table>
+                <div>
+                    <input type="button" class="btn btn-primary" onclick="UpdateDataByAdmin()" value="Update Order" />
                 </div>
             </div>
-        </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 
-        <!-- Delete Confirmation Modal -->
-        <div class="modal" id="DeleteModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Status Update</h5>
-                    </div>
-                    <div class="modal-body" id="DetailsBody">
-                        <p>Are you sure want to Delete the Order?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="DeleteConfirmButton">Confirm</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
+
             </div>
         </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        GetPresentList();
+        debugger;
+    })
+    function GetPresentList(){
+        $.ajax({
+            url: '@Url.Action("GetAdminsPresentJSON", "Admin")',
+            type:'Get',
+            dataType:'Json',
+            success:function(response){
+                if(response!=null){
+                    debugger;
+                    var row='';
+                    for(var i =0;i<response.length;i++){
+                        if (response[i].deliveryStatus == 'Arrived at Warehouse' || response[i].deliveryStatus == 'Picked up by Agent'){
 
-        <!-- Edit Order Modal -->
-        <div class="modal" id="EditModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Status Update</h5>
-                    </div>
-                    <div class="modal-body" id="EditDetailsBody">
-                        <table class="table table-bordered" id="EditTable">
-                            <tr><th>Order ID</th><td><input type="text" id="OrderId" class="form-control" readonly /></td></tr>
-                            <tr><th>Delivered Date</th><td><input type="text" id="DeliveredDate" class="form-control" /></td></tr>
-                            <tr><th>Customer Address</th><td><input type="text" id="CustomerAddress" class="form-control" /></td></tr>
-                            <tr><th>Amount</th><td><input type="text" id="Amount" class="form-control" /></td></tr>
-                            <tr><th>Delivery Charge</th><td><input type="text" id="DeliveryCharge" class="form-control" /></td></tr>
-                            <tr><th>Created Date</th><td><input type="text" id="CreatedDate" class="form-control" /></td></tr>
-                            <tr>
-                                <th>Delivery Status</th>
-                                <td>
-                                    <select id="DeliveryStatus" class="form-control">
-                                        <option value="Order Created">Order Created</option>
-                                        <option value="Picked up by Agent">Picked up by Agent</option>
-                                        <option value="Arrived at Warehouse">Arrived at Warehouse</option>
-                                        <option value="Dispatched for Delivery">Dispatched for Delivery</option>
-                                        <option value="Successfully Delivered">Successfully Delivered</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr><th>Customer Phone</th><td><input type="text" id="CustomerPhone" class="form-control" /></td></tr>
-                            <tr><th>Vendor Phone</th><td><input type="text" id="VendorPhone" class="form-control" /></td></tr>
-                        </table>
-                        <div>
-                            <input type="button" class="btn btn-primary" onclick="UpdateDataByAdmin()" value="Update Order" />
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> <!-- /.MainDiv -->
-    <!-- Scripts -->
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-
-    <script>
-        $(document).ready(function(){
-            GetPresentList();
-        });
-
-        function GetPresentList(){
-            $.ajax({
-                url: '@Url.Action("GetAdminsPresentJSON", "Admin")',
-                type:'Get',
-                dataType:'Json',
-                success:function(response){
-                    if(response!=null){
-                        var row='';
-                        for(var i=0;i<response.length;i++){
-                            var disableButton = (response[i].deliveryStatus==='Arrived at Warehouse' || response[i].deliveryStatus==='Picked up by Agent')
-                                ? '' : 'disabled';
-                            row += `
-                                <tr>
-                                  <td>${response[i].orderId}</td>
-                                  <td>${response[i].companyID}</td>
-                                  <td>${response[i].vendorName}</td>
-                                  <td>${response[i].vendorPhone}</td>
-                                  <td>${response[i].customerId}</td>
-                                  <td>${response[i].customerName}</td>
-                                  <td>${response[i].customerAddress}</td>
-                                  <td>${response[i].customerPhone}</td>
-                                  <td>${response[i].createdDate}</td>
-                                  <td>${response[i].receiverAgentId}</td>
-                                  <td>${response[i].receiverAgentName}</td>
-                                  <td>${response[i].receiverAgentPhone}</td>
-                                  <td>${response[i].deliveredDate}</td>
-                                  <td>${response[i].deliveryAgentId}</td>
-                                  <td>${response[i].deliveryAgentName}</td>
-                                  <td>${response[i].deliveryAgentPhone}</td>
-                                  <td>${response[i].deliveryCharge}</td>
-                                  <td>${response[i].totalAmount}</td>
-                                  <td>
-                                    <input
-                                      type="button"
-                                      value="${response[i].deliveryStatus}"
-                                      id="Status${response[i].orderId}"
-                                      ${disableButton}
-                                      onclick="ShowModal(${response[i].orderId})"
-                                      class="btn btn-success"
-                                    />
-                                  </td>
-                                  <td>
-                                    <div class="Btns" style="display:flex; gap:0.5rem;">
-                                      <input
-                                        type="button"
-                                        class="btn btn-warning"
-                                        value="Edit"
-                                        onclick="EditOrderModal(${response[i].orderId})"
-                                      />
-                                      <input
-                                        type="button"
-                                        class="btn btn-danger"
-                                        value="Delete"
-                                        onclick="DeleteOrderModal(${response[i].orderId})"
-                                      />
-                                    </div>
-                                  </td>
-                                </tr>`;
+                            var disableButton = '';
                         }
+                        else{
+                            var disableButton = 'disabled'
+                        }
+
+                        row +=`
+                                <tr>
+                                        <td>${response[i].orderId}</td>
+                                        <td>${response[i].companyID}</td>
+                                        <td>${response[i].vendorName}</td>
+                                        <td>${response[i].vendorPhone}</td>
+                                        <td>${response[i].customerId}</td>
+                                        <td>${response[i].customerName}</td>
+                                        <td>${response[i].customerAddress}</td>
+                                        <td>${response[i].customerPhone}</td>
+                                        <td>${response[i].createdDate}</td>
+                                        <td>${response[i].receiverAgentId}</td>
+                                        <td>${response[i].receiverAgentName}</td>
+                                        <td>${response[i].receiverAgentPhone}</td>
+                                        <td>${response[i].deliveredDate}</td>
+                                        <td>${response[i].deliveryAgentId}</td>
+                                        <td>${response[i].deliveryAgentName}</td>
+                                        <td>${response[i].deliveryAgentPhone}</td>
+                                        <td>${response[i].deliveryCharge}</td>
+                                        <td>${response[i].totalAmount}</td>
+                                        <td><input type="button" value="${response[i].deliveryStatus}" id=Status${response[i].orderId} ${disableButton} onclick="ShowModal(${response[i].orderId})" class="btn btn-success"/></td>
+                                        <td><div class="Btns" style="display:flex;"><div><input type="button" class="btn btn-warning" value="Edit" id=Edit${response[i].orderId} onclick="EditOrderModal(${response[i].orderId})"/></div>
+                                                <div><input type="button" value = "Delete" id = Delete${response[i].orderID} class="btn btn-danger" onclick = "DeleteOrderModal(${response[i].orderId})" />
+                                            </div></div></td>
+
+                                </tr>
+                        `;
+
                         $("#table1 tbody").html(row);
-                        $("#table1").DataTable({
-                            scrollX: true,
-                            paging: false,
-                            scrollCollapse: true,
-                            scrollY: '60vh'
-                        });
                     }
-                },
-                error:function(){
-                    alert("Error Occured");
+                    $("#table1").DataTable({
+                        "scrollX": true,    // Enable horizontal scrolling
+                        "paging": false,    // Disable paging, as horizontal scrolling will handle navigation
+                        "scrollCollapse": true,
+                        "scrollY": '60vh'
+
+                    });
                 }
-            });
+            },
+            error:function(xhr,status,error){
+                alert("Error Occured");
+            }
+
+        })
+    }
+</script>
+<script>
+    function UpdateDataByAdmin(){
+        debugger;
+
+        var OrderId = $("#OrderId").val();
+        var CustomerAddress = $("#CustomerAddress").val();
+        var DeliveredDate = $("#DeliveredDate").val();
+        var Amount = $("#Amount").val();
+        var DeliveryCharge = $("#DeliveryCharge").val();
+        var CreatedDate = $("#CreatedDate").val();
+        var DeliveryStatus = $("#DeliveryStatus").val();
+        var VendorPhone = $("#VendorPhone").val();
+        var CustomerPhone = $("#CustomerPhone").val();
+
+        if (!OrderId || !CustomerAddress || !DeliveredDate || !Amount || !CreatedDate || !DeliveryCharge || !DeliveryStatus || !VendorPhone || !CustomerPhone) {
+            alert("Please fill in all the feilds");
+            return;
         }
 
-        // All of your existing modal, update, delete, show, etc. functions go here unchanged...
-    </script>
-</body>
-</html>
+        var CreatedDateObj =new Date(CreatedDate);
+        var DeliveredDateObj=new Date(DeliveredDate);
+
+        if(DeliveredDateObj<=CreatedDateObj){
+            alert("DeliveryDate must be later than CreatedDate ");
+            return;
+        }
+
+        if(Amount < 1){
+            alert("Amount cannot be 0 or less than 0");
+            return;
+        }
+
+        if(DeliveryCharge<1)
+        {
+            alert("Delivery Charge cannot be 0 or less than 0");
+            return;
+        }
+        if (!/^(98|97)[\d]{8}$/.test(CustomerPhone) && !/^(01)[\d]{6}$/.test(CustomerPhone)) {
+            alert("Customer Phone Number must start from 98/97/01 and must be of 8 or 10 numbers");
+            return;
+        }
+        if (!/^(98|97)[\d]{8}$/.test(VendorPhone) && !/^(01)[\d]{6}$/.test(VendorPhone)) {
+            alert("Vendor Phone Number must start from 98/97/01 and must be of 8 or 10 numbers");
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("UpdateOrderByAdmin", "Admin")',
+            type:'Post',
+            dataType:'Json',
+            data:{
+                OrderId: OrderId,
+                CustomerAddress:CustomerAddress,
+                DeliveredDate:DeliveredDate,
+                Amount: Amount,
+                DeliveryCharge:DeliveryCharge,
+                CreatedDate: CreatedDate,
+                DeliveryStatus:DeliveryStatus,
+                VendorPhone :VendorPhone,
+                CustomerPhone:CustomerPhone
+            },
+            success:function(response){
+                if(response){
+                    alert("Data updated successfully");
+                    $("#EditModal").modal('hide');
+                    window.location.href = '@Url.Action("GetAdminsPresentList", "Admin")'
+                }
+            },
+            error:function(xhr,status,error){
+                alert("Error Occured!!!");
+            }
+        });
+    }
+</script>
+<script>
+    function EditOrderModal(OrderId){
+
+        $("#EditModal").modal('show');
+        $("#EditModal").data('OrderId',OrderId);
+
+
+        $.ajax({
+            url:'@Url.Action("GetOrderById", "Admin")',
+            type:'Get',
+            data:{
+                OrderId:OrderId
+            },
+            dataType:'Json',
+            success:function(response){
+                if(response.orderId!=null){
+                    debugger;
+                    $("#OrderId").val(response.orderId);
+                    $("#DeliveredDate").val(response.deliveredDate);
+                    $("#CustomerAddress").val(response.customerAddress);
+                    $("#Amount").val(response.amount);
+                    $("#DeliveryCharge").val(response.deliveryCharge);
+                    $("#CreatedDate").val(response.createdDate);
+                    if(response.deliveryStatus) {
+                    $("#DeliveryStatus").val(response.deliveryStatus);
+                    }
+                    $("#CustomerPhone").val(response.customerPhone);
+                    $("#VendorPhone").val(response.vendorPhone);
+
+
+
+                }
+            },
+            error:function(xhr,status,error){
+                alert("Error Occured!!!");
+            }
+
+        });
+
+    }
+
+</script>
+<script>
+    function DeleteOrderModal(OrderId){
+        $("#DeleteModal").modal('show');
+        $("#DeleteModal").data('OrderId',OrderId);
+
+        $("#DeleteConfirmButton").click(function(){
+            var OrderID= $("DeleteModal").data('OrderID');
+            DeleteOrderbyAdmin(OrderId);
+            $("#DeleteModal").modal('hide');
+        })
+    }
+
+    function DeleteOrderbyAdmin(OrderId){
+        $.ajax({
+            url: '@Url.Action("DeleteByAdmin", "Admin")',
+            type:'Get',
+            data:{
+                OrderId:OrderId
+            },
+            dataType:'Json',
+            success:function(response){
+                if(response.responseCode!=null){
+                    alert(response.responseMessage);
+                    window.location.href = '@Url.Action("GetAdminsPresentList", "Admin")';
+                }
+            },
+            error:function(xhr,status,error){
+                alert("Error occured while deleting the data ");
+            }
+        })
+    }
+</script>
+<script>
+    function ShowModal(OrderId){
+
+        $("#Modal").modal('show');
+        $("#Modal").data('OrderId',OrderId);
+
+        $("#ConfirmButton").click(function(){
+            var OrderID = $("#Modal").data('OrderID');
+            UpdateStatus(OrderId);
+            $("#Modal").modal('hide');
+        });
+
+    }
+</script>
+
+<script>
+    function UpdateStatus(OrderId){
+
+        $.ajax({
+            url:'@Url.Action("UpdateDeliveryStatus", "Admin")',
+            type:'Get',
+            data:{
+                OrderId: OrderId
+            },
+            dataType:'Json',
+            success:function(response){
+                if (response.deliveryStatus != null) {
+                    if (response.deliveryStatus != 'Arrived at Warehouse' || response.deliveryStatus != 'Dispatched For Delivery') {
+                        $("#Status" + OrderId).val(response.deliveryStatus);
+
+                        if (response.deliveryStatus = 'Dispatched For Delivery'){
+                            $("#Status"+OrderId).prop("disabled",true);
+
+                        }
+                    }
+
+                    else{
+                        $("#Status" + OrderId).val(response.deliveryStatus);
+                        alert("Cannot update the this status by the admin");
+
+                    }
+                }
+            },
+            error:function(xhr,status,error){
+                alert("error occured");
+            }
+        })
+    }
+</script>

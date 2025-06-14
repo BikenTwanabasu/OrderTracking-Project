@@ -43,37 +43,42 @@
             <h2>@ViewBag.Name</h2>
         </div>
 
-        <!-- Key Metrics -->
         <div class="summary-cards">
-            <div class="card" onclick="updateChart('total')">
-                <i class="fas fa-tasks"></i>
+            <div class="card">
+                <i class="fas fa-boxes"></i>
                 <div class="info">
-                    <h3>Total Tasks</h3>
-                    <p>@(Model?.Count() ?? 0)</p>
+                    <h3>Total Orders</h3>
+                    <p>@ViewBag.TotalOrders</p>
                 </div>
             </div>
-            <div class="card" onclick="updateChart('inProgress')">
-                <i class="fas fa-spinner"></i>
+            <div class="card">
+                <i class="fas fa-truck-loading"></i>
                 <div class="info">
-                    <h3>In Progress</h3>
-                    <p>@(Model?.Count(x => x.DeliveryStatus != "Successfully Delivered") ?? 0)</p>
+                    <h3>Live Deliveries</h3>
+                    <p>@ViewBag.InTransitCount</p>
                 </div>
             </div>
-            <div class="card" onclick="updateChart('completed')">
-                <i class="fas fa-check-circle"></i>
+            <div class="card">
+                <i class="fas fa-clipboard-list"></i>
                 <div class="info">
-                    <h3>Completed</h3>
-                    <p>@(Model?.Count(x => x.DeliveryStatus == "Successfully Delivered") ?? 0)</p>
+                    <h3>Completed Deliveries</h3>
+                    <p>@ViewBag.DeliveredCount</p>
                 </div>
             </div>
         </div>
-
-       
-
-        <!-- Performance Chart -->
         <section class="performance-chart">
-            <h3 id="chartTitle">Weekly Tasks</h3>
-            <canvas id="taskChart"></canvas>
+            <h3 id="chartTitle">Delivery Distribution</h3>
+
+            <div class="chart-placeholder">
+                <p>
+                    Hi Agent! The delivery distribution chart will appear here once data is
+                    available. In the meantime, please review the summary cards above for
+                    your order statistics.
+                </p>
+            </div>
+
+            <!-- If/when you re-enable the pie chart, uncomment this canvas: -->
+            <!-- <canvas id="deliveryChart"></canvas> -->
         </section>
 
         <!-- Footer -->
@@ -98,63 +103,7 @@
         </footer>
     </div>
 
-    <script>
-        // Null-coalescing for ViewBag arrays
-        const labels = @(
-          ViewBag.ChartLabels != null
-            ? Html.Raw(JsonConvert.SerializeObject(ViewBag.ChartLabels))
-            : "[]"
-        );
-        const totalData = @(
-          ViewBag.TotalSeries != null
-            ? Html.Raw(JsonConvert.SerializeObject(ViewBag.TotalSeries))
-            : "[]"
-        );
-        const inProgressData = @(
-          ViewBag.InProgressSeries != null
-            ? Html.Raw(JsonConvert.SerializeObject(ViewBag.InProgressSeries))
-            : "[]"
-        );
-        const completedData = @(
-          ViewBag.CompletedSeries != null
-            ? Html.Raw(JsonConvert.SerializeObject(ViewBag.CompletedSeries))
-            : "[]"
-        );
-
-        const ctx = document.getElementById('taskChart').getContext('2d');
-        let chart = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: 'Weekly Total Tasks',
-              data: totalData,
-              borderColor: '#007bff',
-              fill: false,
-              tension: 0.3
-            }]
-          },
-          options: {
-            responsive: true,
-            scales: { y: { beginAtZero: true } },
-            plugins: { legend: { display: false } }
-          }
-        });
-
-        function updateChart(metric) {
-          let data, title;
-          if (metric === 'total') {
-            data = totalData;      title = 'Weekly Total Tasks';
-          } else if (metric === 'inProgress') {
-            data = inProgressData; title = 'Weekly In-Progress Tasks';
-          } else {
-            data = completedData;  title = 'Weekly Completed Tasks';
-          }
-          chart.data.datasets[0].data  = data;
-          chart.data.datasets[0].label = title;
-          document.getElementById('chartTitle').innerText = title;
-          chart.update();
-        }
+    
     </script>
 </body>
 </html>
