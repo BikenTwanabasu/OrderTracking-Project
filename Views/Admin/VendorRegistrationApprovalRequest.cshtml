@@ -1,42 +1,80 @@
-﻿@{
+﻿@model IEnumerable<CollegeProject.Models.Vendor>
+@{
     ViewData["Title"] = "VendorRegistrationApprovalRequest";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Vendor Approval – Gaubesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<div style="height:100vh;width:100%;">
-    <h1 style="text-align:center;">Vendor Registration Request</h1>
+    <!-- Fonts & icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
 
-    <div style="width:87%; height:60vh; margin-left:6.5%;">
-        <table class="table table-bordered table-striped table-hover mb-2 w-100" id="table1">
-            <thead>
-                <tr>
-                    <th style="display:none;">Vendor Id</th>
-                    <th>S.No.</th>
-                    <th>Company Name</th>
-                    <th>Company Address</th>
-                    <th>Company Email</th>
-                    <th>Company Phone</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
+
+    <!-- Vendor Approval CSS -->
+	<link href="~/css/vendorregistrationapproval.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="MainDiv">
+        <!-- Navbar -->
+        <nav class="nav">
+            <div class="logo">
+                <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Gaubesi Logo" />
+            </div>
+            <ul class="nav-links">
+                <li><a asp-controller="Admin" asp-action="AdminDashboard">Home</a></li>
+                <li><a asp-controller="Admin" asp-action="GetAdminsHistoryList">Past Deliveries</a></li>
+                <li><a asp-controller="Admin" asp-action="GetAdminsPresentList">Live Deliveries</a></li>
+                <li><a asp-controller="Admin" asp-action="AgentRegistrationApprovalRequest">Agent Approval</a></li>
+                <li><a asp-controller="Admin" asp-action="VendorRegistrationApprovalRequest" class="active">Vendor Approval</a></li>
+                <li><a asp-controller="Log" asp-action="Logout">Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Content Card -->
+        <section class="content-card">
+            <h3>Vendor Registration Requests</h3>
+            <p class="subtitle">Pending vendor sign‑ups awaiting approval</p>
+
+            <div class="table-wrapper">
+                <table id="table1" class="records-table display nowrap">
+                    <thead>
+                        <tr>
+                            <th style="display:none;">Vendor Id</th>
+                            <th>S.No.</th>
+                            <th>Company Name</th>
+                            <th>Company Address</th>
+                            <th>Company Email</th>
+                            <th>Company Phone</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
     </div>
-</div>
 
-@section Scripts {
-    <!-- DataTables and Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
+    <!-- Scripts (unchanged) -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Your Custom Scripts -->
-    <script src="~/js/vendorrequestregistration.js" asp-append-version="true"></script>
-}
-
-
-
-
+    <script>
+        $(document).ready(function(){
+          // your existing data‑loading logic in vendorrequestregistration.js will populate #table1
+          GetVendorRequests();
+          $("#table1").DataTable({
+            scrollX: true,
+            paging: false,
+            scrollCollapse: true,
+            scrollY: '60vh'
+          });
+        });
+    </script>
+</body>
+</html>
