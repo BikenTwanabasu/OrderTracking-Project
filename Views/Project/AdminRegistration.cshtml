@@ -1,60 +1,78 @@
-﻿@model CollegeProject.Models.Admin
+﻿
+
+
+
+@model CollegeProject.Models.Admin
 @{
     ViewData["Title"] = "AdminRegistration";
+    Layout = null;
 }
 
-<h1>AdminRegistration</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] – Gaubesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
 
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="AdminName" class="control-label"></label>
-            <input asp-for="AdminName" class="form-control" />
-            <span asp-validation-for="AdminName" class="text-danger"></span>
+    <!-- Your CSS -->
+	<link href="~/css/adminregistration.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- same fixed navbar as other pages -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Gaubesi Logo" />
         </div>
-        <div class="form-group">
-            <label asp-for="AdminPhone" class="control-label"></label>
-            <input asp-for="AdminPhone" class="form-control" />
-            <span asp-validation-for="AdminPhone" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="AdminEmail" class="control-label"></label>
-            <input asp-for="AdminEmail" class="form-control" />
-            <span asp-validation-for="AdminEmail" class="text-danger"></span>
-        </div>
-        
-        <div class="form-group">
-            <label asp-for="AdminPassword" class="control-label"></label>
-            <input asp-for="AdminPassword" class="form-control" type="password" />
-            <span asp-validation-for="AdminPassword" class="text-danger"></span>
-        </div>
-        <div class="form-group form-check">
-            <input asp-for="_isSuperAdmin" class="form-check-input" type="checkbox" id="roleCheckCheckbox" />
-            <label class="form-check-label" for="roleCheckCheckbox">Is Super Admin</label>
-        </div>
-        <div class="form-group">
-            <input type="submit" onclick="AdminRegistration()" value="Create" class="btn btn-success" />
-        </div>
-        <div class="center-container">
-            <a asp-action="AdminLoggingIn" asp-controller="Log" class="centered-link" style="color:#f9004d;">Back to LogIn</a>
-        </div>
+    </nav>
 
+    <div class="form-container">
+        <form id="adminRegForm" class="reg-form" onsubmit="return false;">
+            <h3>Admin Registration</h3>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="form-group">
+                <label asp-for="AdminName"></label>
+                <input asp-for="AdminName" id="AdminName" class="form-control" />
+                <span asp-validation-for="AdminName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdminPhone"></label>
+                <input asp-for="AdminPhone" id="AdminPhone" class="form-control" />
+                <span asp-validation-for="AdminPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdminEmail"></label>
+                <input asp-for="AdminEmail" id="AdminEmail" class="form-control" />
+                <span asp-validation-for="AdminEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdminPassword"></label>
+                <input asp-for="AdminPassword" id="AdminPassword" type="password" class="form-control" />
+                <span asp-validation-for="AdminPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <input asp-for="_isSuperAdmin" class="form-check-input" type="checkbox" id="roleCheckCheckbox" />
+                <label class="form-check-label" for="roleCheckCheckbox">Is Super Admin</label>
+            </div>
+
+            <button type="button" class="btn-submit" onclick="AdminRegistration()">Create Account</button>
+           
+        </form>
     </div>
-</div>
 
-
-
-<script>
-    function AdminRegistration() {
-        var AdminName = $("#AdminName").val();
-        var AdminPhone = $("#AdminPhone").val();
-        var AdminEmail = $("#AdminEmail").val();
-        var AdminPassword = $("#AdminPassword").val();
-
-        if (!/^(98|97)[\d]{8}$/.test(AdminPhone)) {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        function AdminRegistration() {
+            var AdminName     = $("#AdminName").val();
+            var AdminPhone    = $("#AdminPhone").val();
+            var AdminEmail    = $("#AdminEmail").val();
+            var AdminPassword = $("#AdminPassword").val();
+                  if (!/^(98|97)[\d]{8}$/.test(AdminPhone)) {
             alert("Company Phone Number must start from 98/97 and must be 10 numbers");
             return;
         }
@@ -80,36 +98,39 @@
         var isSuperAdmin = false;
         if (isChecked) {
             isSuperAdmin = true;
-        } 
+        }
         else {
             isSuperAdmin = false;
         }
 
-        $.ajax({
-            url: '@Url.Action("AdminRegistration","Project")',
-            type: 'Post',
-            data: {
-                AdminName: AdminName,
-                AdminEmail: AdminEmail,
-                AdminPhone: AdminPhone,
-                _isSuperAdmin : isSuperAdmin,
-                AdminPassword: AdminPassword
-            },
-            dataType: 'Json',
-            success: function (response) {
-                if (response.responseCode != null) {
-                    alert(response.responseMessage);
-                    window.location.href = '@Url.Action("AdminRegistration","Project")';
-                }
-                else {
-                    alert("Agent Registration Failed!!!");
-                    window.location.href = '@Url.Action("AdminRegistration","Project")';
-                }
 
-            },
-            error: function (xhr, status, error) {
-                alert("Error Occured");
-            }
-        })
-    }
-</script>
+                $.ajax({
+                url: '@Url.Action("AdminRegistration", "Project")',
+                type: 'Post',
+                data: {
+                    AdminName: AdminName,
+                    AdminEmail: AdminEmail,
+                    AdminPhone: AdminPhone,
+                    _isSuperAdmin : isSuperAdmin,
+                    AdminPassword: AdminPassword
+                },
+                dataType: 'Json',
+                success: function (response) {
+                    if (response.responseCode != null) {
+                        alert(response.responseMessage);
+                        window.location.href = '@Url.Action("AdminRegistration", "Project")';
+                    }
+                    else {
+                        alert("Agent Registration Failed!!!");
+                        window.location.href = '@Url.Action("AdminRegistration", "Project")';
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    alert("Error Occured");
+                }
+            })
+        }
+    </script>
+</body>
+</html>
