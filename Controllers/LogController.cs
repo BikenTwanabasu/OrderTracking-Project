@@ -61,7 +61,37 @@ namespace CollegeProject.Controllers
             }
             return View();
         }
-
+        public IActionResult AdminLoggingIn(Admin admin)
+        {
+            var a = _services.AdminLogIn(admin);
+            if (a.ResponseCode == 0 && a.AdminEmail != null)
+            {
+                return Json(a);
+            }
+            else if (a.ResponseCode != 0)
+            {
+                int isSuperAdmin = 0;
+                string Role = "Admin"; 
+                if(a._isSuperAdmin) 
+                {
+                     isSuperAdmin = 1;
+                    Role = "SuperAdmin";
+                }
+                
+                var claims = new List<Claim>
+                {
+                    new Claim("AdminName",a.AdminName),
+                    new Claim("AdminId",a.AdminId),
+                    new Claim("AdminEmail",a.AdminEmail),
+                    new Claim("isSuperAdmin",isSuperAdmin.ToString()),
+                    new Claim(ClaimTypes.Role,Role)
+                };
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                return Json(a);
+            }
+            return View();
+        }
 
         public IActionResult Index()
         {

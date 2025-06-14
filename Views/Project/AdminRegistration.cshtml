@@ -97,12 +97,12 @@
             },
             dataType: 'Json',
             success: function (response) {
-                if (response.responseCode != null) {
+                if (response.responseCode == 1) {
                     alert(response.responseMessage);
                     window.location.href = '@Url.Action("AdminRegistration","Project")';
                 }
                 else {
-                    alert("Agent Registration Failed!!!");
+                    alert(response.responseMessage);
                     window.location.href = '@Url.Action("AdminRegistration","Project")';
                 }
 
