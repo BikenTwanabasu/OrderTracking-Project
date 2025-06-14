@@ -1,6 +1,4 @@
-﻿
-
-            @model IEnumerable<CollegeProject.Models.AgentTaskModel>
+﻿@model IEnumerable<CollegeProject.Models.AgentTaskModel>
 @using Newtonsoft.Json
 @using System.Linq
 @{
@@ -21,7 +19,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Dashboard CSS -->
-    <link href="~/css/admindashboard.css" rel="stylesheet" />
+	<link href="~/css/admindashboard.css" rel="stylesheet" />
 </head>
 <body>
     <div class="MainDiv">
@@ -49,21 +47,21 @@
 
         <!-- Key Metrics -->
         <div class="summary-cards">
-            <div class="card" onclick="updateChart('total')">
+            <div class="card">
                 <i class="fas fa-boxes"></i>
                 <div class="info">
                     <h3>Total Orders</h3>
                     <p>@(Model?.Count() ?? 0)</p>
                 </div>
             </div>
-            <div class="card" onclick="updateChart('live')">
+            <div class="card">
                 <i class="fas fa-truck-loading"></i>
                 <div class="info">
                     <h3>Live Deliveries</h3>
                     <p>@(Model?.Count(x => x.DeliveryStatus != "Successfully Delivered") ?? 0)</p>
                 </div>
             </div>
-            <div class="card" onclick="updateChart('past')">
+            <div class="card">
                 <i class="fas fa-clipboard-list"></i>
                 <div class="info">
                     <h3>Past Deliveries</h3>
@@ -72,11 +70,9 @@
             </div>
         </div>
 
-      
-
         <!-- Performance Chart -->
         <section class="performance-chart">
-            <h3 id="chartTitle">Weekly Overview</h3>
+            <h3 id="chartTitle">Order Distribution</h3>
             <canvas id="deliveryChart"></canvas>
         </section>
 
@@ -105,55 +101,42 @@
     </div>
 
     <script>
-        // These arrays should be set in your AdminDashboard action:
-        // ViewBag.ChartLabels, ViewBag.TotalSeries, ViewBag.LiveSeries, ViewBag.PastSeries
-        const labels    = @(ViewBag.ChartLabels != null
+        const labels = @(ViewBag.ChartLabels != null
             ? Html.Raw(JsonConvert.SerializeObject(ViewBag.ChartLabels))
             : "[]");
         const totalData = @(ViewBag.TotalSeries != null
             ? Html.Raw(JsonConvert.SerializeObject(ViewBag.TotalSeries))
             : "[]");
-        const liveData  = @(ViewBag.LiveSeries != null
+        const liveData = @(ViewBag.LiveSeries != null
             ? Html.Raw(JsonConvert.SerializeObject(ViewBag.LiveSeries))
             : "[]");
-        const pastData  = @(ViewBag.PastSeries != null
+        const pastData = @(ViewBag.PastSeries != null
             ? Html.Raw(JsonConvert.SerializeObject(ViewBag.PastSeries))
             : "[]");
 
         const ctx = document.getElementById('deliveryChart').getContext('2d');
         let chart = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: 'Total Orders',
-              data: totalData,
-              borderColor: '#d80000',
-              fill: false,
-              tension: 0.3
-            }]
-          },
-          options: {
-            responsive: true,
-            scales: { y: { beginAtZero: true } },
-            plugins: { legend: { display: false } }
-          }
+            type: 'pie',
+            data: {
+                labels: ['Total Orders', 'Live Deliveries', 'Past Deliveries'],
+                datasets: [{
+                    data: [
+                        totalData.reduce((a, b) => a + b, 0),
+                        liveData.reduce((a, b) => a + b, 0),
+                        pastData.reduce((a, b) => a + b, 0)
+                    ],
+                    backgroundColor: ['#d80000', '#ff9900', '#009900']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
         });
-
-        function updateChart(metric) {
-          let data, title;
-          if (metric === 'total') {
-            data = totalData; title = 'Weekly Total Orders';
-          } else if (metric === 'live') {
-            data = liveData;  title = 'Weekly Live Deliveries';
-          } else {
-            data = pastData;  title = 'Weekly Past Deliveries';
-          }
-          chart.data.datasets[0].data  = data;
-          chart.data.datasets[0].label = title;
-          document.getElementById('chartTitle').innerText = title;
-          chart.update();
-        }
     </script>
 </body>
 </html>

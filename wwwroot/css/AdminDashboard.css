@@ -1,16 +1,14 @@
-﻿
-* {
+﻿* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins',sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 html, body {
     height: 100%;
-    background: linear-gradient(to bottom right,#fff,#f9f9f9 35%,#ffe6e6);
+    background: linear-gradient(to bottom right, #fff, #f9f9f9 35%, #ffe6e6);
     overflow-x: hidden;
-    
 }
 
 .nav {
@@ -46,7 +44,7 @@ html, body {
 
     .nav-links li a {
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 700; /* make it bold */
         color: #d80000;
         transition: color 0.3s;
     }
@@ -55,7 +53,6 @@ html, body {
             color: #a50000;
             text-decoration: underline;
         }
-
 
 /* Main layout */
 .MainDiv {
@@ -93,10 +90,12 @@ html, body {
     gap: 1rem;
     justify-content: center;
     padding: 1rem 2rem;
+    flex-wrap: wrap;
 }
 
 .card {
     flex: 1;
+    min-width: 220px;
     background: #fff;
     border-radius: 1rem;
     border: 2px solid #d80000;
@@ -106,7 +105,7 @@ html, body {
     gap: 1rem;
     padding: 1rem;
     cursor: pointer;
-    transition: transform 0.2s,box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
     .card:hover {
@@ -131,25 +130,27 @@ html, body {
         color: #333;
     }
 
-
 /* Performance Chart */
 .performance-chart {
-    max-width: 1000px; 
-    width: 90%; 
-    min-height: 400px; 
+    max-width: 600px;
+    width: 90%;
     margin: 2rem auto;
-    padding: 1.5rem; 
+    padding: 2rem;
     background: #fff;
     border-radius: 1rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    text-align: center;
 }
 
     .performance-chart h3 {
         color: #d80000;
-        text-align: center;
         margin-bottom: 1.5rem;
     }
 
+canvas {
+    max-width: 100%;
+    height: auto;
+}
 
 /* Footer */
 .footer {
@@ -172,7 +173,9 @@ html, body {
         color: #fff;
     }
 
-    .footer-column p, .footer-column ul, .footer-column li {
+    .footer-column p,
+    .footer-column ul,
+    .footer-column li {
         color: #ddd;
         font-size: .9rem;
         list-style: none;
