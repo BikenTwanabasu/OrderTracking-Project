@@ -103,27 +103,26 @@
             isSuperAdmin = false;
         }
 
-
-                $.ajax({
-                url: '@Url.Action("AdminRegistration", "Project")',
-                type: 'Post',
-                data: {
-                    AdminName: AdminName,
-                    AdminEmail: AdminEmail,
-                    AdminPhone: AdminPhone,
-                    _isSuperAdmin : isSuperAdmin,
-                    AdminPassword: AdminPassword
-                },
-                dataType: 'Json',
-                success: function (response) {
-                    if (response.responseCode != null) {
-                        alert(response.responseMessage);
-                        window.location.href = '@Url.Action("AdminRegistration", "Project")';
-                    }
-                    else {
-                        alert("Agent Registration Failed!!!");
-                        window.location.href = '@Url.Action("AdminRegistration", "Project")';
-                    }
+        $.ajax({
+            url: '@Url.Action("AdminRegistration","Project")',
+            type: 'Post',
+            data: {
+                AdminName: AdminName,
+                AdminEmail: AdminEmail,
+                AdminPhone: AdminPhone,
+                _isSuperAdmin : isSuperAdmin,
+                AdminPassword: AdminPassword
+            },
+            dataType: 'Json',
+            success: function (response) {
+                if (response.responseCode != null) {
+                    alert(response.responseMessage);
+                    window.location.href = '@Url.Action("AdminRegistration","Project")';
+                }
+                else {
+                    alert("Agent Registration Failed!!!");
+                    window.location.href = '@Url.Action("AdminRegistration","Project")';
+                }
 
                 },
                 error: function (xhr, status, error) {
