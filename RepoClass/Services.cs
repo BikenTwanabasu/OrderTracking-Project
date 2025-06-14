@@ -195,6 +195,11 @@ namespace CollegeProject.RepoClass
                     agent.ResponseCode = 1;
                     agent.ResponseMessage = "Login Successful";
                 }
+                else
+                {
+                    agent.ResponseCode = 0;
+                    agent.ResponseMessage = "ID Password Mismatched";
+                }
                 return agent;
 
             }
@@ -233,7 +238,55 @@ namespace CollegeProject.RepoClass
                     vendor.ResponseCode = 1;
                     vendor.ResponseMessage = "Login Successful";
                 }
+                else
+                {
+                    vendor.ResponseCode = 0;
+                    vendor.ResponseMessage = "ID Password Mismatched";
+                }
                 return vendor;
+
+            }
+        }
+
+        public Admin AdminLogIn(Admin admin)
+        {
+            if (admin.AdminEmail == null)
+            {
+                return admin;
+            }
+            string UIPassword = admin.AdminPassword;
+            using (SqlConnection con = new SqlConnection(ConnectionString()))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@AdminEmail", admin.AdminEmail);
+                cmd.Parameters.AddWithValue("@flag", "AdminLogIn");
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                if (rdr.Read())
+                {
+                    admin.ResponseCode = (int)rdr["ResponseCode"];
+                    admin.ResponseMessage = rdr["ResponseMessage"].ToString();
+                    admin.AdminPassword = rdr["AdminPassword"].ToString();
+                    admin.AdminId = rdr["AdminId"].ToString();
+                    admin.AdminName = rdr["AdminName"].ToString();
+                    admin.AdminPhone = rdr["AdminPhone"].ToString();
+                    admin._isSuperAdmin = Convert.ToBoolean(rdr["IsSuperAdmin"]);
+                }
+
+                bool _passwordIsCorrect = _passwordService.VerifyPassword(admin.AdminPassword, UIPassword);
+                if (_passwordIsCorrect)
+                {
+                    admin.ResponseCode = 1;
+                    admin.ResponseMessage = "Login Successful";
+                }
+                else
+                {
+                    admin.ResponseCode=0;
+                    admin.ResponseMessage = "ID Password Mismatched";
+                }
+                return admin;
 
             }
         }
