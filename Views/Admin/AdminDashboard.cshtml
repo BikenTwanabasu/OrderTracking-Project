@@ -71,40 +71,18 @@
         </div>
         <section class="performance-chart">
             <h3 id="chartTitle">Delivery Distribution</h3>
-            <canvas id="deliveryChart"></canvas>
+
+            <div class="chart-placeholder">
+                <p>
+                    Hi Admin! The delivery distribution chart will appear here once data is
+                    available. In the meantime, please review the summary cards above for
+                    your order statistics.
+                </p>
+            </div>
+
+            <!-- If/when you re-enable the pie chart, uncomment this canvas: -->
+            <!-- <canvas id="deliveryChart"></canvas> -->
         </section>
-
-        <script>
-            const totalCount = @(Model?.Count() ?? 0);
-            const liveCount  = @(Model?.Count(x => x.DeliveryStatus != "Successfully Delivered") ?? 0);
-            const pastCount  = @(Model?.Count(x => x.DeliveryStatus == "Successfully Delivered") ?? 0);
-
-            const ctx = document.getElementById('deliveryChart').getContext('2d');
-            const chart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ['Total Orders', 'Live Deliveries', 'Past Deliveries'],
-                    datasets: [{
-                        data: [totalCount, liveCount, pastCount],
-                        backgroundColor: [
-                            '#d80000',
-                            '#ffa500',
-                            '#4caf50'
-                        ],
-                        borderColor: '#fff',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
-        </script>
 
         <!-- Footer -->
         <footer class="footer">
@@ -136,40 +114,6 @@
         </footer>
     </div>
 
-    <script>
-        const summaryDiv = document.getElementById("orderSummary");
-
-        const total = summaryDiv.dataset.total;
-        const live = summaryDiv.dataset.live;
-        const past = summaryDiv.dataset.past;
-
-        const totalData = total;
-        const liveData = live;
-        const pastData = past;
-
-        const ctx = document.getElementById('deliveryChart').getContext('2d');
-        let chart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Total Orders', 'Live Deliveries', 'Past Deliveries'],
-                datasets: [{
-                    data: [
-                        totalData.reduce((a, b) => a + b, 0),
-                        liveData.reduce((a, b) => a + b, 0),
-                        pastData.reduce((a, b) => a + b, 0)
-                    ],
-                    backgroundColor: ['#d80000', '#ff9900', '#009900']
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-    </script>
+   
 </body>
 </html>

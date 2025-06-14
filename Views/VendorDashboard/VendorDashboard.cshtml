@@ -44,37 +44,42 @@
             <h2>@ViewBag.Name</h2>
         </div>
 
-        <!-- Key Metrics (clickable) -->
         <div class="summary-cards">
-            <div class="card" data-metric="total" onclick="updateChart('total')">
+            <div class="card">
                 <i class="fas fa-boxes"></i>
                 <div class="info">
                     <h3>Total Orders</h3>
-                    <p>@ViewBag.TotalSeries</p>
+                    <p>@ViewBag.TotalOrders</p>
                 </div>
             </div>
-            <div class="card" data-metric="inTransit" onclick="updateChart('inTransit')">
-                <i class="fas fa-shipping-fast"></i>
+            <div class="card">
+                <i class="fas fa-truck-loading"></i>
                 <div class="info">
-                    <h3>In Transit</h3>
-                    <p>@ViewBag.LiveSeries</p>
+                    <h3>Live Deliveries</h3>
+                    <p>@ViewBag.InTransitCount</p>
                 </div>
             </div>
-            <div class="card" data-metric="delivered" onclick="updateChart('delivered')">
-                <i class="fas fa-check-circle"></i>
+            <div class="card">
+                <i class="fas fa-clipboard-list"></i>
                 <div class="info">
-                    <h3>Delivered</h3>
-                    <p>@ViewBag.PastSeries</p>
+                    <h3>Completed Deliveries</h3>
+                    <p>@ViewBag.DeliveredCount</p>
                 </div>
             </div>
         </div>
-
-       
-
-        <!-- Performance Chart (below table) -->
         <section class="performance-chart">
-            <h3 id="chartTitle">Weekly Deliveries</h3>
-            <canvas id="deliveryChart"></canvas>
+            <h3 id="chartTitle">Delivery Distribution</h3>
+
+            <div class="chart-placeholder">
+                <p>
+                    Hi Vendor! The delivery distribution chart will appear here once data is
+                    available. In the meantime, please review the summary cards above for
+                    your order statistics.
+                </p>
+            </div>
+
+            <!-- If/when you re-enable the pie chart, uncomment this canvas: -->
+            <!-- <canvas id="deliveryChart"></canvas> -->
         </section>
 
         <!-- Footer -->
