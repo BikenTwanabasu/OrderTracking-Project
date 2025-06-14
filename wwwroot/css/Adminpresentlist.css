@@ -1,4 +1,4 @@
-﻿/* Reset & Base */
+﻿/* Reset & base */
 * {
     margin: 0;
     padding: 0;
@@ -12,13 +12,13 @@ html, body {
     overflow-x: hidden;
 }
 
-/* Main container pushes content below navbar */
+/* Main layout & top‐padding to clear the fixed navbar */
 .MainDiv {
-    padding-top: 60px; /* height of navbar */
+    padding-top: 60px;
     min-height: 100vh;
 }
 
-/* Navbar (same as other pages) */
+/* Navbar */
 .nav {
     position: fixed;
     top: 0;
@@ -60,65 +60,81 @@ html, body {
         .nav-links li a:hover,
         .nav-links li a.active {
             color: #a50000;
+            font-weight: 700;
             text-decoration: underline;
         }
 
-/* Page title */
+/* Page Title */
 .MainDiv > h1 {
-    margin: 2rem 0 1rem;
+    margin: 2rem auto 1rem;
+    text-align: center;
     color: #d80000;
+    font-size: 2rem;
 }
 
-/* Table wrapper */
-table#table1 {
-    width: 100%;
-    border-collapse: collapse;
+/* Table “Card” */
+.table-container {
+    max-width: 87%;
+    margin: 0 auto 2rem;
     background: #fff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     border: 2px solid #d80000;
-    border-radius: 0.5rem;
-    overflow: hidden;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-    table#table1 thead {
-        background: #ffecec;
+    .table-container h3 {
+        margin-bottom: 1rem;
+        text-align: center;
+        color: #d80000;
+        font-size: 1.5rem;
     }
 
-    table#table1 th, table#table1 td {
+/* DataTable overrides */
+#table1 {
+    width: 100% !important;
+    border-collapse: collapse !important;
+}
+
+    #table1 th {
+        background: #ffecec !important;
+        color: #d80000 !important;
+        font-weight: 600;
         padding: 0.75rem 1rem;
+        border-bottom: 1px solid #ddd;
         text-align: left;
-        border-bottom: 1px solid #eee;
-        font-size: 0.9rem;
+    }
+
+    #table1 td {
+        padding: 0.75rem 1rem;
+        border-top: 1px solid #eee;
         color: #333;
     }
 
-    table#table1 th {
-        color: #d80000;
-        font-weight: 600;
-    }
-
-/* DataTables container override */
-.dataTables_wrapper {
-    margin-top: 1rem;
+/* Modals (bootstrap‐based) */
+.modal-content {
+    border-radius: 0.5rem;
 }
 
-/* Modal button spacing */
-.modal .modal-footer .btn {
-    margin-left: 0.5rem;
+.modal-header .modal-title {
+    color: #d80000;
 }
 
-/* Utility: center the page title on small screens */
-@media (max-width: 600px) {
-    .MainDiv > h1 {
-        font-size: 1.5rem;
-        margin: 1rem;
-    }
-
-    .nav {
-        padding: 0 1rem;
-    }
-
-    .nav-links {
-        gap: 1rem;
-    }
+.modal-body p {
+    margin: 0.5rem 0;
 }
+
+.modal-footer .btn-secondary {
+    background: #fff;
+    border-color: #ccc;
+    color: #333;
+}
+
+    .modal-footer .btn-secondary:hover {
+        background: #f5f5f5;
+    }
+
+/* Ensure your inline <div style="width:87%;..."> is replaced with:
+   <div class="table-container">…</div>
+   so the above .table-container styles apply.
+*/
