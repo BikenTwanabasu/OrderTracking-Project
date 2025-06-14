@@ -111,6 +111,7 @@ namespace CollegeProject.RepoClass
                 cmd.Parameters.AddWithValue("@AdminPhone", admin.AdminPhone);
                 cmd.Parameters.AddWithValue("@IsSuperAdmin", isSuperAdmin);
                 cmd.Parameters.AddWithValue("@AdminPassword", hashedPassword);
+                cmd.Parameters.AddWithValue("@AdminAddress", admin.AdminAddress);
                 cmd.Parameters.AddWithValue("@flag", "RegisterAdmin");
 
                 SqlDataReader rdr = cmd.ExecuteReader();
@@ -273,6 +274,7 @@ namespace CollegeProject.RepoClass
                     admin.AdminName = rdr["AdminName"].ToString();
                     admin.AdminPhone = rdr["AdminPhone"].ToString();
                     admin._isSuperAdmin = Convert.ToBoolean(rdr["IsSuperAdmin"]);
+                    admin.AdminAddress = rdr["AdminAddress"].ToString();
                 }
 
                 bool _passwordIsCorrect = _passwordService.VerifyPassword(admin.AdminPassword, UIPassword);

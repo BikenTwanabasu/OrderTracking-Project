@@ -76,6 +76,7 @@
         public bool _isSuperAdmin { get; set; }  
         public int ResponseCode { get; set; }
         public string? ResponseMessage { get; set;}
+        public string? AdminAddress { get; set; }
     }
     public class VendorOrderChartData
     {
