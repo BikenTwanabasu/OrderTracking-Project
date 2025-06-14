@@ -86,6 +86,43 @@ namespace CollegeProject.RepoClass
             }
 
         }
+        public Admin RegisterAdmin(Admin admin) 
+        {
+            var isSuperAdmin = 2 ;
+            if(admin._isSuperAdmin == true) 
+            {
+                isSuperAdmin = 1;
+            }
+            else
+            {
+                isSuperAdmin = 0;
+            }
+            if (admin.AdminEmail == null && admin.AdminPhone == null && admin.AdminName == null && admin.AdminPassword == null)
+            { return admin; }
+            string hashedPassword = _passwordService.HashPassword(admin.AdminPassword);
+            
+            using (SqlConnection con = new SqlConnection(ConnectionString()))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@AdminName", admin.AdminName);
+                cmd.Parameters.AddWithValue("@AdminEmail", admin.AdminEmail);
+                cmd.Parameters.AddWithValue("@AdminPhone", admin.AdminPhone);
+                cmd.Parameters.AddWithValue("@IsSuperAdmin", isSuperAdmin);
+                cmd.Parameters.AddWithValue("@AdminPassword", hashedPassword);
+                cmd.Parameters.AddWithValue("@flag", "RegisterAdmin");
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    admin.ResponseCode = (int)rdr["ResponseCode"];
+                    admin.ResponseMessage = rdr["ResponseMessage"].ToString();
+                }
+                return admin;
+            }
+        }
         public bool OrderCreations(OrderAndStudentModel orderAndStudentModel)
         {
             int i = 0;

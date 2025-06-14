@@ -66,4 +66,15 @@
         public Customer? customer { get; set; }
         public Order? order { get; set; }
     }
+    public class Admin
+    {
+        public string? AdminId { get; set; }
+        public string? AdminEmail { get; set; }
+        public string? AdminName { get; set;}
+        public string? AdminPhone { get; set;}
+        public string? AdminPassword { get; set; }
+        public bool _isSuperAdmin { get; set; }  
+        public int ResponseCode { get; set; }
+        public string? ResponseMessage { get; set;}
+    }
 }

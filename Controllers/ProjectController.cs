@@ -39,6 +39,15 @@ namespace CollegeProject.Controllers
             return View();
 
         }
+        public IActionResult AdminRegistration(Admin admin) 
+        {
+            var a =_services.RegisterAdmin(admin);
+            if(a.AdminEmail!=null) 
+            {
+                return Json(a);
+            }
+            return View();
+        }
         [Permission("Vendor")]
         public IActionResult OrderCreation(OrderAndStudentModel orderAndStudentModel)
         {
