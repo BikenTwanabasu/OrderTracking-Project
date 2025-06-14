@@ -1,5 +1,6 @@
 ﻿using CollegeProject.Models;
 using CollegeProject.RepoClass;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -17,35 +18,35 @@ namespace CollegeProject.Controllers
         {
             return View();
         }
-        //[Permission("Admin", "SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         public IActionResult GetAdminsPresentList()
         {
             return View();
         }
-        //[Permission("Admin", "SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         public IActionResult GetAdminsPresentJSON(AgentTaskModel model)
         {
             var a = _adminServices.getAdminPresentList(model);
             return Json(a);
         }
-        //[Permission("Admin", "SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         public IActionResult UpdateDeliveryStatus(AgentTaskModel model)
         {
             var response = _adminServices.UpdateDeliveryStatusByAdmin(model);
             return Json(response);
         }
-        //[Permission("Admin", "SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         public IActionResult GetAdminsHistoryList()
         {
             return View();
         }
-        //[Permission("Admin", "SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         public IActionResult GetAdminsHistoryJSON(AgentTaskModel model)
         {
             var a = _adminServices.getAdminHistoryList(model);
             return Json(a);
         }
-        //[Permission("Admin", "SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         public IActionResult AdminDashboard()
         {
             var claimData = HttpContext.GetClaimsData();
@@ -66,19 +67,19 @@ namespace CollegeProject.Controllers
 
             return View(); 
         }
-        //[Permission("Admin", "SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         public IActionResult DeleteByAdmin(AgentTaskModel model)
         {
             var a = _adminServices.deleteByAdmin(model);
             return Json(a);
         }
-        //[Permission("Admin", "SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         public IActionResult GetOrderById(AgentTaskModel model)
         {
             var a = _adminServices.Getorder(model);
             return Json(a);
         }
-        //[Permission("Admin", "SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         public IActionResult UpdateOrderByAdmin(AgentTaskModel model)
         {
             var a=_adminServices.updateOrderDataByAdmin(model);
@@ -87,31 +88,31 @@ namespace CollegeProject.Controllers
                 return Json(a);
 
         }
-        //[Permission("Admin", "SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         public IActionResult VendorRegistrationApprovalRequest()
         {
             return View();
         }
-        //[Permission("Admin", "SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpPost]
         public IActionResult VendorRegistrationApprovalRequestJSON()
         {
             var a = _adminServices.VendorRegistrationRequest(); 
             return Json(a);
         }
-        //[Permission("Admin", "SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpPost]
         public IActionResult AccpetVendorRegistrationRequest(int tempCompanyId)
         {
             var a = _adminServices.AcceptVendorRegistrationRequest(tempCompanyId);
             return Json(a);
         }
-        //[Permission("Admin", "SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         public IActionResult AgentRegistrationApprovalRequest()
         {
             return View();
         }
-        //[Permission("Admin", "SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         [HttpPost]
         public IActionResult AgentRegistrationApprovalRequestJSON() 
         {
@@ -119,7 +120,7 @@ namespace CollegeProject.Controllers
             return Json(a);
         }
         [HttpPost]
-        //[Permission("Admin", "SuperAdmin")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         public IActionResult AcceptAgentRegistrationRequest(int tempAgentId)
         {
             var a = _adminServices.AcceptAgentRegistrationRequest(tempAgentId);

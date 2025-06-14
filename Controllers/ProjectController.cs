@@ -1,5 +1,6 @@
 ﻿using CollegeProject.Models;
 using CollegeProject.RepoClass;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StackExchange.Redis;
 
@@ -39,7 +40,7 @@ namespace CollegeProject.Controllers
             return View();
 
         }
-        [Permission("SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin")]
         public IActionResult AdminRegistration(Admin admin) 
         {
             var a =_services.RegisterAdmin(admin);
