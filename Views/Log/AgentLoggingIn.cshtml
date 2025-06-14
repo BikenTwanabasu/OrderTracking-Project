@@ -221,7 +221,7 @@
                 success: function(response){
                     if (response.responseCode != null) {
                         debugger;
-                        if (response.responseCode == 0) {
+                        if (response.responseCode == 1) {
                             $("#DivErrorView")
                                 .html('<div class="alert alert-success">' + response.responseMessage + '</div>')
                                 .show()

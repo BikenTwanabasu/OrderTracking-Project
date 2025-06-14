@@ -82,5 +82,21 @@ namespace CollegeProject.Controllers
             var a = _adminServices.AcceptVendorRegistrationRequest(tempCompanyId);
             return Json(a);
         }
+        public IActionResult AgentRegistrationApprovalRequest()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AgentRegistrationApprovalRequestJSON() 
+        {
+            var a = _adminServices.AgentRegistrationRequest();
+            return Json(a);
+        }
+        [HttpPost]
+        public IActionResult AcceptAgentRegistrationRequest(int tempAgentId)
+        {
+            var a = _adminServices.AcceptAgentRegistrationRequest(tempAgentId);
+            return Json(a); 
+        }
     }
 }

@@ -133,14 +133,13 @@ namespace CollegeProject.RepoClass
             {
                 return agent;
             }
-            string hashedPassword = _passwordService.HashPassword(agent.AgentPassword);
+            string UIPassword = agent.AgentPassword;
             using (SqlConnection con = new SqlConnection(ConnectionString()))
             {
                 con.Open();
                 SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@AgentEmail", agent.AgentEmail);
-                cmd.Parameters.AddWithValue("@AgentPassword", hashedPassword);
                 cmd.Parameters.AddWithValue("@flag", "AgentLogIn");
                 SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -150,7 +149,14 @@ namespace CollegeProject.RepoClass
                     agent.ResponseMessage = rdr["ResponseMessage"].ToString();
                     agent.AgentId = rdr["AgentId"].ToString();
                     agent.AgentName = rdr["AgentName"].ToString();
-                    agent.AgentAddress = rdr["AgentAddress"].ToString();
+                    agent.AgentAddress = rdr["AgentAddress"].ToString(); 
+                    agent.AgentPassword = rdr["AgentPassword"].ToString();
+                }
+                bool _passwordIsCorrect = _passwordService.VerifyPassword(agent.AgentPassword, UIPassword);
+                if (_passwordIsCorrect)
+                {
+                    agent.ResponseCode = 1;
+                    agent.ResponseMessage = "Login Successful";
                 }
                 return agent;
 

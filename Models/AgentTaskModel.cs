@@ -33,5 +33,6 @@
         public string? Amount { get; set; }
         public string? VendorEmail { get; set; }
         public string? RegisterStatus { get; set; }
+        public string? AgentEmail { get; set; }
     }
 }

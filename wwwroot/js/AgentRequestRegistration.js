@@ -1,15 +1,13 @@
 ﻿$(document).ready(function () {
-    VendorRegistrationRequest();
+    AgentRegistrationRequest();
 });
 
-function VendorRegistrationRequest() {
+function AgentRegistrationRequest() {
     if ($.fn.DataTable.isDataTable('#table1')) {
         $('#table1').DataTable().clear().destroy();
     }
-
-    debugger;
     $.ajax({
-        url: '/Admin/VendorRegistrationApprovalRequestJSON',
+        url: '/Admin/AgentRegistrationApprovalRequestJSON',
         type: 'Post',
         dataType: 'json',
         success: function (response) {
@@ -19,16 +17,16 @@ function VendorRegistrationRequest() {
                 for (var i = 0; i < response.length; i++) {
                     row += `
                             <tr>
-                                <td style="display:none;">${response[i].companyID}</td>
+                                <td style="display:none;">${response[i].agentId}</td>
                                 <td>${i + 1}</td>
-                                <td>${response[i].vendorName}</td>
-                                <td>${response[i].vendorAddress}</td>
-                                <td>${response[i].vendorEmail}</td>
-                                <td>${response[i].vendorPhone}</td>
+                                <td>${response[i].agentName}</td>
+                                <td>${response[i].agentAddress}</td>
+                                <td>${response[i].agentEmail}</td>
+                                <td>${response[i].agentPhone}</td>
                                 <td>
                                 <div class="d-flex justify-content-center gap-2">
-                                    <button type="button" class="accept-btn btn btn-sm btn-success" onclick="RegisterVendor(${response[i].companyID})">Accept</button>
-                                    <button type="button" class="delete-btn btn btn-sm btn-danger" onclick="DeleteVendor(${response[i].companyID})">Delete</button>
+                                    <button type="button" class="accept-btn btn btn-sm btn-success" onclick="RegisterAgent(${response[i].agentId})">Accept</button>
+                                    <button type="button" class="delete-btn btn btn-sm btn-danger" onclick="DeleteAgent(${response[i].agentId})">Delete</button>
                                 </div>
                             </td>
                             </tr>`;
@@ -51,20 +49,19 @@ function VendorRegistrationRequest() {
     });
 }
 
-function RegisterVendor(companyId) {
+function RegisterAgent(agentId) {
     $.ajax({
-        url: '/Admin/AccpetVendorRegistrationRequest',
+        url: '/Admin/AcceptAgentRegistrationRequest',
         type: 'POST',
         dataType: 'Json',
         data: {
-            tempCompanyId : companyId
+            tempAgentId: agentId
         },
         success: function (response) {
-            debugger;
-            if (response.responseMessage!= null) {
+            if (response.responseMessage != null) {
                 alert(response.responseMessage);
                 debugger;
-                window.location.href = '/Admin/VendorRegistrationApprovalRequest';
+                window.location.href = '/Admin/AgentRegistrationApprovalRequest';
             }
             else {
                 alert("Vendor Account Creation Failed")
@@ -76,18 +73,18 @@ function RegisterVendor(companyId) {
     })
 }
 
-function DeleteVendor(companyId) {
+function DeleteAgent(agentId) {
     $.ajax({
         url: '',
         type: 'POST',
         dataType: 'Json',
         data: {
-            tempCompanyId: companyId
+            tempAgentId: agentId
         },
         success: function (result) {
             if (result) {
                 alert("Vendor Account Request Deleted Successfully");
-                window.location.href = '/Admin/VendorRegistrationApprovalRequest';
+                window.location.href = '/Admin/AgentRegistrationApprovalRequest';
             }
             else {
                 alert("Vendor Account Request Deletion Failed");

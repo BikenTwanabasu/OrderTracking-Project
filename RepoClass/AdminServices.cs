@@ -245,5 +245,52 @@ namespace CollegeProject.RepoClass
             }
             return model;
         }
+        public List<AgentTaskModel> AgentRegistrationRequest()
+        {
+            List<AgentTaskModel> list = new List<AgentTaskModel>();
+            using (SqlConnection con = new SqlConnection(Connection()))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@flag", "AgentRegistrationRequestList");
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    AgentTaskModel agentTaskModel = new AgentTaskModel();
+                    agentTaskModel.AgentId = rdr["TempAgentId"].ToString();
+                    agentTaskModel.AgentName = rdr["AgentName"].ToString();
+                    agentTaskModel.AgentAddress = rdr["AgentAddress"].ToString();
+                    agentTaskModel.AgentEmail = rdr["AgentEmail"].ToString();
+                    agentTaskModel.AgentPhone = rdr["AgentPhone"].ToString();
+                    agentTaskModel.RegisterStatus = rdr["RegisterStatus"].ToString();
+
+                    list.Add(agentTaskModel);
+                }
+                return list;
+            }
+        }
+        public AgentTaskModel AcceptAgentRegistrationRequest(int TempAgentId)
+        {
+            AgentTaskModel model = new AgentTaskModel();
+            using (SqlConnection con = new SqlConnection(Connection()))
+            {
+
+                con.Open();
+                SqlCommand cmd = new SqlCommand("sp_insertDatas", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@flag", "AcceptAgentRegistrationRequest");
+                cmd.Parameters.AddWithValue("@TempAgentId", TempAgentId);
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    model.ResponseCode = rdr["ResponseCode"].ToString();
+                    model.ResponseMessage = rdr["ResponseMessage"].ToString();
+
+                }
+
+            }
+            return model;
+        }
     }
 }
