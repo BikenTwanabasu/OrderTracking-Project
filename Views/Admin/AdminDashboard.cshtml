@@ -1,66 +1,4 @@
-﻿@*
-@model IEnumerable<CollegeProject.Models.AgentTaskModel>
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>Admin Dashboard – Gaubesi</title>
-    <meta name="viewport" content="width=device-width, iniatial-scale=1.0" />
-
-    <!-- Fonts & icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
-
-    <!-- Your dashboard CSS -->
-	<link href="~/css/admindashboard.css" rel="stylesheet" />
-</head>
-<body>
-    <div class="MainDiv">
-        <!-- Navbar -->
-        <nav class="nav">
-            <div class="logo">
-
-                <img src="https://gaaubesi.com/static/assets/images/LOGO.gif" alt="Gaubesi Logo" />
-
-            </div>
-        <ul class="nav-links">
-            <li><a asp-controller="Admin" asp-action="AdminDashboard">Home</a></li>
-            <li><a asp-controller="Admin" asp-action="GetAdminsHistoryList">Past Deliveries</a></li>
-            <li><a asp-controller="Admin" asp-action="GetAdminsPresentList">Live Deliveries</a></li>
-                <li><a asp-controller="Log" asp-action="Logout">Logout</a></li>
-        </ul>
-       </nav>
-
-            <!-- Background Image (left half) -->
-            <div class="Admin-background">
-			<img src="~/image/onedrive/pictures/newfolder/whatsapp image 2025-05-12 at 3.05.18 pm.jpeg" />
-		</div>
-
-            <!-- Welcome Overlay on image side -->
-            <div class="Admin-welcome">
-                <h1>Welcome</h1>
-                <h2>@ViewBag.Name</h2>
-            </div>
-
-
-            <!-- Footer -->
-            <div class="Admin-welcome">
-                <h1>Welcome</h1>
-                <h2>@ViewBag.Name</h2>
-            </div>
-
-            <!-- Footer -->
-            <div class="footer">
-                <p>&copy; 2025 Gaubesi. All rights reserved.</p>
-            </div>
-        </div>
-</body>
-</html>
-*@
+﻿
 
             @model IEnumerable<CollegeProject.Models.AgentTaskModel>
 @using Newtonsoft.Json
@@ -133,35 +71,7 @@
             </div>
         </div>
 
-        <!-- Recent Deliveries Table -->
-        <section class="recent-table">
-            <h3>Recent Deliveries</h3>
-            <div class="table-wrapper">
-                <table id="recentDeliveries" class="records-table">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Vendor</th>
-                            <th>Customer</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var t in (Model ?? Enumerable.Empty<CollegeProject.Models.AgentTaskModel>())
-                        .OrderByDescending(x => x.DeliveredDate ?? x.CreatedDate)
-                        .Take(5))
-                        {
-                            <tr>
-                                <td>@t.OrderId</td>
-                                <td>@t.VendorName</td>
-                                <td>@t.CustomerName</td>
-                                <td>@t.DeliveryStatus</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </section>
+      
 
         <!-- Performance Chart -->
         <section class="performance-chart">
@@ -181,6 +91,8 @@
                     <li><a asp-controller="Admin" asp-action="AdminDashboard">Home</a></li>
                     <li><a asp-controller="Admin" asp-action="GetAdminsHistoryList">Past Deliveries</a></li>
                     <li><a asp-controller="Admin" asp-action="GetAdminsPresentList">Live Deliveries</a></li>
+                    <li><a asp-controller="Admin" asp-action="AgentRegistrationApprovalRequest">Agent Approval</a></li>
+                    <li><a asp-controller="Admin" asp-action="VendorRegistrationApprovalRequest">Vendor Approval</a></li>
                 </ul>
             </div>
             <div class="footer-column">
