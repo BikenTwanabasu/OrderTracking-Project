@@ -12,15 +12,13 @@ html, body {
     overflow-x: hidden;
 }
 
-/* Main wrapper pushes content below navbar */
+/* Main container pushes content below navbar */
 .MainDiv {
-    padding-top: 60px;
+    padding-top: 60px; /* height of navbar */
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
 }
 
-/* Navbar */
+/* Navbar (same as other pages) */
 .nav {
     position: fixed;
     top: 0;
@@ -39,7 +37,7 @@ html, body {
     .nav .logo img {
         height: 40px;
         cursor: pointer;
-        transition: transform .3s;
+        transition: transform 0.3s;
     }
 
         .nav .logo img:hover {
@@ -56,72 +54,71 @@ html, body {
         text-decoration: none;
         font-weight: 600;
         color: #d80000;
-        padding: 0.25rem;
-        transition: color .3s, background .3s;
+        transition: color 0.3s;
     }
 
         .nav-links li a:hover,
         .nav-links li a.active {
-            background: #d80000;
-            color: #fff;
-            border-radius: 4px;
+            color: #a50000;
+            text-decoration: underline;
         }
 
-/* Content Card */
-.content-card {
-    width: calc(100% - 4rem);
-    max-width: 1100px;
-    margin: 2rem auto;
-    background: #fff;
-    padding: 1.5rem;
-    border: 2px solid #d80000;
-    border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+/* Page title */
+.MainDiv > h1 {
+    margin: 2rem 0 1rem;
+    color: #d80000;
 }
 
-    .content-card h3 {
-        text-align: center;
-        color: #d80000;
-        font-size: 1.75rem;
-        margin-bottom: 0.25rem;
-    }
-
-    .content-card .subtitle {
-        text-align: center;
-        color: #555;
-        margin-bottom: 1rem;
-    }
-
-/* Table Wrapper */
-.table-wrapper {
-    overflow-x: auto;
-    padding: 0.5rem;
-    background: #fff;
-    border-radius: 4px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-}
-
-.records-table {
+/* Table wrapper */
+table#table1 {
     width: 100%;
     border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 2px solid #d80000;
+    border-radius: 0.5rem;
+    overflow: hidden;
 }
 
-    .records-table th {
-        background: #ffe6e6;
-        color: #d80000;
-        font-weight: 600;
-        padding: 0.75rem;
-        border-bottom: 2px solid #ddd;
-        text-align: left;
+    table#table1 thead {
+        background: #ffecec;
     }
 
-    .records-table td {
-        padding: 0.75rem;
-        border-top: 1px solid #eee;
+    table#table1 th, table#table1 td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+        font-size: 0.9rem;
         color: #333;
     }
 
-/* Maintain DataTables built‑in styling for responsiveness */
-.dataTables_wrapper .dataTables_scroll {
-    overflow: visible !important;
+    table#table1 th {
+        color: #d80000;
+        font-weight: 600;
+    }
+
+/* DataTables container override */
+.dataTables_wrapper {
+    margin-top: 1rem;
+}
+
+/* Modal button spacing */
+.modal .modal-footer .btn {
+    margin-left: 0.5rem;
+}
+
+/* Utility: center the page title on small screens */
+@media (max-width: 600px) {
+    .MainDiv > h1 {
+        font-size: 1.5rem;
+        margin: 1rem;
+    }
+
+    .nav {
+        padding: 0 1rem;
+    }
+
+    .nav-links {
+        gap: 1rem;
+    }
 }
