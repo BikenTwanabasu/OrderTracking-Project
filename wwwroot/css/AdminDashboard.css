@@ -44,7 +44,7 @@ html, body {
 
     .nav-links li a {
         text-decoration: none;
-        font-weight: 700; /* make it bold */
+        font-weight: 700; 
         color: #d80000;
         transition: color 0.3s;
     }
