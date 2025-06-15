@@ -61,6 +61,7 @@ namespace CollegeProject.Controllers
             }
             return View();
         }
+        [Route("Admin")]
         public IActionResult AdminLoggingIn(Admin admin)
         {
             var a = _services.AdminLogIn(admin);
